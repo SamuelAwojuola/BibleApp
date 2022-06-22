@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bible App Test-05</title>
+    <style>
+        select {
+            height: 90vh;
+        }
+
+        #bible_chapters>option {
+            display: none;
+            width: 20px;
+        }
+
+        #bible_verses>option {
+            /* display: none; */
+            /* width: 20px; */
+        }
+
+        .show_chapter {
+            display: block !important;
+        }
+
+        .show_verses {
+            display: block !important;
+        }
+    </style>
+</head>
+
+<body>
+    <select name="books" id="bible_books" multiple></select>
+    <select name="chapters" id="bible_chapters" multiple></select>
+    <select name="verses" id="bible_verses" multiple></select>
+</body>
+<script>
+    // Populate Select Lists with Layouts and Categories from JSON file
+    var selectBooks = document.querySelector('#bible_books');
+    var selectChapters = document.querySelector('#bible_chapters');
+    var selectVerse = document.querySelector('#bible_verses');
+    var ppp = document.querySelector('#ppp');
+
+    var requestURLkjvStrongsSummary = 'kjv_strongs_summary01.json';
+    var kjvBible_refs = new XMLHttpRequest();
+    kjvBible_refs.open('GET', requestURLkjvStrongsSummary);
+    kjvBible_refs.responseType = 'json';
+    kjvBible_refs.send();
+
+    var booksChaptersAndVerses;
+    var verses;
+    kjvBible_refs.onload = function () {
+        booksChaptersAndVerses = kjvBible_refs.response;
+        populateBooks(booksChaptersAndVerses);
+    }
+
+    function populateBooks(obj) {
+        verses = obj['verses'];
+        var prevBook = null;
+        var prevChapter = 0;
+        var prevVerse = 0;
+        var versesLength = verses.length;
+        var myOption1;
+        var bookChanged = 0;
+        var chapterChanged = 0;
+
+        var bookName = null,
+            bookNum = null,
+            bookStartIndex = null,
+            bookEndIndex = null,
+            numberOfChapters = null,
+            versesPerChapter = [];
+
+        for (let i = 0; i < versesLength; i++) {
+            //Books Select
+            bibleBook = document.createElement('option');
+            bibleBook.setAttribute('bookName', verses[i].bookName);
+            bibleBook.setAttribute('bookStartIndex', verses[i].bookStartIndex);
+            bibleBook.setAttribute('bookEndIndex', verses[i].bookEndIndex);
+            bookName = verses[i].bookName;
+            bibleBook.value = 'book_' + i;
+            bibleBook.setAttribute('bookIndex', [i]);
+            bibleBook.textContent = verses[i].bookName;
+
+            bibleBook.setAttribute('onClick', 'getBooksChapters(this)');
+
+            selectBooks.appendChild(bibleBook);
+
+            //Chapters Select
+            var numberOfChapters = verses[i].versesPerChapter;
+            for (j = 0; j < numberOfChapters.length; j++) {
+                var bookChapters = document.createElement('option');
+                bookChapters.classList.add('book_' + i);
+                bookChapters.setAttribute('bookName', bookName);
+                bookChapters.setAttribute('bookIndex', i);
+                bookChapters.setAttribute('chapterIndex', j);
+
+                // bibleBook.setAttribute('chapterStartIndex', verses[j].bookStartIndex);
+                // bookChapters.setAttribute('chapterEndIndex', verses[j].bookEndIndex);
+
+                bookChapters.value = 'bk' + i + 'ch' + j;
+                bookChapters.textContent = [j + 1];
+
+                bookChapters.setAttribute('onClick', 'getChaptersVerses(this)');
+                selectChapters.appendChild(bookChapters);
+
+                //Verses Select
+                var numberOfverses = verses[i].versesPerChapter;
+                for (k = 0; k < numberOfverses.length; k++) {}
+            }
+        }
+    }
+
+    function getBooksChapters(xxx) {
+        if (document.querySelector(".show_chapter")) {
+            document.querySelectorAll(".show_chapter").forEach(element => {
+                element.classList.remove("show_chapter");
+            });
+        }
+        var classOfChapters = document.querySelectorAll('.' + xxx.value);
+        classOfChapters.forEach(element => {
+            element.classList.add("show_chapter");
+        });
+    }
+
+    function getChaptersVerses(xxx) {
+        selectVerse.querySelectorAll('*').forEach(element => {
+            element.remove();
+        });
+        var bookId = Number(numberOfverses=xxx.getAttribute("bookIndex"));
+        var chapterId = Number(numberOfverses=xxx.getAttribute("chapterIndex"));
+        numberOfverses = Number(verses[bookId].versesPerChapter[chapterId]);
+        
+        for (k = 0; k < numberOfverses; k++) {
+            var bookVerses = document.createElement('option');
+            // bookVerses.setAttribute('onClick', 'getChaptersVerses(this)');
+            bookVerses.innerText = k+1;
+            selectVerse.appendChild(bookVerses);
+        }
+    }
+
+    function getTextOfChapter(xxx){}
+</script>
+
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bible App Test-01</title>
+</head>
+
+<body>
+    <select name="books" id="bible_books" multiple></select>
+    <select name="chapters" id="bible_chapters" multiple></select>
+    <select name="verses" id="bible_verses"></select>
+</body>
+<script>
+    // Populate Select Lists with Layouts and Categories from JSON file
+    var selectBooks = document.querySelector('#bible_books');
+    var selectChapters = document.querySelector('#bible_chapters');
+    var selectVerse = document.querySelector('#bible_verses');
+
+    var requestURL = 'kjv_strongs.json';
+    var kjvBible = new XMLHttpRequest();
+    kjvBible.open('GET', requestURL);
+    kjvBible.responseType = 'json';
+    kjvBible.send();
+
+    var booksChaptersAndVerses;
+    kjvBible.onload = function () {
+        // var booksChaptersAndVerses = kjvBible.response;
+        booksChaptersAndVerses = kjvBible.response;
+        populateBooks(booksChaptersAndVerses);
+        // populateFullReference(booksChaptersAndVerses);
+    }
+
+    var bibleBooksEssentialDetails = [];
+    // class Person {
+    //     constructor(fname, lname) {
+    //         this.firstName = fname;
+    //         this.lastName = lname;
+    //     }
+    // }
+    // const person = new Person('testFirstName', 'testLastName');
+
+
+    function populateBooks(obj) {
+        var verses = obj['verses'];
+        var prevBook = null;
+        var prevChapter = null;
+        var versesLength = verses.length;
+        var myOption1;
+
+        var bookName = null,
+            bookNum = null,
+            bookStartIndex = null,
+            bookEndIndex = null,
+            numberOfChapters = null,
+            versesPerChapter = [];
+
+            /* {
+        "book_name": "Genesis",
+        "book": 1,
+        "chapter": 1,
+        "verse": 1,
+        "text": "In the beginning{H7225} God{H430} created{H1254}{(H8804)}{H853} the heaven{H8064} and{H853} the earth{H776}."
+    } */
+
+        for (let i = 0; i < versesLength; i++) {
+            /* POPULATE BOOK SELECT */
+
+            if ((bookName != verses[i].book_name)/* &&(prevBook)&&(i != versesLength - 1) */) {
+                bookName=verses[i].book_name;
+                prevBook=bookName;
+            }
+            if (bookChapter != verses[i].chapter) {
+                currentChapter=verses[i].chapter;
+                prevChapter=currentChapter;
+                // prevBook=bookName;
+            }
+            if (chapterVerse != verses[i].verse) {}
+            
+            if (bookName != verses[i].book_name) { //first time encountering a book_name
+                if ((prevBook) && ((i != versesLength - 1))) { //for every other book before Revelation
+                    numberOfChapters = verses[i - 1].chapter;
+                    bookEndIndex = i - 1
+                    
+                    // createBibleEssentialObject()
+                }
+                bookName = verses[i].book_name
+                myOption1 = document.createElement('option');
+                bookStartIndex = i; //Verse where the book starts
+                bookNum = verses[i].book; //the position of the book among books of the bible
+                var currentBook = verses[i].book_name;
+                // bibleBooksEssentialDetails.push(currentBook)
+                prevBook = currentBook;
+                
+            }
+            if (i == versesLength - 1) { //for Revelation
+                numberOfChapters = verses[i].chapter;
+                bookEndIndex = i;
+                // createBibleEssentialObject()
+            }
+            
+            var currentChapter = verses[i].chapter;
+        
+            //For Verses per Chapter
+            function getVersesPerChapters(x){
+                if((x==)&&(prevChapter != currentChapter)){
+                console.log(verses[i].chapter)
+                prevChapter == currentChapter;
+            }}
+            function createBibleEssentialObject() {
+                console.log({
+                    "bookName": bookName,
+                    "bookStartIndex": bookStartIndex,
+                    "bookEndIndex": bookEndIndex,
+                    "bookStartIndex": null,
+                    "bookEndIndex": null,
+                    "numberOfChapters": null,
+                    "versesPerChapter": []
+                })
+            }
+
+            /* POPULATE CHAPTER NUMBERS */
+            //whenever there is a new book (line 46 above:  if ((prevBook)  && ((i != versesLength - 1)) ) {/...),
+            //create a subsection with the book name and under it
+            //create chapters
+            //you can also get the number of verses for each chapter and assigning it to the chapter as an attribute
+            /*
+            OR I COULD JUST GENERATE A FRESH JSON FILE WITH ALL THESE DETAILS
+            [
+                Genesis:{
+                    bookNameAbreviations:[gen,gn]
+                    bookStartIndex: ....,
+                    bookEndIndex: ....,
+                    numberOfChapters: ....,
+                    versesPerChapter: [
+                        40,
+                        50,
+                        yz,
+                    ]
+                },
+                Exodus:{
+                    bookNameAbreviations:[ex, exo, exod]
+                    bookStartIndex: ....,
+                    bookEndIndex: ....,
+                    numberOfChapters: ....,
+                    versesPerChapter: [
+                        40,
+                        50,
+                        yz,
+                    ]
+                },
+            ]
+             */
+        }
+    }
+
+    function populateFullReference(obj) {
+        var verses = obj['verses'];
+        // console.log(verses.length)
+        for (let i = 0; i < verses.length; i++) {
+            var myOption1 = document.createElement('option');
+            myOption1.value = verses[i].book + '.' + verses[i].chapter + '.' + verses[i].verse;
+            myOption1.textContent = verses[i].book_name + ' ' + verses[i].chapter + ':' + verses[i].verse;
+            selectVerse.appendChild(myOption1);
+        }
+    }
+
+    // function getBooksChapters(x) {
+    //     console.log(x.getAttribute('bookStartIndex'))
+    //     console.log(booksChaptersAndVerses.verses[(x.getAttribute('bookStartIndex'))].book_name)
+    // }
+    //Foor search, get the text of the verses--verses[i].text--and chech with rejex 
+    console.log(bibleBooksEssentialDetails)
+</script>
+
+</html>

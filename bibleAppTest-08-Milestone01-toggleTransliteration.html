@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bible AppTest 08 (Milestone01-toggleTransliteration)</title>
+    <style>
+        body {
+            display: grid;
+            background-color: rgb(246, 246, 246);
+        }
+        body *:not(.chptheading) {
+            font-size: x-small;
+        }
+        select {
+            height: 95vh;
+        }
+        #bible_chapters>option {
+            display: none;
+            width: 20px;
+        }
+        #bible_verses>option {
+            /* display: none; */
+            /* width: 20px; */
+        }
+        .show_chapter {
+            display: block !important;
+        }
+        .show_verses {
+            display: block !important;
+        }       
+        #navigation {
+            grid-column-start: 1;
+            grid-column-end: 2;
+        }
+        #navigation * {
+            font-size: 7px;
+        }
+        #ppp {
+            height: 95vh;
+            overflow-y: scroll;
+            grid-column-start: 2;
+            grid-column-end: 3;
+            grid-row-start: 2;
+            grid-row-end: 3;
+            padding-left: 5px;
+        }
+        .buttons {
+            /* width: 50vw; */
+            background-color: rgb(216, 227, 236);
+            grid-column-start: 1;
+            grid-column-end: 3;
+            grid-row-start: 1;
+            grid-row-end: 1;
+        }
+        .buttons * {
+            padding: 0;
+            /* width: 10px; */
+            min-width: 1.5rem;
+        }
+        .strongsnum {
+            color: rgb(64, 59, 105);
+            font-size: xx-small;
+        }
+        .chptheading{
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="buttons">
+        <button onclick="toggleNav()" class="togglenav" title="Toggle Nav">tN</button>
+        <button onclick="showStrongs(this)" class="showing" title="Show Strongs"><b>s+</b></button>
+        <button onclick="showTransliteration()" class="translit" title="Transliteration"><b>T</b></button>
+    </div>
+    <div id="navigation" style="display:block">
+        <select name="books" id="bible_books" multiple></select>
+        <select name="chapters" id="bible_chapters" multiple></select>
+        <select name="verses" id="bible_verses" multiple></select>
+    </div>
+    <div id="ppp"></div>
+</body>
+<script>
+    // Populate Select Lists with Layouts and Categories from JSON file
+    var selectBooks = document.querySelector('#bible_books');
+    var selectChapters = document.querySelector('#bible_chapters');
+    var selectVerse = document.querySelector('#bible_verses');
+    var ppp = document.querySelector('#ppp');
+
+    //For Reference Pane
+    var requestURLkjvStrongsSummary = 'kjv_strongs_summary01.json';
+    var kjvBible_refs = new XMLHttpRequest();
+    kjvBible_refs.open('GET', requestURLkjvStrongsSummary);
+    kjvBible_refs.responseType = 'json';
+    kjvBible_refs.send();
+
+    var bChandV;
+    var verses;
+    kjvBible_refs.onload = function () {
+        bChandV = kjvBible_refs.response;
+        populateBooks(bChandV);
+    }
+
+    function populateBooks(obj) {
+        verses = obj['verses'];
+        var prevBook = null;
+        var prevChapter = 0;
+        var prevVerse = 0;
+        var versesLength = verses.length;
+        var myOption1;
+        var bookChanged = 0;
+        var chapterChanged = 0;
+
+        var bookName = null,
+            bookNum = null,
+            bookStartIndex = null,
+            bookEndIndex = null,
+            numberOfChapters = null,
+            versesPerChapter = [];
+
+        for (let i = 0; i < versesLength; i++) {
+            //Books Select
+            bibleBook = document.createElement('option');
+            bibleBook.setAttribute('bookName', verses[i].bookName);
+            var bookStartIndex = verses[i].bookStartIndex;
+            bibleBook.setAttribute('bookStartIndex', bookStartIndex);
+            var bookEndIndex = verses[i].bookEndIndex;
+            bibleBook.setAttribute('bookEndIndex', bookEndIndex);
+            bookName = verses[i].bookName;
+            bibleBook.value = 'book_' + i;
+            bibleBook.setAttribute('bookIndex', [i]);
+            bibleBook.textContent = verses[i].bookName;
+
+            bibleBook.setAttribute('onClick', 'getBooksChapters(this)');
+
+            selectBooks.appendChild(bibleBook);
+            var chapterStartIncreamenter = 0;
+
+            //Chapters Select
+            var numberOfChapters = verses[i].versesPerChapter;
+            for (j = 0; j < numberOfChapters.length; j++) {
+                var bookChapters = document.createElement('option');
+                bookChapters.classList.add('book_' + i);
+                bookChapters.setAttribute('bookName', bookName);
+                bookChapters.setAttribute('bookIndex', i);
+                bookChapters.setAttribute('chapterIndex', j);
+
+
+                var chapterStartIndex = bookStartIndex + chapterStartIncreamenter;
+                var chapterEndIndex = chapterStartIndex + numberOfChapters[j] - 1;
+                chapterStartIncreamenter = chapterStartIncreamenter + numberOfChapters[j];
+                bookChapters.setAttribute('chapterStartIndex', chapterStartIndex);
+                bookChapters.setAttribute('chapterEndIndex', chapterEndIndex);
+
+                bookChapters.value = 'bk' + i + 'ch' + j;
+                bookChapters.textContent = [j + 1];
+
+                bookChapters.setAttribute('onClick', 'createChaptersVerses(this)');
+                selectChapters.appendChild(bookChapters);
+            }
+        }
+    }
+
+
+    function getBooksChapters(xxx) {
+        if (document.querySelector(".show_chapter")) {
+            document.querySelectorAll(".show_chapter").forEach(element => {
+                element.classList.remove("show_chapter");
+            });
+        }
+        var classOfChapters = document.querySelectorAll('.' + xxx.value);
+        classOfChapters.forEach(element => {
+            element.classList.add("show_chapter");
+        });
+    }
+
+    function createChaptersVerses(xxx) {
+        selectVerse.querySelectorAll('*').forEach(element => {
+            element.remove();
+        });
+        var bookId = Number(numberOfverses = xxx.getAttribute("bookIndex"));
+        var chapterId = Number(numberOfverses = xxx.getAttribute("chapterIndex"));
+        numberOfverses = Number(verses[bookId].versesPerChapter[chapterId]);
+
+        var chapterStartIndex = Number(xxx.getAttribute("chapterStartIndex"));
+        for (k = 0; k < numberOfverses; k++) {
+            var bookVerses = document.createElement('option');
+            var verseIndex = chapterStartIndex + k;
+            bookVerses.setAttribute('verseIndex', verseIndex);
+
+            bookVerses.setAttribute('onClick', 'getTextOfVerse(this)');
+            bookVerses.innerText = k + 1;
+            selectVerse.appendChild(bookVerses);
+        }
+        getTextOfChapter(xxx)
+    }
+
+    function getTextOfBook(xxx) {
+        // console.log(bcv[bId].text)
+    }
+
+    function getTextOfChapter(xxx) {
+        chNumInBk = Number(xxx.getAttribute("chapterindex"));
+        chStartIdx = Number(xxx.getAttribute("chapterStartIndex"));
+        chEndIdx = Number(xxx.getAttribute("chapterendindex")) + 1;
+        bookname = xxx.getAttribute("bookname");
+
+        ppp.innerHTML = ''; //will only contain one chapter at a time
+        for (a = 1, i = chStartIdx; i < chEndIdx; i++, a++) {
+            if (a == 1) {
+                chapterHeading = document.createElement('h2');
+                chapterHeading.classList.add('chptheading');
+                chapterHeading.append(bookname+' ' +(chNumInBk + 1));
+                ppp.prepend(chapterHeading)
+            }
+
+            versesText = document.createElement('span');
+            verseSpan = document.createElement('span');
+            verseNum = document.createElement('code');
+            breakElm = document.createElement('br');
+
+            let vText = bcv[Number(i)].text;
+            //e.g., {(H2536)}
+            vText = vText.replace(/({(\(((H|G)(\d+))\))})+/g,
+                '<sup class="strongsnum" strnum="$3" testament="$4" strindx="$5">$2</sup>');
+            vText = vText.replace(/({(((H|G)(\d+)))})+/g,
+                '<sup class="strongsnum" strnum="$2" testament="$4" strindx="$5">$2</sup>');
+            verseSpan.innerHTML = vText;
+            verseNum.prepend((chNumInBk + 1) + ':' + a + ' ');
+            verseNum.prepend(breakElm);
+            verseSpan.prepend(verseNum);
+            ppp.appendChild(verseSpan);
+        }
+
+    }
+
+    function getTextOfVerse(xxx) {
+        vIdx = xxx.getAttribute("verseIndex")
+        ppp.append(bcv[Number(vIdx)].text)
+    }
+
+    // FOR ACTUAL TEXT
+    var requestURL = 'kjv_strongs.json';
+    var kjvBible = new XMLHttpRequest();
+    kjvBible.open('GET', requestURL);
+    kjvBible.responseType = 'json';
+    kjvBible.send();
+
+    let booksChaptersAndVerses;
+    var bcv;
+    kjvBible.onload = function () {
+        booksChaptersAndVerses = kjvBible.response;
+        bcv = booksChaptersAndVerses['verses'];
+        openachapteronpageload() //To display Gensis 1 on pageLoad
+    }
+
+    // FOR STRONGS LEXICON
+    var requestStrongsURL = 'strongs.json';
+    var strongsJSON = new XMLHttpRequest();
+    strongsJSON.open('GET', requestStrongsURL);
+    strongsJSON.responseType = 'json';
+    strongsJSON.send();
+
+    let strongsJSONresponse;
+    let strngsAll;
+    strongsJSON.onload = function () {
+        strongsJSONresponse = strongsJSON.response;
+    }
+
+    window.addEventListener("click", function (e) {
+        clickedElm = e.target;
+        if (clickedElm.classList.contains('strongsnum')) {
+            strindx = Number(clickedElm.getAttribute("strindx")) - 1;
+            vText = clickedElm.innerText;
+            for (i = 0; i < strongsJSONresponse.length; i++) {
+                if (strongsJSONresponse[i].number == clickedElm.getAttribute("strnum")) {
+                    console.log(strongsJSONresponse[strindx].lemma);
+                    console.log(strongsJSONresponse[strindx].number);
+                    console.log(strongsJSONresponse[strindx].xlit);
+                    vText = vText.replace(/((H|G)\d+)+/g, '<strong>' + strongsJSONresponse[strindx].xlit +
+                        '</strong>');
+                    console.log(vText)
+                    clickedElm.innerHTML = vText;
+                }
+            }
+        }
+
+    })
+
+    function showStrongs(x) {
+        var headPart = document.getElementsByTagName('head')[0];
+        hideStrongs = `.strongsnum {
+            display: none;
+        }`
+        if (x.classList.contains('showing')) {
+            newStyleInHead = document.createElement('style');
+            newStyleInHead.id = 'hidestrongs';
+            newStyleInHead.innerHTML = hideStrongs;
+            headPart.append(newStyleInHead);
+            x.classList.add('hidingstrongs');
+            x.classList.remove('showing');
+        } else {
+            x.classList.add('showing');
+            x.classList.remove('hidingstrongs');
+            hidestrongs.remove();
+        }
+    }
+
+    var stl = 0;
+    // var strgsInVerseSpan;
+
+    function showTransliteration() {
+        // const strgsInVerseSpan = ppp.getElementsByClassName('strongsnum')
+        for (q = 0; q < ppp.querySelectorAll('.strongsnum').length; q++) {
+            var clickedElm = ppp.querySelectorAll('.strongsnum')[q];
+            var vText = clickedElm.innerText;
+            for (i = 0; i < strongsJSONresponse.length; i++) {
+                if (strongsJSONresponse[i].number == clickedElm.getAttribute("strnum")) {
+                    // console.log(strongsJSONresponse[i].lemma);
+                    // console.log(strongsJSONresponse[i].number);
+                    // console.log(strongsJSONresponse[i].xlit);
+                    if (!clickedElm.classList.contains("translit")) {
+                        // vText = vText.replace(/((H|G)(\d+))+/g, '<strong>' + strongsJSONresponse[i].xlit +'</strong>');
+                        vText = vText.replace(/((H|G)(\d+))+/g, strongsJSONresponse[i].xlit);
+                        clickedElm.innerHTML = vText;
+                        clickedElm.classList.add("translit")
+                    } else {
+                        clickedElm.innerHTML = clickedElm.getAttribute("strnum");
+                        clickedElm.classList.remove("translit")
+                    }
+                }
+            }
+        }
+    }
+
+    /* ON PAGE LOAD SELECT THE FIRST BOOK AND CHAPTER */
+    function openachapteronpageload() {
+        bible_books.querySelector('[bookname="Genesis"]').click();
+        bible_chapters.querySelector('[chapterindex="0"]').click();
+    }
+
+    function toggleNav() {
+        console.log(navigation.style)
+        navigation = document.querySelector('#navigation')
+        if (navigation.style.display == 'block') {
+            navigation.style.display = 'none'
+        } else {
+            navigation.style.display = 'block'
+        }
+    }
+</script>
+
+</html>

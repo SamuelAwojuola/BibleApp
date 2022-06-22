@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Higlighter-01</title>
+
+    <style>
+        html{background-color: darkcyan;}
+        .highlight {
+            box-sizing: border-box;
+            /* border: 1px solid grey; */
+            border-radius: 2px;
+        }
+        #menu * {font-size: xx-small;}
+    </style>
+</head>
+
+<body>
+    <div id="menu" style="font-size: smaller;">
+        <button onclick="boldCommand()">Bold</button>
+        <button type="button" onclick="highlightClass()">Highlight</button>
+        <select id="classNameList">
+            <input type="text" placeholder="Enter ClassName" id="inputId">
+            <!-- <option value=""></option> -->
+        </select>
+        <!-- <input type="text" placeholder="Enter ClassName" id="inputId"> -->
+        <select id="highlightColor">
+            <option style="background-color: aliceblue;" value="aliceblue">aliceblue</option>
+            <option style="background-color: antiquewhite;" value="antiquewhite">antiquewhite</option>
+            <option style="background-color: aqua;" value="aqua">aqua</option>
+            <option style="background-color: aquamarine;" value="aquamarine">aquamarine</option>
+            <option style="background-color: azure;" value="azure">azure</option>
+            <option style="background-color: beige;" value="beige">beige</option>
+            <option style="background-color: bisque;" value="bisque">bisque</option>
+            <option style="background-color: black;" value="black">black</option>
+            <option style="background-color: blanchedalmond;" value="blanchedalmond">blanchedalmond</option>
+            <option style="background-color: blue;" value="blue">blue</option>
+            <option style="background-color: blueviolet;" value="blueviolet">blueviolet</option>
+            <option style="background-color: brown;" value="brown">brown</option>
+            <option style="background-color: burlywood;" value="burlywood">burlywood</option>
+            <option style="background-color: cadetblue;" value="cadetblue">cadetblue</option>
+            <option style="background-color: chartreuse;" value="chartreuse">chartreuse</option>
+            <option style="background-color: chocolate;" value="chocolate">chocolate</option>
+            <option style="background-color: coral;" value="coral">coral</option>
+            <option style="background-color: cornflowerblue;" value="cornflowerblue">cornflowerblue</option>
+            <option style="background-color: cornsilk;" value="cornsilk">cornsilk</option>
+            <option style="background-color: crimson;" value="crimson">crimson</option>
+            <option style="background-color: cyan;" value="cyan">cyan</option>
+            <option style="background-color: darkblue;" value="darkblue">darkblue</option>
+            <option style="background-color: darkcyan;" value="darkcyan">darkcyan</option>
+            <option style="background-color: darkgoldenrod;" value="darkgoldenrod">darkgoldenrod</option>
+            <option style="background-color: darkgray;" value="darkgray">darkgray</option>
+            <option style="background-color: darkgreen;" value="darkgreen">darkgreen</option>
+            <option style="background-color: darkkhaki;" value="darkkhaki">darkkhaki</option>
+            <option style="background-color: darkmagenta;" value="darkmagenta">darkmagenta</option>
+            <option style="background-color: darkolivegreen;" value="darkolivegreen">darkolivegreen</option>
+            <option style="background-color: darkorange;" value="darkorange">darkorange</option>
+            <option style="background-color: darkorchid;" value="darkorchid">darkorchid</option>
+            <option style="background-color: darkred;" value="darkred">darkred</option>
+            <option style="background-color: darksalmon;" value="darksalmon">darksalmon</option>
+            <option style="background-color: darkseagreen;" value="darkseagreen">darkseagreen</option>
+            <option style="background-color: darkslateblue;" value="darkslateblue">darkslateblue</option>
+            <option style="background-color: darkslategray;" value="darkslategray">darkslategray</option>
+            <option style="background-color: darkturquoise;" value="darkturquoise">darkturquoise</option>
+            <option style="background-color: darkviolet;" value="darkviolet">darkviolet</option>
+            <option style="background-color: deeppink;" value="deeppink">deeppink</option>
+            <option style="background-color: deepskyblue;" value="deepskyblue">deepskyblue</option>
+            <option style="background-color: dimgray;" value="dimgray">dimgray</option>
+            <option style="background-color: dodgerblue;" value="dodgerblue">dodgerblue</option>
+            <option style="background-color: firebrick;" value="firebrick">firebrick</option>
+            <option style="background-color: floralwhite;" value="floralwhite">floralwhite</option>
+            <option style="background-color: forestgreen;" value="forestgreen">forestgreen</option>
+            <option style="background-color: fuchsia;" value="fuchsia">fuchsia</option>
+            <option style="background-color: gainsboro;" value="gainsboro">gainsboro</option>
+            <option style="background-color: ghostwhite;" value="ghostwhite">ghostwhite</option>
+            <option style="background-color: gold;" value="gold">gold</option>
+            <option style="background-color: goldenrod;" value="goldenrod">goldenrod</option>
+            <option style="background-color: gray;" value="gray">gray</option>
+            <option style="background-color: green;" value="green">green</option>
+            <option style="background-color: greenyellow;" value="greenyellow">greenyellow</option>
+            <option style="background-color: honeydew;" value="honeydew">honeydew</option>
+            <option style="background-color: hotpink;" value="hotpink">hotpink</option>
+            <option style="background-color: indianred;" value="indianred">indianred</option>
+            <option style="background-color: indigo;" value="indigo">indigo</option>
+            <option style="background-color: ivory;" value="ivory">ivory</option>
+            <option style="background-color: khaki;" value="khaki">khaki</option>
+            <option style="background-color: lavender;" value="lavender">lavender</option>
+            <option style="background-color: lavenderblush;" value="lavenderblush">lavenderblush</option>
+            <option style="background-color: lawngreen;" value="lawngreen">lawngreen</option>
+            <option style="background-color: lemonchiffon;" value="lemonchiffon">lemonchiffon</option>
+            <option style="background-color: lightblue;" value="lightblue">lightblue</option>
+            <option style="background-color: lightcoral;" value="lightcoral">lightcoral</option>
+            <option style="background-color: lightcyan;" value="lightcyan">lightcyan</option>
+            <option style="background-color: lightgoldenrodyellow;" value="lightgoldenrodyellow">lightgoldenrodyellow</option>
+            <option style="background-color: lightgreen;" value="lightgreen">lightgreen</option>
+            <option style="background-color: lightgrey;" value="lightgrey">lightgrey</option>
+            <option style="background-color: lightpink;" value="lightpink">lightpink</option>
+            <option style="background-color: lightsalmon;" value="lightsalmon">lightsalmon</option>
+            <option style="background-color: lightseagreen;" value="lightseagreen">lightseagreen</option>
+            <option style="background-color: lightskyblue;" value="lightskyblue">lightskyblue</option>
+            <option style="background-color: lightslategray;" value="lightslategray">lightslategray</option>
+            <option style="background-color: lightsteelblue;" value="lightsteelblue">lightsteelblue</option>
+            <option style="background-color: lightyellow;" value="lightyellow">lightyellow</option>
+            <option style="background-color: lime;" value="lime">lime</option>
+            <option style="background-color: limegreen;" value="limegreen">limegreen</option>
+            <option style="background-color: linen;" value="linen">linen</option>
+            <option style="background-color: magenta;" value="magenta">magenta</option>
+            <option style="background-color: maroon;" value="maroon">maroon</option>
+            <option style="background-color: mediumaquamarine;" value="mediumaquamarine">mediumaquamarine</option>
+            <option style="background-color: mediumblue;" value="mediumblue">mediumblue</option>
+            <option style="background-color: mediumorchid;" value="mediumorchid">mediumorchid</option>
+            <option style="background-color: mediumpurple;" value="mediumpurple">mediumpurple</option>
+            <option style="background-color: mediumseagreen;" value="mediumseagreen">mediumseagreen</option>
+            <option style="background-color: mediumslateblue;" value="mediumslateblue">mediumslateblue</option>
+            <option style="background-color: mediumspringgreen;" value="mediumspringgreen">mediumspringgreen</option>
+            <option style="background-color: mediumturquoise;" value="mediumturquoise">mediumturquoise</option>
+            <option style="background-color: mediumvioletred;" value="mediumvioletred">mediumvioletred</option>
+            <option style="background-color: midnightblue;" value="midnightblue">midnightblue</option>
+            <option style="background-color: mintcream;" value="mintcream">mintcream</option>
+            <option style="background-color: mistyrose;" value="mistyrose">mistyrose</option>
+            <option style="background-color: moccasin;" value="moccasin">moccasin</option>
+            <option style="background-color: navajowhite;" value="navajowhite">navajowhite</option>
+            <option style="background-color: navy;" value="navy">navy</option>
+            <option style="background-color: navyblue;" value="navyblue">navyblue</option>
+            <option style="background-color: oldlace;" value="oldlace">oldlace</option>
+            <option style="background-color: olive;" value="olive">olive</option>
+            <option style="background-color: olivedrab;" value="olivedrab">olivedrab</option>
+            <option style="background-color: orange;" value="orange">orange</option>
+            <option style="background-color: orangered;" value="orangered">orangered</option>
+            <option style="background-color: orchid;" value="orchid">orchid</option>
+            <option style="background-color: palegoldenrod;" value="palegoldenrod">palegoldenrod</option>
+            <option style="background-color: palegreen;" value="palegreen">palegreen</option>
+            <option style="background-color: paleturquoise;" value="paleturquoise">paleturquoise</option>
+            <option style="background-color: palevioletred;" value="palevioletred">palevioletred</option>
+            <option style="background-color: papayawhip;" value="papayawhip">papayawhip</option>
+            <option style="background-color: peachpuff;" value="peachpuff">peachpuff</option>
+            <option style="background-color: peru;" value="peru">peru</option>
+            <option style="background-color: pink;" value="pink">pink</option>
+            <option style="background-color: plum;" value="plum">plum</option>
+            <option style="background-color: powderblue;" value="powderblue">powderblue</option>
+            <option style="background-color: purple;" value="purple">purple</option>
+            <option style="background-color: red;" value="red">red</option>
+            <option style="background-color: rosybrown;" value="rosybrown">rosybrown</option>
+            <option style="background-color: royalblue;" value="royalblue">royalblue</option>
+            <option style="background-color: saddlebrown;" value="saddlebrown">saddlebrown</option>
+            <option style="background-color: salmon;" value="salmon">salmon</option>
+            <option style="background-color: sandybrown;" value="sandybrown">sandybrown</option>
+            <option style="background-color: seagreen;" value="seagreen">seagreen</option>
+            <option style="background-color: seashell;" value="seashell">seashell</option>
+            <option style="background-color: sienna;" value="sienna">sienna</option>
+            <option style="background-color: silver;" value="silver">silver</option>
+            <option style="background-color: skyblue;" value="skyblue">skyblue</option>
+            <option style="background-color: slateblue;" value="slateblue">slateblue</option>
+            <option style="background-color: slategray;" value="slategray">slategray</option>
+            <option style="background-color: snow;" value="snow">snow</option>
+            <option style="background-color: springgreen;" value="springgreen">springgreen</option>
+            <option style="background-color: steelblue;" value="steelblue">steelblue</option>
+            <option style="background-color: tan;" value="tan">tan</option>
+            <option style="background-color: teal;" value="teal">teal</option>
+            <option style="background-color: thistle;" value="thistle">thistle</option>
+            <option style="background-color: tomato;" value="tomato">tomato</option>
+            <option style="background-color: turquoise;" value="turquoise">turquoise</option>
+            <option style="background-color: violet;" value="violet">violet</option>
+            <option style="background-color: wheat;" value="wheat">wheat</option>
+            <option style="background-color: white;" value="white">white</option>
+            <option style="background-color: whitesmoke;" value="whitesmoke">whitesmoke</option>
+            <option style="background-color: yellow;" value="yellow">yellow</option>
+            <option style="background-color: yellowgreen;" value="yellowgreen">yellowgreen</option>
+        </select>
+    </div>
+    <p>[Rom 5:1] Therefore being justified by faith, we have peace with God through our Lord Jesus Christ: 
+    <br>[Rom 5:2] By whom also we have access by faith into this grace wherein we stand, and rejoice in hope of the glory
+        of God.
+    <br>[Rom 5:3] And not only so, but we glory in tribulations also: 
+    <br>knowing that tribulation worketh patience; 
+    <br>[Rom 5:4] And patience, experience; and experience, hope: 
+    <br>[Rom 5:5] And hope maketh not ashamed; because the love of God is shed abroad in our hearts by the Holy Ghost
+        which is given unto us.
+    <br>[Rom 5:6] For when we were yet without strength, in due time Christ died for the ungodly.
+    <br>[Rom 5:7] For scarcely for a righteous man will one die: yet peradventure for a good man some would even dare to
+        die.
+    <br>[Rom 5:8] But God commendeth his love toward us, in that, while we were yet sinners, Christ died for us.
+    <br>[Rom 5:9] Much more then, being now justified by his blood, we shall be saved from wrath through him.
+    <br>[Rom 5:10] For if, when we were enemies, we were reconciled to God by the death of his Son, much more, being
+        reconciled, we shall be saved by his life.
+    <br>[Rom 5:11] And not only so, but we also joy in God through our Lord Jesus Christ, by whom we have now received
+        the atonement.</p>
+    
+</body>
+<script src="textHiglighter.js"></script>
+
+</html>

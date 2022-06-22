@@ -1,0 +1,76 @@
+<!doctype html>
+
+<body>
+JEsus is LORD
+  <p id="p">Example: <i>italic</i> and <b>bold</b><br>
+    [Rom 5:1] Therefore being <span class="highlight hl_justification" style="background-color: coral;">justified</span>
+    by faith, we have peace with God through our Lord Jesus Christ:
+  </p>
+
+  <p id="result"></p>
+
+  From <input id="from" disabled> – To <input id="to" disabled>
+  <script>
+    let range = new Range();
+
+    // Each demonstrated method is represented here:
+    let methods = {
+      deleteContents() {
+        range.deleteContents()
+      },
+      extractContents() {
+        let content = range.extractContents();
+        result.innerHTML = "";
+        result.append(content);
+      },
+      cloneContents() {
+        let content = range.cloneContents();
+        result.innerHTML = "";
+        result.append("cloned: ", content);
+      },
+      insertNode() {
+        let newNode = document.createElement('u');
+        newNode.innerHTML = "NEW NODE";
+        range.insertNode(newNode);
+      },
+      /*       surroundContents() {
+              let newNode = document.createElement('u');
+              try {
+                range.surroundContents(newNode);
+              } catch (e) {
+                console.log(e)
+              }
+            }, */
+      modifiedSurroundContents() {
+        let newNode = document.createElement('u');
+        let content = range.extractContents();
+        newNode.append(content);
+        range.insertNode(newNode);
+      },
+      resetExample() {
+        p.innerHTML = `Example: <i>italic</i> and <b>bold</b>[Rom 5:1] Therefore being <span class="highlight hl_justification" style="background-color: coral;">justified</span>
+    by faith, we have peace with God through our Lord Jesus Christ:`;
+        result.innerHTML = "";
+        //////////////////////////////////////
+        document.onselectionchange = function () {
+          let selection = document.getSelection();
+          // anchorNode and focusNode are text nodes usually
+          from.value = `${selection.anchorNode.data}, offset ${selection.anchorOffset}`;
+          to.value = `${selection.focusNode.data}, offset ${selection.focusOffset}`;
+          range.setStart(selection.anchorNode, selection.anchorOffset);
+          range.setEnd(selection.focusNode, selection.focusOffset);
+        };
+        //////////////////////////////////////
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+      }
+
+    };
+
+    for (let method in methods) {
+      document.write(`<div><button onclick="methods.${method}()">${method}</button></div>`);
+    }
+
+    methods.resetExample();
+  </script>
+</body>

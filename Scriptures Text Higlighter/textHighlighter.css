@@ -1,0 +1,57 @@
+html {
+    /* background-color: rgb(238, 238, 238); */
+    background-color: rgb(244, 244, 244);
+}
+/* body {
+    pointer-events: none;
+}
+body * {
+    pointer-events: visible;
+} */
+svg {
+    pointer-events: visible;
+}
+.highlight {
+    box-sizing: border-box;
+    border: 1px solid grey;
+    border-radius: 2px;
+    /* background: linear-gradient(rgba(255, 255, 255, 0.234), rgba(255, 255, 255, 0.404)); */
+}
+#menu *,
+#highlightOptionsMenu * {
+    font-size: xx-small;
+}
+p {
+    column-width: 250px;
+}
+button.hlsection:not(#commentarybtn) {
+    margin: 0;
+    padding: 2px;
+    color: black;
+    /* background-color: rgba(246, 246, 246, 0.808); */
+    border: 1px solid grey;
+    border-radius: 2px;
+    /* font-weight: bold; */
+    /* float: left; */
+    min-width: 13px;
+}
+button.hlsection:not(#commentarybtn):hover{
+    background-color: #ddfa00;
+}
+button.hlsection:not(#commentarybtn):active{
+    background-color: #00FA9A;
+}
+#commentarysubsection{
+    position: relative;
+    width: 100%!important;
+    /* background-color: #00FA9A; */
+}
+#commentarybox{
+    width: 100%!important;
+    height: 100px;
+    box-sizing: border-box;
+    display: none;
+}
+#commentarybtn{
+    grid-column-start: 1;
+}

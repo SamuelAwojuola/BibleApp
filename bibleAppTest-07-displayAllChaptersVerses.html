@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bible App Test-07</title>
+    <style>
+        body * {
+            font-size: x-small;
+        }
+        select {
+            height: 90vh;
+        }
+        #bible_chapters>option {
+            display: none;
+            width: 20px;
+        }
+        #bible_verses>option {
+            /* display: none; */
+            /* width: 20px; */
+        }
+        .show_chapter {
+            display: block !important;
+        }
+        .show_verses {
+            display: block !important;
+        }
+        body {
+            display: grid;
+        }
+        #navigation {
+            grid-column-start: 1;
+            grid-column-end: 2;
+        }
+        #ppp {
+            height: 90vh;
+            overflow-y: scroll;
+            grid-column-start: 2;
+            grid-column-end: 3;
+            padding-left: 5px;
+            background-color: beige;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="navigation">
+        <select name="books" id="bible_books" multiple></select>
+        <select name="chapters" id="bible_chapters" multiple></select>
+        <select name="verses" id="bible_verses" multiple></select></div>
+    <div id="ppp"></div>
+</body>
+<script>
+    // Populate Select Lists with Layouts and Categories from JSON file
+    var selectBooks = document.querySelector('#bible_books');
+    var selectChapters = document.querySelector('#bible_chapters');
+    var selectVerse = document.querySelector('#bible_verses');
+    var ppp = document.querySelector('#ppp');
+
+    //For Reference Pane
+    var requestURLkjvStrongsSummary = 'kjv_strongs_summary01.json';
+    var kjvBible_refs = new XMLHttpRequest();
+    kjvBible_refs.open('GET', requestURLkjvStrongsSummary);
+    kjvBible_refs.responseType = 'json';
+    kjvBible_refs.send();
+
+    var bChandV;
+    var verses;
+    kjvBible_refs.onload = function () {
+        bChandV = kjvBible_refs.response;
+        populateBooks(bChandV);
+    }
+
+    function populateBooks(obj) {
+        verses = obj['verses'];
+        var prevBook = null;
+        var prevChapter = 0;
+        var prevVerse = 0;
+        var versesLength = verses.length;
+        var myOption1;
+        var bookChanged = 0;
+        var chapterChanged = 0;
+
+        var bookName = null,
+            bookNum = null,
+            bookStartIndex = null,
+            bookEndIndex = null,
+            numberOfChapters = null,
+            versesPerChapter = [];
+
+        for (let i = 0; i < versesLength; i++) {
+            //Books Select
+            bibleBook = document.createElement('option');
+            bibleBook.setAttribute('bookName', verses[i].bookName);
+            var bookStartIndex = verses[i].bookStartIndex;
+            bibleBook.setAttribute('bookStartIndex', bookStartIndex);
+            var bookEndIndex = verses[i].bookEndIndex;
+            bibleBook.setAttribute('bookEndIndex', bookEndIndex);
+            bookName = verses[i].bookName;
+            bibleBook.value = 'book_' + i;
+            bibleBook.setAttribute('bookIndex', [i]);
+            bibleBook.textContent = verses[i].bookName;
+
+            bibleBook.setAttribute('onClick', 'getBooksChapters(this)');
+
+            selectBooks.appendChild(bibleBook);
+            var chapterStartIncreamenter = 0;
+
+            //Chapters Select
+            var numberOfChapters = verses[i].versesPerChapter;
+            for (j = 0; j < numberOfChapters.length; j++) {
+                var bookChapters = document.createElement('option');
+                bookChapters.classList.add('book_' + i);
+                bookChapters.setAttribute('bookName', bookName);
+                bookChapters.setAttribute('bookIndex', i);
+                bookChapters.setAttribute('chapterIndex', j);
+
+
+                var chapterStartIndex = bookStartIndex + chapterStartIncreamenter;
+                var chapterEndIndex = chapterStartIndex + numberOfChapters[j]-1;
+                chapterStartIncreamenter = chapterStartIncreamenter + numberOfChapters[j];
+                bookChapters.setAttribute('chapterStartIndex', chapterStartIndex);
+                bookChapters.setAttribute('chapterEndIndex', chapterEndIndex);
+
+                bookChapters.value = 'bk' + i + 'ch' + j;
+                bookChapters.textContent = [j + 1];
+
+                bookChapters.setAttribute('onClick', 'createChaptersVerses(this)');
+                selectChapters.appendChild(bookChapters);
+            }
+        }
+    }
+
+
+    function getBooksChapters(xxx) {
+        if (document.querySelector(".show_chapter")) {
+            document.querySelectorAll(".show_chapter").forEach(element => {
+                element.classList.remove("show_chapter");
+            });
+        }
+        var classOfChapters = document.querySelectorAll('.' + xxx.value);
+        classOfChapters.forEach(element => {
+            element.classList.add("show_chapter");
+        });
+    }
+
+    function createChaptersVerses(xxx) {
+        selectVerse.querySelectorAll('*').forEach(element => {
+            element.remove();
+        });
+        var bookId = Number(numberOfverses = xxx.getAttribute("bookIndex"));
+        var chapterId = Number(numberOfverses = xxx.getAttribute("chapterIndex"));
+        numberOfverses = Number(verses[bookId].versesPerChapter[chapterId]);
+
+        var chapterStartIndex = Number(xxx.getAttribute("chapterStartIndex"));
+        for (k = 0; k < numberOfverses; k++) {
+            var bookVerses = document.createElement('option');
+            // var verseIndex = bookStartIndex;
+            // console.log(bookStartIndex);
+            var verseIndex = chapterStartIndex + k;
+            bookVerses.setAttribute('verseIndex', verseIndex);
+
+            bookVerses.setAttribute('onClick', 'getTextOfVerse(this)');
+            bookVerses.innerText = k + 1;
+            selectVerse.appendChild(bookVerses);
+        }
+        console.log(bcv[xxx.getAttribute("chapterStartIndex")].text)
+        getTextOfChapter(xxx)
+    }
+
+    function getTextOfBook(xxx) {
+        // console.log(bcv[bId].text)
+    }
+
+    function getTextOfChapter(xxx) {
+        console.log(xxx)
+        chNumInBk = Number(xxx.getAttribute("chapterindex"));
+        chStartIdx = Number(xxx.getAttribute("chapterStartIndex"));
+        chEndIdx = Number(xxx.getAttribute("chapterendindex"))+1;
+        // console.log(Number(chStartIdx))
+        // console.log(Number(chEndIdx))
+        
+        // console.log(bcv[Number(chStartIdx)])
+        // console.log(bcv[Number(chEndIdx)])
+        ppp.innerHTML='';
+        for(a=1,i=chStartIdx;i<chEndIdx;i++,a++){
+            versesText = document.createElement('span');
+            verseSpan = document.createElement('span');
+            verseNum = document.createElement('sus');
+            brealElm = document.createElement('br');
+
+            let vText = bcv[Number(i)].text;
+            vText = vText.replace(/{/g, '<sup>');
+            vText = vText.replace(/}/g, '</sup>');
+            verseSpan.innerHTML=(vText);
+            verseNum.prepend((chNumInBk+1) +':'+a+' ');
+            verseNum.prepend(brealElm);
+            verseSpan.prepend(verseNum);
+            ppp.appendChild(verseSpan);
+        }
+
+    }
+
+    function getTextOfVerse(xxx) {
+        vIdx = xxx.getAttribute("verseIndex")
+        ppp.append(bcv[Number(vIdx)].text)
+    }
+
+    // FOR ACTUAL TEXT
+    var requestURL = 'kjv_strongs.json';
+    var kjvBible = new XMLHttpRequest();
+    kjvBible.open('GET', requestURL);
+    kjvBible.responseType = 'json';
+    kjvBible.send();
+
+    let booksChaptersAndVerses;
+    var bcv;
+    kjvBible.onload = function () {
+        booksChaptersAndVerses = kjvBible.response;
+        bcv = booksChaptersAndVerses['verses'];
+    }
+</script>
+
+</html>
