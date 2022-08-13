@@ -1,0 +1,183 @@
+body>svg{
+    width: 100% !important;
+}
+
+html {
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    overflow-y: hidden;
+    display: grid;
+    row-gap: 0;
+    /* don't add color to the body, it will hide the svg */
+    /* font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
+}
+
+body * {
+    font-size: 0.8em;
+}
+.chptheading {
+    /* margin: 0; */
+    background-color: beige;
+    border-bottom: 0.5px solid grey;
+}
+#ppp>span {
+    display: block;
+}
+@keyframes blink { 0%{ background-color:beige; } 75%{ background-color:rgb(255, 170, 80); } 100%{ background-color:beige; } }
+.vglow{animation: blink 3s 2;animation-direction: alternate;}
+.vhlt{
+    background-color: beige;
+    border: 0.25px solid rgba(128, 128, 128, 0.611);
+    border-radius: 2px;
+    border-style:inset;
+}
+.vhlt+.vhlt{
+    border-top:0;
+}
+
+#navigation {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    height: 100%;
+}
+#navigation>select {
+    height: 100%;
+    background-color: rgb(248, 248, 248);
+    border-radius: 0;
+    border-color: transparent;
+    border-right: 1px solid grey;
+}
+#navigation>select * {
+    font-size:0.75em;
+    /* background-color: rgb(37, 37, 37); */
+    /* color: white; */
+    /* background-color: rgb(255, 217, 0);
+    color: black; */
+}
+
+#bible_chapters {
+}
+#bible_chapters>option {
+    display: none;
+}
+.show_chapter {
+    display: block !important;
+}
+
+#bible_verses {
+    display: none;
+}
+
+#bible_verses>option {
+    /* display: none; */
+    width: 20px;
+}
+.show_verses {
+    /* display: block !important; */
+}
+
+.buttons {
+    background-color:rgb(66, 125, 127);
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 1;
+    /* height: 10px; */
+    font-size: 0.25em;;
+}
+.buttons * {
+    padding: 0;
+    min-width: 1.5rem;
+    margin-left: -2.5px;
+    padding-left:2px!important;
+    padding-right:2px!important;
+    font-size: 0.25em!important;
+    /* background-color: rgb(254, 253, 235); */
+    border: 1px solid grey;
+    border-width: 0.25px;
+    border-radius:0.5px;
+    height: 11px;
+    vertical-align: bottom;
+}
+#reference {
+    height: 10.5px;
+    vertical-align: bottom;
+}
+.buttons button:hover {
+    background-color: rgb(252, 245, 114);
+}
+
+.strongsnum {
+    color: rgb(64, 59, 105);
+    font-size: 0.85em;
+}
+
+#ppp {
+    /* column-width: none !important; */
+    height: 97vh;
+    overflow-y: scroll;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    padding-left: 5px;
+}
+
+span.verse:hover {
+    cursor:pointer;
+    background-color:rgb(241, 249, 194)
+}
+span.translated:hover {
+    /* cursor:pointer; */
+    /* background-color:rgba(255, 217, 47, 0.805); */
+    border-bottom: 1px dashed rgb(151, 116, 0);
+    /* font-style: italic; */
+    color: brown;
+}
+sup{
+    /* font-size: xx-small; */
+    font-size: 7px;
+    font-weight: bold;
+}
+/* span.translated:active>sup.strnum {
+    display: inline;
+    margin-left: 3px;
+}
+span.translated:active>sup.strnum::before {
+    content: attr(data-trans)" "attr(data-lemma)" (";
+}
+span.translated:active>sup.strnum::after {
+    content: ')';
+} */
+main span {
+    font-size:x-small;
+}
+.translated[translation] {
+    font-size:xx-small;
+    font-weight:600;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+#reference::-webkit-input-placeholder {
+    font-style: italic;
+ }
+#reference:-moz-placeholder {
+    font-style: italic;  
+ }
+#reference::-moz-placeholder {
+    font-style: italic;  
+ }
+#reference:-ms-input-placeholder {  
+    font-style: italic; 
+ }
+ 
+/* .strnum:before {
+    content: attr(data-trans);
+    font-style: italic;
+}  
+.strnum:after {
+    content: attr(data-lemma);
+    font-style: italic;
+}   */

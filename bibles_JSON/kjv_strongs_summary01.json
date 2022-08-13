@@ -1,0 +1,399 @@
+{
+    "verses": [{
+        "bookName": "Genesis",
+        "bookStartIndex": 0,
+        "bookEndIndex": 1532,
+        "numberOfChapters": 50,
+        "versesPerChapter": [31, 25, 24, 26, 32, 22, 24, 22, 29, 32, 32, 20, 18, 24, 21, 16, 27, 33, 38, 18, 34, 24, 20, 67, 34, 35, 46, 22, 35, 43, 55, 32, 20, 31, 29, 43, 36, 30, 23, 23, 57, 38, 34, 34, 28, 34, 31, 22, 33, 26]
+    }, {
+        "bookName": "Exodus",
+        "bookStartIndex": 1533,
+        "bookEndIndex": 2745,
+        "numberOfChapters": 40,
+        "versesPerChapter": [22, 25, 22, 31, 23, 30, 25, 32, 35, 29, 10, 51, 22, 31, 27, 36, 16, 27, 25, 26, 36, 31, 33, 18, 40, 37, 21, 43, 46, 38, 18, 35, 23, 35, 35, 38, 29, 31, 43, 38]
+    }, {
+        "bookName": "Leviticus",
+        "bookStartIndex": 2746,
+        "bookEndIndex": 3604,
+        "numberOfChapters": 27,
+        "versesPerChapter": [17, 16, 17, 35, 19, 30, 38, 36, 24, 20, 47, 8, 59, 57, 33, 34, 16, 30, 37, 27, 24, 33, 44, 23, 55, 46, 34]
+    }, {
+        "bookName": "Numbers",
+        "bookStartIndex": 3605,
+        "bookEndIndex": 4892,
+        "numberOfChapters": 36,
+        "versesPerChapter": [54, 34, 51, 49, 31, 27, 89, 26, 23, 36, 35, 16, 33, 45, 41, 50, 13, 32, 22, 29, 35, 41, 30, 25, 18, 65, 23, 31, 40, 16, 54, 42, 56, 29, 34, 13]
+    }, {
+        "bookName": "Deuteronomy",
+        "bookStartIndex": 4893,
+        "bookEndIndex": 5851,
+        "numberOfChapters": 34,
+        "versesPerChapter": [46, 37, 29, 49, 33, 25, 26, 20, 29, 22, 32, 32, 18, 29, 23, 22, 20, 22, 21, 20, 23, 30, 25, 22, 19, 19, 26, 68, 29, 20, 30, 52, 29, 12]
+    }, {
+        "bookName": "Joshua",
+        "bookStartIndex": 5852,
+        "bookEndIndex": 6509,
+        "numberOfChapters": 24,
+        "versesPerChapter": [18, 24, 17, 24, 15, 27, 26, 35, 27, 43, 23, 24, 33, 15, 63, 10, 18, 28, 51, 9, 45, 34, 16, 33]
+    }, {
+        "bookName": "Judges",
+        "bookStartIndex": 6510,
+        "bookEndIndex": 7127,
+        "numberOfChapters": 21,
+        "versesPerChapter": [36, 23, 31, 24, 31, 40, 25, 35, 57, 18, 40, 15, 25, 20, 20, 31, 13, 31, 30, 48, 25]
+    }, {
+        "bookName": "Ruth",
+        "bookStartIndex": 7128,
+        "bookEndIndex": 7212,
+        "numberOfChapters": 4,
+        "versesPerChapter": [22, 23, 18, 22]
+    }, {
+        "bookName": "1 Samuel",
+        "bookStartIndex": 7213,
+        "bookEndIndex": 8022,
+        "numberOfChapters": 31,
+        "versesPerChapter": [28, 36, 21, 22, 12, 21, 17, 22, 27, 27, 15, 25, 23, 52, 35, 23, 58, 30, 24, 42, 15, 23, 29, 22, 44, 25, 12, 25, 11, 31, 13]
+    }, {
+        "bookName": "2 Samuel",
+        "bookStartIndex": 8023,
+        "bookEndIndex": 8717,
+        "numberOfChapters": 24,
+        "versesPerChapter": [27, 32, 39, 12, 25, 23, 29, 18, 13, 19, 27, 31, 39, 33, 37, 23, 29, 33, 43, 26, 22, 51, 39, 25]
+    }, {
+        "bookName": "1 Kings",
+        "bookStartIndex": 8718,
+        "bookEndIndex": 9533,
+        "numberOfChapters": 22,
+        "versesPerChapter": [53, 46, 28, 34, 18, 38, 51, 66, 28, 29, 43, 33, 34, 31, 34, 34, 24, 46, 21, 43, 29, 53]
+    }, {
+        "bookName": "2 Kings",
+        "bookStartIndex": 9534,
+        "bookEndIndex": 10252,
+        "numberOfChapters": 25,
+        "versesPerChapter": [18, 25, 27, 44, 27, 33, 20, 29, 37, 36, 21, 21, 25, 29, 38, 20, 41, 37, 37, 21, 26, 20, 37, 20, 30]
+    }, {
+        "bookName": "1 Chronicles",
+        "bookStartIndex": 10253,
+        "bookEndIndex": 11194,
+        "numberOfChapters": 29,
+        "versesPerChapter": [54, 55, 24, 43, 26, 81, 40, 40, 44, 14, 47, 40, 14, 17, 29, 43, 27, 17, 19, 8, 30, 19, 32, 31, 31, 32, 34, 21, 30]
+    }, {
+        "bookName": "2 Chronicles",
+        "bookStartIndex": 11195,
+        "bookEndIndex": 12016,
+        "numberOfChapters": 36,
+        "versesPerChapter": [17, 18, 17, 22, 14, 42, 22, 18, 31, 19, 23, 16, 22, 15, 19, 14, 19, 34, 11, 37, 20, 12, 21, 27, 28, 23, 9, 27, 36, 27, 21, 33, 25, 33, 27, 23]
+    }, {
+        "bookName": "Ezra",
+        "bookStartIndex": 12017,
+        "bookEndIndex": 12296,
+        "numberOfChapters": 10,
+        "versesPerChapter": [11, 70, 13, 24, 17, 22, 28, 36, 15, 44]
+    }, {
+        "bookName": "Nehemiah",
+        "bookStartIndex": 12297,
+        "bookEndIndex": 12702,
+        "numberOfChapters": 13,
+        "versesPerChapter": [11, 20, 32, 23, 19, 19, 73, 18, 38, 39, 36, 47, 31]
+    }, {
+        "bookName": "Esther",
+        "bookStartIndex": 12703,
+        "bookEndIndex": 12869,
+        "numberOfChapters": 10,
+        "versesPerChapter": [22, 23, 15, 17, 14, 14, 10, 17, 32, 3]
+    }, {
+        "bookName": "Job",
+        "bookStartIndex": 12870,
+        "bookEndIndex": 13939,
+        "numberOfChapters": 42,
+        "versesPerChapter": [22, 13, 26, 21, 27, 30, 21, 22, 35, 22, 20, 25, 28, 22, 35, 22, 16, 21, 29, 29, 34, 30, 17, 25, 6, 14, 23, 28, 25, 31, 40, 22, 33, 37, 16, 33, 24, 41, 30, 24, 34, 17]
+    }, {
+        "bookName": "Psalms",
+        "bookStartIndex": 13940,
+        "bookEndIndex": 16400,
+        "numberOfChapters": 150,
+        "versesPerChapter": [6, 12, 8, 8, 12, 10, 17, 9, 20, 18, 7, 8, 6, 7, 5, 11, 15, 50, 14, 9, 13, 31, 6, 10, 22, 12, 14, 9, 11, 12, 24, 11, 22, 22, 28, 12, 40, 22, 13, 17, 13, 11, 5, 26, 17, 11, 9, 14, 20, 23, 19, 9, 6, 7, 23, 13, 11, 11, 17, 12, 8, 12, 11, 10, 13, 20, 7, 35, 36, 5, 24, 20, 28, 23, 10, 12, 20, 72, 13, 19, 16, 8, 18, 12, 13, 17, 7, 18, 52, 17, 16, 15, 5, 23, 11, 13, 12, 9, 9, 5, 8, 28, 22, 35, 45, 48, 43, 13, 31, 7, 10, 10, 9, 8, 18, 19, 2, 29, 176, 7, 8, 9, 4, 8, 5, 6, 5, 6, 8, 8, 3, 18, 3, 3, 21, 26, 9, 8, 24, 13, 10, 7, 12, 15, 21, 10, 20, 14, 9, 6]
+    }, {
+        "bookName": "Proverbs",
+        "bookStartIndex": 16401,
+        "bookEndIndex": 17315,
+        "numberOfChapters": 31,
+        "versesPerChapter": [33, 22, 35, 27, 23, 35, 27, 36, 18, 32, 31, 28, 25, 35, 33, 33, 28, 24, 29, 30, 31, 29, 35, 34, 28, 28, 27, 28, 27, 33, 31]
+    }, {
+        "bookName": "Ecclesiastes",
+        "bookStartIndex": 17316,
+        "bookEndIndex": 17537,
+        "numberOfChapters": 12,
+        "versesPerChapter": [18, 26, 22, 16, 20, 12, 29, 17, 18, 20, 10, 14]
+    }, {
+        "bookName": "Song of Solomon",
+        "bookStartIndex": 17538,
+        "bookEndIndex": 17654,
+        "numberOfChapters": 8,
+        "versesPerChapter": [17, 17, 11, 16, 16, 13, 13, 14]
+    }, {
+        "bookName": "Isaiah",
+        "bookStartIndex": 17655,
+        "bookEndIndex": 18946,
+        "numberOfChapters": 66,
+        "versesPerChapter": [31, 22, 26, 6, 30, 13, 25, 22, 21, 34, 16, 6, 22, 32, 9, 14, 14, 7, 25, 6, 17, 25, 18, 23, 12, 21, 13, 29, 24, 33, 9, 20, 24, 17, 10, 22, 38, 22, 8, 31, 29, 25, 28, 28, 25, 13, 15, 22, 26, 11, 23, 15, 12, 17, 13, 12, 21, 14, 21, 22, 11, 12, 19, 12, 25, 24]
+    }, {
+        "bookName": "Jeremiah",
+        "bookStartIndex": 18947,
+        "bookEndIndex": 20310,
+        "numberOfChapters": 52,
+        "versesPerChapter": [19, 37, 25, 31, 31, 30, 34, 22, 26, 25, 23, 17, 27, 22, 21, 21, 27, 23, 15, 18, 14, 30, 40, 10, 38, 24, 22, 17, 32, 24, 40, 44, 26, 22, 19, 32, 21, 28, 18, 16, 18, 22, 13, 30, 5, 28, 7, 47, 39, 46, 64, 34]
+    }, {
+        "bookName": "Lamentations",
+        "bookStartIndex": 20311,
+        "bookEndIndex": 20464,
+        "numberOfChapters": 5,
+        "versesPerChapter": [22, 22, 66, 22, 22]
+    }, {
+        "bookName": "Ezekiel",
+        "bookStartIndex": 20465,
+        "bookEndIndex": 21737,
+        "numberOfChapters": 48,
+        "versesPerChapter": [28, 10, 27, 17, 17, 14, 27, 18, 11, 22, 25, 28, 23, 23, 8, 63, 24, 32, 14, 49, 32, 31, 49, 27, 17, 21, 36, 26, 21, 26, 18, 32, 33, 31, 15, 38, 28, 23, 29, 49, 26, 20, 27, 31, 25, 24, 23, 35]
+    }, {
+        "bookName": "Daniel",
+        "bookStartIndex": 21738,
+        "bookEndIndex": 22094,
+        "numberOfChapters": 12,
+        "versesPerChapter": [21, 49, 30, 37, 31, 28, 28, 27, 27, 21, 45, 13]
+    }, {
+        "bookName": "Hosea",
+        "bookStartIndex": 22095,
+        "bookEndIndex": 22291,
+        "numberOfChapters": 14,
+        "versesPerChapter": [11, 23, 5, 19, 15, 11, 16, 14, 17, 15, 12, 14, 16, 9]
+    }, {
+        "bookName": "Joel",
+        "bookStartIndex": 22292,
+        "bookEndIndex": 22364,
+        "numberOfChapters": 3,
+        "versesPerChapter": [20, 32, 21]
+    }, {
+        "bookName": "Amos",
+        "bookStartIndex": 22365,
+        "bookEndIndex": 22510,
+        "numberOfChapters": 9,
+        "versesPerChapter": [15, 16, 15, 13, 27, 14, 17, 14, 15]
+    }, {
+        "bookName": "Obadiah",
+        "bookStartIndex": 22511,
+        "bookEndIndex": 22531,
+        "numberOfChapters": 1,
+        "versesPerChapter": [21]
+    }, {
+        "bookName": "Jonah",
+        "bookStartIndex": 22532,
+        "bookEndIndex": 22579,
+        "numberOfChapters": 4,
+        "versesPerChapter": [17, 10, 10, 11]
+    }, {
+        "bookName": "Micah",
+        "bookStartIndex": 22580,
+        "bookEndIndex": 22684,
+        "numberOfChapters": 7,
+        "versesPerChapter": [16, 13, 12, 13, 15, 16, 20]
+    }, {
+        "bookName": "Nahum",
+        "bookStartIndex": 22685,
+        "bookEndIndex": 22731,
+        "numberOfChapters": 3,
+        "versesPerChapter": [15, 13, 19]
+    }, {
+        "bookName": "Habakkuk",
+        "bookStartIndex": 22732,
+        "bookEndIndex": 22787,
+        "numberOfChapters": 3,
+        "versesPerChapter": [17, 20, 19]
+    }, {
+        "bookName": "Zephaniah",
+        "bookStartIndex": 22788,
+        "bookEndIndex": 22840,
+        "numberOfChapters": 3,
+        "versesPerChapter": [18, 15, 20]
+    }, {
+        "bookName": "Haggai",
+        "bookStartIndex": 22841,
+        "bookEndIndex": 22878,
+        "numberOfChapters": 2,
+        "versesPerChapter": [15, 23]
+    }, {
+        "bookName": "Zechariah",
+        "bookStartIndex": 22879,
+        "bookEndIndex": 23089,
+        "numberOfChapters": 14,
+        "versesPerChapter": [21, 13, 10, 14, 11, 15, 14, 23, 17, 12, 17, 14, 9, 21]
+    }, {
+        "bookName": "Malachi",
+        "bookStartIndex": 23090,
+        "bookEndIndex": 23144,
+        "numberOfChapters": 4,
+        "versesPerChapter": [14, 17, 18, 6]
+    }, {
+        "bookName": "Matthew",
+        "bookStartIndex": 23145,
+        "bookEndIndex": 24215,
+        "numberOfChapters": 28,
+        "versesPerChapter": [25, 23, 17, 25, 48, 34, 29, 34, 38, 42, 30, 50, 58, 36, 39, 28, 27, 35, 30, 34, 46, 46, 39, 51, 46, 75, 66, 20]
+    }, {
+        "bookName": "Mark",
+        "bookStartIndex": 24216,
+        "bookEndIndex": 24893,
+        "numberOfChapters": 16,
+        "versesPerChapter": [45, 28, 35, 41, 43, 56, 37, 38, 50, 52, 33, 44, 37, 72, 47, 20]
+    }, {
+        "bookName": "Luke",
+        "bookStartIndex": 24894,
+        "bookEndIndex": 26044,
+        "numberOfChapters": 24,
+        "versesPerChapter": [80, 52, 38, 44, 39, 49, 50, 56, 62, 42, 54, 59, 35, 35, 32, 31, 37, 43, 48, 47, 38, 71, 56, 53]
+    }, {
+        "bookName": "John",
+        "bookStartIndex": 26045,
+        "bookEndIndex": 26923,
+        "numberOfChapters": 21,
+        "versesPerChapter": [51, 25, 36, 54, 47, 71, 53, 59, 41, 42, 57, 50, 38, 31, 27, 33, 26, 40, 42, 31, 25]
+    }, {
+        "bookName": "Acts",
+        "bookStartIndex": 26924,
+        "bookEndIndex": 27930,
+        "numberOfChapters": 28,
+        "versesPerChapter": [26, 47, 26, 37, 42, 15, 60, 40, 43, 48, 30, 25, 52, 28, 41, 40, 34, 28, 41, 38, 40, 30, 35, 27, 27, 32, 44, 31]
+    }, {
+        "bookName": "Romans",
+        "bookStartIndex": 27931,
+        "bookEndIndex": 28363,
+        "numberOfChapters": 16,
+        "versesPerChapter": [32, 29, 31, 25, 21, 23, 25, 39, 33, 21, 36, 21, 14, 23, 33, 27]
+    }, {
+        "bookName": "1 Corinthians",
+        "bookStartIndex": 28364,
+        "bookEndIndex": 28800,
+        "numberOfChapters": 16,
+        "versesPerChapter": [31, 16, 23, 21, 13, 20, 40, 13, 27, 33, 34, 31, 13, 40, 58, 24]
+    }, {
+        "bookName": "2 Corinthians",
+        "bookStartIndex": 28801,
+        "bookEndIndex": 29057,
+        "numberOfChapters": 13,
+        "versesPerChapter": [24, 17, 18, 18, 21, 18, 16, 24, 15, 18, 33, 21, 14]
+    }, {
+        "bookName": "Galatians",
+        "bookStartIndex": 29058,
+        "bookEndIndex": 29206,
+        "numberOfChapters": 6,
+        "versesPerChapter": [24, 21, 29, 31, 26, 18]
+    }, {
+        "bookName": "Ephesians",
+        "bookStartIndex": 29207,
+        "bookEndIndex": 29361,
+        "numberOfChapters": 6,
+        "versesPerChapter": [23, 22, 21, 32, 33, 24]
+    }, {
+        "bookName": "Philippians",
+        "bookStartIndex": 29362,
+        "bookEndIndex": 29465,
+        "numberOfChapters": 4,
+        "versesPerChapter": [30, 30, 21, 23]
+    }, {
+        "bookName": "Colossians",
+        "bookStartIndex": 29466,
+        "bookEndIndex": 29560,
+        "numberOfChapters": 4,
+        "versesPerChapter": [29, 23, 25, 18]
+    }, {
+        "bookName": "1 Thessalonians",
+        "bookStartIndex": 29561,
+        "bookEndIndex": 29649,
+        "numberOfChapters": 5,
+        "versesPerChapter": [10, 20, 13, 18, 28]
+    }, {
+        "bookName": "2 Thessalonians",
+        "bookStartIndex": 29650,
+        "bookEndIndex": 29696,
+        "numberOfChapters": 3,
+        "versesPerChapter": [12, 17, 18]
+    }, {
+        "bookName": "1 Timothy",
+        "bookStartIndex": 29697,
+        "bookEndIndex": 29809,
+        "numberOfChapters": 6,
+        "versesPerChapter": [20, 15, 16, 16, 25, 21]
+    }, {
+        "bookName": "2 Timothy",
+        "bookStartIndex": 29810,
+        "bookEndIndex": 29892,
+        "numberOfChapters": 4,
+        "versesPerChapter": [18, 26, 17, 22]
+    }, {
+        "bookName": "Titus",
+        "bookStartIndex": 29893,
+        "bookEndIndex": 29938,
+        "numberOfChapters": 3,
+        "versesPerChapter": [16, 15, 15]
+    }, {
+        "bookName": "Philemon",
+        "bookStartIndex": 29939,
+        "bookEndIndex": 29963,
+        "numberOfChapters": 1,
+        "versesPerChapter": [25]
+    }, {
+        "bookName": "Hebrews",
+        "bookStartIndex": 29964,
+        "bookEndIndex": 30266,
+        "numberOfChapters": 13,
+        "versesPerChapter": [14, 18, 19, 16, 14, 20, 28, 13, 28, 39, 40, 29, 25]
+    }, {
+        "bookName": "James",
+        "bookStartIndex": 30267,
+        "bookEndIndex": 30374,
+        "numberOfChapters": 5,
+        "versesPerChapter": [27, 26, 18, 17, 20]
+    }, {
+        "bookName": "1 Peter",
+        "bookStartIndex": 30375,
+        "bookEndIndex": 30479,
+        "numberOfChapters": 5,
+        "versesPerChapter": [25, 25, 22, 19, 14]
+    }, {
+        "bookName": "2 Peter",
+        "bookStartIndex": 30480,
+        "bookEndIndex": 30540,
+        "numberOfChapters": 3,
+        "versesPerChapter": [21, 22, 18]
+    }, {
+        "bookName": "1 John",
+        "bookStartIndex": 30541,
+        "bookEndIndex": 30645,
+        "numberOfChapters": 5,
+        "versesPerChapter": [10, 29, 24, 21, 21]
+    }, {
+        "bookName": "2 John",
+        "bookStartIndex": 30646,
+        "bookEndIndex": 30658,
+        "numberOfChapters": 1,
+        "versesPerChapter": [13]
+    }, {
+        "bookName": "3 John",
+        "bookStartIndex": 30659,
+        "bookEndIndex": 30672,
+        "numberOfChapters": 1,
+        "versesPerChapter": [14]
+    }, {
+        "bookName": "Jude",
+        "bookStartIndex": 30673,
+        "bookEndIndex": 30697,
+        "numberOfChapters": 1,
+        "versesPerChapter": [25]
+    }, {
+        "bookName": "Revelation",
+        "bookStartIndex": 30698,
+        "bookEndIndex": 31101,
+        "numberOfChapters": 22,
+        "versesPerChapter": [20, 29, 22, 11, 14, 17, 17, 13, 21, 11, 19, 17, 18, 20, 8, 21, 18, 24, 21, 15, 27, 21]
+    }]
+}
