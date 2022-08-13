@@ -490,19 +490,30 @@ document.addEventListener("dblclick", function (e) {
 //TO Identify all words translated from the same original word
 main.addEventListener("dblclick", function (e) {
     hoverElm = e.target;
-    if (hoverElm.nodeName == 'SPAN' && hoverElm.classList.contains('translated')) {
-        var stn = hoverElm.querySelector('sup').getAttribute('strnum');
+    if (hoverElm.nodeName == 'SPAN' && hoverElm.classList.contains('translated') && !hoverElm.classList.contains('eng2grk')) {
+        let stn = hoverElm.querySelector('sup').getAttribute('strnum');
         allSimilarWords = main.querySelectorAll('sup[strnum="' + stn + '"]');
         allSimilarWords.forEach(elm => {
             elmP = elm.parentElement;
             translationValue = elmP.childNodes[0].textContent;
-            elmP.setAttribute('translation', translationValue)
+            elmP.setAttribute('trans', translationValue)
             elmP.setAttribute('title', translationValue + " | " + stn)
-            transliteration = strongsJSONresponse[i].xlit;
             elmP.childNodes[0].textContent = "";
             elmP.prepend(elm.getAttribute("data-trans"));
+            elmP.classList.add('eng2grk');
         });
-
+    } else if (hoverElm.nodeName == 'SPAN' && hoverElm.classList.contains('eng2grk')) {
+        let stn = hoverElm.querySelector('sup').getAttribute('strnum');
+        allSimilarWords = main.querySelectorAll('sup[strnum="' + stn + '"]');
+        allSimilarWords.forEach(elm => {
+            elmP = elm.parentElement;
+            let translationValue = elmP.getAttribute('trans')
+            elmP.setAttribute('title', translationValue + " | " + stn)
+            elmP.childNodes[0].textContent = "";
+            elmP.prepend(elmP.getAttribute("trans"));
+            elmP.removeAttribute("trans")
+            elmP.classList.remove('eng2grk')
+        });
     }
 })
 

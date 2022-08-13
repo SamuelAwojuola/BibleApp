@@ -126,6 +126,9 @@ body * {
     padding-left: 5px;
 }
 
+span.verse:last-child {
+    margin-bottom: 20px;
+}
 span.verse:hover {
     cursor:pointer;
     background-color:rgb(241, 249, 194)
@@ -152,10 +155,11 @@ span.translated:active>sup.strnum::before {
 span.translated:active>sup.strnum::after {
     content: ')';
 } */
+
 main span {
     font-size:x-small;
 }
-.translated[translation] {
+.translated[trans] {
     font-size:xx-small;
     font-weight:600;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
