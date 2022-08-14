@@ -425,15 +425,15 @@ function appendTransliteration(strNumElm) {
         strNumElm.innerText = strNumElm.getAttribute("data-trans");
         strNumElm.classList.add("translit")
     } else {
-        strNumElm.innerHTML = strNumElm.getAttribute("strnum");
+        strNumElm.innerText = strNumElm.getAttribute("strnum");
         strNumElm.classList.remove("translit")
     }
 }
 
 function showTransliteration() {
     for (q = 0; q < ppp.querySelectorAll('.strnum').length; q++) {
-        let clickedElm = ppp.querySelectorAll('.strnum')[q];
-        appendTransliteration(clickedElm)
+        let elm = ppp.querySelectorAll('.strnum')[q];
+        appendTransliteration(elm)
     }
 }
 
@@ -466,7 +466,7 @@ function getAllChapters() {
     });
     currentBook = clickedElm.getAttribute('bookindex');
     currentBookName = clickedElm.getAttribute('bookname');
-    let targetVerse = document.getElementById(`_${currentBook}.1.1`);//scroll to first verse of book
+    let targetVerse = document.getElementById(`_${currentBook}.1.1`); //scroll to first verse of book
     scrollToVerse(targetVerse)
     goto = 1;
 }
@@ -545,7 +545,7 @@ function toggleNav() {
     realine();
 }
 ppp.addEventListener("scroll", realine) //for Scripture Text Highligher
-function realine(){}//This empty
+function realine() {} //This empty
 /* TRANSLITERAIOTN */
 /* 
 Α	α	a
@@ -573,3 +573,25 @@ function realine(){}//This empty
 Ψ	ψ	ps
 Ω	ω	ō
  */
+
+let wordsearch = document.getElementById('wordsearch')
+
+function runWordSearch() {
+    let word2find = new RegExp(wordsearch.value, "i");
+    let allVersesInPage = main.querySelectorAll('.verse');
+    let searchResultArr = [];
+    allVersesInPage.forEach(v => {
+        if (v.innerText.search(word2find) != -1) {
+            searchResultArr.push(v.id)
+            scrollToVerse(v)
+            console.log(v)
+        }
+    });
+    console.log(word2find)
+    console.log(searchResultArr)
+}
+// let position = text.search("Blue");
+// let position = text.search("blue");
+// let position = text.search(/Blue/);
+// let position = text.search(/blue/);
+// let position = text.search(/blue/i);
