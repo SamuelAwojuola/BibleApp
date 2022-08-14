@@ -324,6 +324,7 @@ function createTransliterationAttr(x) {
                 let str_lemma = strongsJSONresponse[abc].lemma;
                 strNumElm.setAttribute("data-trans", str_trans);
                 strNumElm.setAttribute("data-lemma", str_lemma);
+                strNumElm.parentElement.setAttribute("strnum", wStrnum);
                 strNumElm.parentElement.setAttribute("data-trans", str_trans);
                 strNumElm.parentElement.title = str_trans + " | " + wStrnum + " | " + str_lemma;
                 break
@@ -383,38 +384,34 @@ function randomColor(brightness) {
 }
 //Random color Alternative
 //+'#' + (0x1000000 + Math.random() * 0xFFFFFF).toString(16).substr(1,6);
-main.addEventListener("mousedown", function (e) {
-    function highlightAllStrongs(x) {
-        var headPart = document.getElementsByTagName('head')[0];
-        cs = `span[strnum="` + x + `"]{background-color:` + randomColor(200) + `;}`
-        if (!document.querySelector('style#highlightstrongs')) {
-            newStyleInHead = document.createElement('style');
-            newStyleInHead.id = 'highlightstrongs';
-            newStyleInHead.innerHTML = cs;
-            headPart.append(newStyleInHead);
-        } else if (!highlightstrongs.toString().includes(`span[strnum="` + x + `"]{background-color:`)) {
-            // console.log(x)
-            // console.log(cs)
-            highlightstrongs = document.getElementById('highlightstrongs').sheet.insertRule(cs, 0)
-            highlightstrongs.innerHTML = highlightstrongs.innerText;
-            // console.log('hi')
-        }
+function highlightAllStrongs(x) {
+    var headPart = document.getElementsByTagName('head')[0];
+    cs = `span[strnum="` + x + `"]{background-color:` + randomColor(200) + `;}`
+    if (!document.querySelector('style#highlightstrongs')) {
+        newStyleInHead = document.createElement('style');
+        newStyleInHead.id = 'highlightstrongs';
+        newStyleInHead.innerHTML = cs;
+        headPart.append(newStyleInHead);
+    } else if (!highlightstrongs.toString().includes(`span[strnum="` + x + `"]{background-color:`)) {
+        // console.log(x)
+        // console.log(cs)
+        highlightstrongs = document.getElementById('highlightstrongs').sheet.insertRule(cs, 0)
+        highlightstrongs.innerHTML = highlightstrongs.innerText;
+        // console.log('hi')
     }
-    //Hide navigation bar on pressing any part of the scripture
-    // if (navigation.style.display == 'block') {
-    //     toggleNav()
-    // }
+}
+main.addEventListener("mousedown", function (e) {
     var hoverElm;
     if (e.target.classList.contains('translated')) {
         hoverElm = e.target;
         stn = hoverElm.getAttribute('strnum');
+        console.log(stn)
         highlightAllStrongs(stn)
     } else if (e.target.parentElement.classList.contains('translated')) {
         hoverElm = e.target.parentElement;
         stn = hoverElm.getAttribute('strnum');
         highlightAllStrongs(stn)
     }
-
 })
 
 var stl = 0;
@@ -584,7 +581,6 @@ function runWordSearch() {
         if (v.innerText.search(word2find) != -1) {
             searchResultArr.push(v.id)
             scrollToVerse(v)
-            console.log(v)
         }
     });
     console.log(word2find)
@@ -595,3 +591,18 @@ function runWordSearch() {
 // let position = text.search(/Blue/);
 // let position = text.search(/blue/);
 // let position = text.search(/blue/i);
+
+main.addEventListener('mouseover', function(e){
+    if(e.target.classList.contains('translated')){
+        let newStyleInHead = document.createElement('style');
+        newStyleInHead.id = 'highlightall';
+        newStyleInHead.innerHTML = '[data-trans="' + e.target.getAttribute('data-trans')+'"]{background-color:rgb(154, 252, 255)}';
+        let headPart = document.getElementsByTagName('head')[0];
+        headPart.append(newStyleInHead);
+    }
+})
+main.addEventListener('mouseout', function(e){
+    if(e.target.classList.contains('translated')){
+        document.getElementById('highlightall').remove();
+    }
+})
