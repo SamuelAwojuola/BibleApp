@@ -4,6 +4,7 @@ body>svg {
 
 html {
     padding: 0;
+    font-size: 12px;
 }
 
 body {
@@ -23,14 +24,13 @@ body {
     /* overflow-y:scroll; */
 }
 
-body * {
-    /* font-size: 0.8em; */
+code {
+    font-size: 0.7em;
 }
-
 .chptheading {
-    /* margin: 0; */
     background-color: beige;
     border-bottom: 0.5px solid grey;
+    font-size: small;
 }
 
 #ppp>span {
@@ -102,8 +102,9 @@ body * {
     grid-row-start: 1;
     grid-row-end: 1;
     background-color: rgb(66, 125, 127);
-    /* font-size: 0.25em; */
+    font-size: 0.25em;
     ;
+    display: flex;
 }
 
 .buttons > * {
@@ -351,11 +352,17 @@ main span {
     border-top: 0;
 }
 
-@media screen and (max-device-width: 50px) {
-    /* body * {
-    font-size: larger;
+@media screen and (max-device-width: 500px) {
+    html {
+        font-size: 25px;
     }
-    main span {
-        font-size: large;
-    } */
+    .buttons *{
+        font-size: 17px!important;
+    }
+    h2 {
+        font-size: 20px;
+    }
+    code {
+        font-weight: bold;
+    }
 }

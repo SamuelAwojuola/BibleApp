@@ -1,3 +1,10 @@
+wordsearch.addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        runWordSearch()
+        event.preventDefault();
+    }
+});
+
 /* FUNCTION FOR SEARCH FOR SCRIPTURES BY WORDS AND PHRASES */
 let wordsearch = document.getElementById('wordsearch')
 
