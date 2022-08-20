@@ -1,10 +1,3 @@
-wordsearch.addEventListener("keypress", function (event) {
-    if (event.key === "Enter") {
-        runWordSearch()
-        event.preventDefault();
-    }
-});
-
 /* FUNCTION FOR SEARCH FOR SCRIPTURES BY WORDS AND PHRASES */
 let wordsearch = document.getElementById('wordsearch')
 
@@ -180,3 +173,9 @@ function showCurrentChapterInHeadnSearchBar(h){
     //Make current chapter page title
     document.querySelector('head>title').innerText = /*'LightCity-' +  */h.innerText
 }
+wordsearch.addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        runWordSearch()
+        event.preventDefault();
+    }
+});
