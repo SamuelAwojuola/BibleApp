@@ -1,4 +1,4 @@
-body>svg{
+body>svg {
     width: 100% !important;
 }
 
@@ -9,61 +9,77 @@ html {
 body {
     margin: 0;
     overflow-y: hidden;
-    display: grid;
-    grid-template-columns: auto 1fr 1fr;
-    row-gap: 0;
     /* don't add color to the body, it will hide the svg */
-    /* font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
+}
+#pagemaster{
+    position: relative;
+    height: 100vh;
+    /* border: 2px solid red; */
+    display: grid;
+    /* grid-template-columns: repeat(auto-fill, minmax(min(auto, 100%), 1fr)); */
+    grid-template-columns: auto 1fr 1fr;
+    grid-template-rows: auto 1fr 1fr;
+    row-gap: 0;
+    /* overflow-y:scroll; */
 }
 
 body * {
-    font-size: 0.8em;
+    /* font-size: 0.8em; */
 }
+
 .chptheading {
     /* margin: 0; */
     background-color: beige;
     border-bottom: 0.5px solid grey;
 }
+
 #ppp>span {
     display: block;
-}
-@keyframes blink { 0%{ background-color:beige; } 75%{ background-color:rgb(255, 170, 80); } 100%{ background-color:beige; } }
-.vglow{animation: blink 3s 2;animation-direction: alternate;}
-.vhlt{
-    background-color: beige;
-    border: 0.25px solid rgba(128, 128, 128, 0.611);
-    border-radius: 2px;
-    border-style:inset;
-}
-.vhlt+.vhlt{
-    border-top:0;
 }
 
 #navigation {
     grid-column-start: 1;
     grid-column-end: 2;
-    /* height: 100%; */
+    grid-row-start: 2;
+    grid-row-end: 4;
+    display: flex;
 }
-#navigation>select {
+
+#navigation>.bible_nav {
     height: 100%;
+    float: left;
     background-color: rgb(248, 248, 248);
     border-radius: 0;
     border-color: transparent;
     border-right: 1px solid grey;
-}
-#navigation>select * {
-    font-size:0.75em;
-    /* background-color: rgb(37, 37, 37); */
-    /* color: white; */
-    /* background-color: rgb(255, 217, 0);
-    color: black; */
+    overflow-y: scroll;
 }
 
-#bible_chapters {
+#navigation>.bible_nav * {
+    /* font-size: 0.75em; */
+    cursor: pointer;
 }
+#navigation>.bible_nav *:hover {
+    background-color: beige;
+}
+#navigation>.bible_nav *:active {
+    background-color: rgb(255, 255, 157);
+}
+.ref_hlt{
+    background-color: beige;
+    border-top: 0.25px solid rgba(128, 128, 128, 0.611);
+    border-bottom: 0.25px solid rgba(128, 128, 128, 0.611);
+}
+.tmp_hlt{
+    background-color: beige;
+}
+
+#bible_chapters {}
+
 #bible_chapters>option {
     display: none;
 }
+
 .show_chapter {
     display: block !important;
 }
@@ -76,78 +92,90 @@ body * {
     /* display: none; */
     width: 20px;
 }
+
 .show_verses {
     /* display: block !important; */
 }
-
 .buttons {
     grid-column-start: 1;
     grid-column-end: 5;
     grid-row-start: 1;
     grid-row-end: 1;
-    background-color:rgb(66, 125, 127);
-    font-size: 0.25em;;
+    background-color: rgb(66, 125, 127);
+    /* font-size: 0.25em; */
+    ;
 }
-.buttons * {
+
+.buttons > * {
     padding: 0;
-    min-width: 1.5rem;
-    margin-left: -2.5px;
-    padding-left:2px!important;
-    padding-right:2px!important;
-    font-size: 0.25em!important;
-    /* background-color: rgb(254, 253, 235); */
+    min-width: 15px;
+    height: 15px;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+    /* font-size: 0.25em !important; */
+    background-color:rgb(245, 245, 245);
     border: 1px solid grey;
     border-width: 0.25px;
-    border-radius:0.5px;
-    height: 11px;
+    border-radius: 0.5px;
     vertical-align: bottom;
 }
+
 #reference {
-    height: 10.5px;
     vertical-align: bottom;
 }
+
 .buttons button:hover {
     background-color: rgb(252, 245, 114);
 }
 
 .strongsnum {
     color: rgb(64, 59, 105);
-    font-size: 0.85em;
+    /* font-size: 0.85em; */
 }
-#main{
-    /* max-width:100%; */
+
+#main {
+    /* border: 3px solid orange; */
+    max-width:100%;
     grid-column-start: 2;
     grid-column-end: 5;
-    grid-row-start: 2; 
-    grid-row-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 4;
     overflow-y: scroll;
-    display: grid;
-    /* grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));FOR MULTIPLE SCRIPTURE COLUMNS */
+    display: flex;
 }
-#main>*{
-}
-#main>*>*{
+
+#main>* {}
+
+#main>*>* {
     padding-left: 5px;
 }
+
 #ppp {
-    height: 97vh;
+    /* height: 50%; */
+    /* overflow-y: hidden; */
 }
-#search_section{
+
+#search_section {
     /* max-width:100px; */
     grid-column-start: 4;
     grid-column-end: 5;
-    grid-row-start: 1; 
+    grid-row-start: 1;
     grid-row-end: 4;
     background-color: royalblue;
 }
+
 span.verse:last-child {
     /* margin-bottom: 20px; */
     padding-bottom: 20px;
 }
+
 span.verse:hover {
-    cursor:pointer;
-    background-color:rgb(241, 249, 194)
+    cursor: pointer;
+    background-color: rgb(241, 249, 194)
 }
+
 span.translated:hover {
     /* cursor:pointer; */
     /* background-color:rgba(255, 217, 47, 0.805); */
@@ -155,52 +183,179 @@ span.translated:hover {
     /* font-style: italic; */
     color: brown;
 }
-sup{
+
+sup {
     /* font-size: xx-small; */
-    font-size: 7px;
+    /* font-size: 7px; */
     font-weight: bold;
 }
+
 /* span.translated:active>sup.strnum {
     display: inline;
     margin-left: 3px;
 }
 span.translated:active>sup.strnum::before {
-    content: attr(data-trans)" "attr(data-lemma)" (";
+    content: attr(data-xlit)" "attr(data-lemma)" (";
 }
 span.translated:active>sup.strnum::after {
     content: ')';
 } */
 
 main span {
-    font-size:x-small;
+    /* font-size: x-small; */
 }
+
 .translated[trans] {
-    font-size:xx-small;
-    font-weight:600;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    /* font-size: xx-small; */
+    font-weight: 600;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
+
 #wordsearch::-webkit-input-placeholder,
 #reference::-webkit-input-placeholder {
     font-style: italic;
- }
+}
+
 #wordsearch:-moz-placeholder,
 #reference:-moz-placeholder {
-    font-style: italic;  
- }
+    font-style: italic;
+}
+
 #wordsearch::-moz-placeholder,
 #reference::-moz-placeholder {
-    font-style: italic;  
- }
-#wordsearch:-ms-input-placeholder,
-#reference:-ms-input-placeholder {  
-    font-style: italic; 
- }
- 
-/* .strnum:before {
-    content: attr(data-trans);
     font-style: italic;
-}  
+}
+
+#wordsearch:-ms-input-placeholder,
+#reference:-ms-input-placeholder {
+    font-style: italic;
+}
+/* .strnum:before {content: " " attr(data-xlit) " ";} */
+.eng2grk{text-indent: -9999px;}
+.eng2grk>span{display: inline;font-weight: bold;}
+/* 
 .strnum:after {
     content: attr(data-lemma);
     font-style: italic;
 }   */
+
+#searchresultwindow {
+    position: absolute;
+    top: 12px;
+    right: 5px;
+    height: 100%;
+    width: 150px;
+}
+.relative{
+    position: relative;
+    /* margin-top: 100px; */
+    /* width: 100%;*/
+    height: 100%; 
+}
+#searchPreview {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    width: 150px;
+    padding: 5px 0 5px 0;
+    background-color: white;
+    border: 0.5px solid black;
+    min-height: 0px;
+    max-height: 90%;
+    overflow-y: scroll;
+}
+
+#searchPreview>* {
+    display: block;
+    padding: 0 5px;
+}
+
+#searchboxtitlebar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 5px;
+    border: 0.5px solid whitesmoke;
+    background-color: whitesmoke;
+    cursor: pointer;
+    z-index: 2;
+}
+
+#searchclose {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 5px;
+    padding: 0 2px;
+    font-size: 5px;
+    font-weight: bold;
+    border-left: 1px solid black;
+    /* color:white;
+    background-color: rgb(158, 42, 0); */
+}
+#searchclose:active, #searchminimize:active {
+    font-style: italic;
+}
+#searchclose:hover {
+    background-color:lightpink;
+}
+#searchminimize:hover {
+    background-color: greenyellow;
+}
+#searchminimize {
+    position: absolute;
+    top: 0px;
+    right: 22px;
+    height: 5px;
+    padding: 0 2px;
+    font-size: 5px;
+    font-weight: bold;
+    border-left: 1px solid black;
+    /* color:black;
+    background-color: greenyellow; */
+    z-index: -1;
+}
+
+.displaynone {
+    display: none;
+}
+
+@keyframes blink {
+    0% {
+        background-color: beige;
+    }
+
+    75% {
+        background-color: rgb(255, 170, 80);
+    }
+
+    100% {
+        background-color: beige;
+    }
+}
+
+.vglow {
+    animation: blink 3s 2;
+    animation-direction: alternate;
+}
+
+.vhlt {
+    background-color: beige;
+    border: 0.25px solid rgba(128, 128, 128, 0.611);
+    border-radius: 2px;
+    border-style: inset;
+}
+
+.vhlt+.vhlt {
+    border-top: 0;
+}
+
+@media screen and (max-device-width: 50px) {
+    /* body * {
+    font-size: larger;
+    }
+    main span {
+        font-size: large;
+    } */
+}

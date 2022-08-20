@@ -12,208 +12,44 @@
 </head>
 
 <body>
+    <div id="pagemaster">
     <div class="buttons">
         <button onclick="toggleNav()" class="togglenav" id="togglenavbtn" title="Toggle Nav">&#9776;</button>
-        <button onclick="showStrongs(this)" class="showing" title="Show Strongs"><b>s+</b></button>
-        <button onclick="showTransliteration()" class="translit" title="Transliteration"><b>T</b></button>
-        <button onclick="savefile('p#text')" class="footersection" id="filesaver">Download</button>
-        <button onclick="makeContentEditable()" class="footersection" id="btnfootcontenteditable" title="Make page editable">EditPage</button>
-        <input class="footersection" id="reference" title="Type Bible Reference" placeholder="Type Bible Reference"></input>
-        <button onclick="gotoRef()" class="footersection" id="forreference" title="go to reference">GO</button>
-        <input class="footersection" id="wordsearch" title="What to search for" placeholder="Type Words to Search For"></input>
-        <button onclick="runWordSearch()" class="footersection" id="forwordsearch" title="Run Search">&#128270;</button>
+            <!-- <button onclick="showStrongs(this)" class="showing" title="Show Strongs"><b>s+</b><button onclick="showTransliteration()" id="translit"class="translit" title="Transliteration"><b>T</b></button> -->
+        <!-- <button onclick="savefile('p#text')" class="footersection" id="filesaver">Download
+        <button onclick="makeContentEditable()" class="footersection" id="btnfootcontenteditable"title="Make page editable">EditPage -->
+        <input class="footersection" id="reference" title="Type Bible Reference"
+            placeholder="Type Bible Reference"></input><button onclick="gotoRef()" class="footersection" id="forreference" title="go to reference">GO</button>
+            <input class="footersection" id="wordsearch" title="What to search for"placeholder="Type Words to Search For"></input><button onclick="runWordSearch()" class="footersection" id="forwordsearch" title="Run Search">&#128270;
     </div>
     <div id="navigation" style="display:block">
-        <select name="books" id="bible_books" multiple></select>
-        <select name="chapters" id="bible_chapters" multiple></select>
-        <select name="verses" id="bible_verses" multiple></select>
-    </div>
-    <div class="hlsection" id="highlightOptionsMenu"
-        style="font-size: xx-small;position: absolute; background-color: rgba(245, 245, 220, 0.718);width: 200px; left:-1000px">
-        <button class="hlsection" onclick="boldCommand()" title="Bold">b</button><button class="hlsection" onclick="italicCommand()" title="Italic"><em>i</em></button><button class="hlsection" type="button" onclick="formatAll('strong')" title="Make all instances bold"><strong>B</strong></button><button class="hlsection" type="button" onclick="formatAll('em')" title="Make all instances italic"><em>I</em></button>
-
-        <div class="switch">
-            <input id="caseSensitiveSearch" type="checkbox" title="" class="switch-input"/>
-            <label for="caseSensitiveSearch" class="switch-label" title="Case Sensitivity">.</label>
-        </div>
-
-        <input class="hlsection notcollapsedselection highlightedmodifier" type="text" placeholder="Enter/Select Group Name" id="inputId">
-        
-        <select class="hlsection notcollapsedselection highlightedmodifier" id="classNameList" style="width:100%">
-            <option class="hlsection" value="">SelectClassName</option>
-        </select>
-        <!-- <input type="text" placeholder="Enter ClassName" id="inputId"> -->
-        <select class="hlsection forhighlightspanandnonecollapsedselection" id="highlightColor" style="width:100%">
-            <option style="background-color: #F0F8FF;" value="#F0F8FF">aliceblue</option>
-            <option style="background-color: #FAEBD7;" value="#FAEBD7">antiquewhite</option>
-            <option style="background-color: #00FFFF;" value="#00FFFF">aqua</option>
-            <option style="background-color: #7FFFD4;" value="#7FFFD4">aquamarine</option>
-            <option style="background-color: #F0FFFF;" value="#F0FFFF">azure</option>
-            <option style="background-color: #F5F5DC;" value="#F5F5DC">beige</option>
-            <option style="background-color: #FFE4C4;" value="#FFE4C4">bisque</option>
-            <option style="background-color: #000000;" value="#000000">black</option>
-            <option style="background-color: #FFEBCD;" value="#FFEBCD">blanchedalmond</option>
-            <option style="background-color: #0000FF;" value="#0000FF">blue</option>
-            <option style="background-color: #8A2BE2;" value="#8A2BE2">blueviolet</option>
-            <option style="background-color: #A52A2A;" value="#A52A2A">brown</option>
-            <option style="background-color: #DEB887;" value="#DEB887">burlywood</option>
-            <option style="background-color: #5F9EA0;" value="#5F9EA0">cadetblue</option>
-            <option style="background-color: #7FFF00;" value="#7FFF00">chartreuse</option>
-            <option style="background-color: #D2691E;" value="#D2691E">chocolate</option>
-            <option style="background-color: #FF7F50;" value="#FF7F50">coral</option>
-            <option style="background-color: #6495ED;" value="#6495ED">cornflowerblue</option>
-            <option style="background-color: #FFF8DC;" value="#FFF8DC">cornsilk</option>
-            <option style="background-color: #DC143C;" value="#DC143C">crimson</option>
-            <option style="background-color: #00FFFF;" value="#00FFFF">cyan</option>
-            <option style="background-color: #00008B;" value="#00008B">darkblue</option>
-            <option style="background-color: #008B8B;" value="#008B8B">darkcyan</option>
-            <option style="background-color: #B8860B;" value="#B8860B">darkgoldenrod</option>
-            <option style="background-color: #A9A9A9;" value="#A9A9A9">darkgray</option>
-            <option style="background-color: #006400;" value="#006400">darkgreen</option>
-            <option style="background-color: #BDB76B;" value="#BDB76B">darkkhaki</option>
-            <option style="background-color: #8B008B;" value="#8B008B">darkmagenta</option>
-            <option style="background-color: #556B2F;" value="#556B2F">darkolivegreen</option>
-            <option style="background-color: #FF8C00;" value="#FF8C00">darkorange</option>
-            <option style="background-color: #9932CC;" value="#9932CC">darkorchid</option>
-            <option style="background-color: #8B0000;" value="#8B0000">darkred</option>
-            <option style="background-color: #E9967A;" value="#E9967A">darksalmon</option>
-            <option style="background-color: #8FBC8F;" value="#8FBC8F">darkseagreen</option>
-            <option style="background-color: #483D8B;" value="#483D8B">darkslateblue</option>
-            <option style="background-color: #2F4F4F;" value="#2F4F4F">darkslategray</option>
-            <option style="background-color: #00CED1;" value="#00CED1">darkturquoise</option>
-            <option style="background-color: #9400D3;" value="#9400D3">darkviolet</option>
-            <option style="background-color: #FF1493;" value="#FF1493">deeppink</option>
-            <option style="background-color: #00BFFF;" value="#00BFFF">deepskyblue</option>
-            <option style="background-color: #696969;" value="#696969">dimgray</option>
-            <option style="background-color: #1E90FF;" value="#1E90FF">dodgerblue</option>
-            <option style="background-color: #B22222;" value="#B22222">firebrick</option>
-            <option style="background-color: #FFFAF0;" value="#FFFAF0">floralwhite</option>
-            <option style="background-color: #228B22;" value="#228B22">forestgreen</option>
-            <option style="background-color: #FF00FF;" value="#FF00FF">fuchsia</option>
-            <option style="background-color: #DCDCDC;" value="#DCDCDC">gainsboro</option>
-            <option style="background-color: #F8F8FF;" value="#F8F8FF">ghostwhite</option>
-            <option style="background-color: #FFD700;" value="#FFD700">gold</option>
-            <option style="background-color: #DAA520;" value="#DAA520">goldenrod</option>
-            <option style="background-color: #7F7F7F;" value="#7F7F7F">gray</option>
-            <option style="background-color: #008000;" value="#008000">green</option>
-            <option style="background-color: #ADFF2F;" value="#ADFF2F">greenyellow</option>
-            <option style="background-color: #F0FFF0;" value="#F0FFF0">honeydew</option>
-            <option style="background-color: #FF69B4;" value="#FF69B4">hotpink</option>
-            <option style="background-color: #CD5C5C;" value="#CD5C5C">indianred</option>
-            <option style="background-color: #4B0082;" value="#4B0082">indigo</option>
-            <option style="background-color: #FFFFF0;" value="#FFFFF0">ivory</option>
-            <option style="background-color: #F0E68C;" value="#F0E68C">khaki</option>
-            <option style="background-color: #E6E6FA;" value="#E6E6FA">lavender</option>
-            <option style="background-color: #FFF0F5;" value="#FFF0F5">lavenderblush</option>
-            <option style="background-color: #7CFC00;" value="#7CFC00">lawngreen</option>
-            <option style="background-color: #FFFACD;" value="#FFFACD">lemonchiffon</option>
-            <option style="background-color: #ADD8E6;" value="#ADD8E6">lightblue</option>
-            <option style="background-color: #F08080;" value="#F08080">lightcoral</option>
-            <option style="background-color: #E0FFFF;" value="#E0FFFF">lightcyan</option>
-            <option style="background-color: #FAFAD2;" value="#FAFAD2">lightgoldenrodyellow</option>
-            <option style="background-color: #90EE90;" value="#90EE90">lightgreen</option>
-            <option style="background-color: #D3D3D3;" value="#D3D3D3">lightgrey</option>
-            <option style="background-color: #FFB6C1;" value="#FFB6C1">lightpink</option>
-            <option style="background-color: #FFA07A;" value="#FFA07A">lightsalmon</option>
-            <option style="background-color: #20B2AA;" value="#20B2AA">lightseagreen</option>
-            <option style="background-color: #87CEFA;" value="#87CEFA">lightskyblue</option>
-            <option style="background-color: #778899;" value="#778899">lightslategray</option>
-            <option style="background-color: #B0C4DE;" value="#B0C4DE">lightsteelblue</option>
-            <option style="background-color: #FFFFE0;" value="#FFFFE0">lightyellow</option>
-            <option style="background-color: #00FF00;" value="#00FF00">lime</option>
-            <option style="background-color: #32CD32;" value="#32CD32">limegreen</option>
-            <option style="background-color: #FAF0E6;" value="#FAF0E6">linen</option>
-            <option style="background-color: #FF00FF;" value="#FF00FF">magenta</option>
-            <option style="background-color: #800000;" value="#800000">maroon</option>
-            <option style="background-color: #66CDAA;" value="#66CDAA">mediumaquamarine</option>
-            <option style="background-color: #0000CD;" value="#0000CD">mediumblue</option>
-            <option style="background-color: #BA55D3;" value="#BA55D3">mediumorchid</option>
-            <option style="background-color: #9370DB;" value="#9370DB">mediumpurple</option>
-            <option style="background-color: #3CB371;" value="#3CB371">mediumseagreen</option>
-            <option style="background-color: #7B68EE;" value="#7B68EE">mediumslateblue</option>
-            <option style="background-color: #00FA9A;" value="#00FA9A">mediumspringgreen</option>
-            <option style="background-color: #48D1CC;" value="#48D1CC">mediumturquoise</option>
-            <option style="background-color: #C71585;" value="#C71585">mediumvioletred</option>
-            <option style="background-color: #191970;" value="#191970">midnightblue</option>
-            <option style="background-color: #F5FFFA;" value="#F5FFFA">mintcream</option>
-            <option style="background-color: #FFE4E1;" value="#FFE4E1">mistyrose</option>
-            <option style="background-color: #FFE4B5;" value="#FFE4B5">moccasin</option>
-            <option style="background-color: #FFDEAD;" value="#FFDEAD">navajowhite</option>
-            <option style="background-color: #000080;" value="#000080">navy</option>
-            <option style="background-color: #9FAFDF;" value="#9FAFDF">navyblue</option>
-            <option style="background-color: #FDF5E6;" value="#FDF5E6">oldlace</option>
-            <option style="background-color: #808000;" value="#808000">olive</option>
-            <option style="background-color: #6B8E23;" value="#6B8E23">olivedrab</option>
-            <option style="background-color: #FFA500;" value="#FFA500">orange</option>
-            <option style="background-color: #FF4500;" value="#FF4500">orangered</option>
-            <option style="background-color: #DA70D6;" value="#DA70D6">orchid</option>
-            <option style="background-color: #EEE8AA;" value="#EEE8AA">palegoldenrod</option>
-            <option style="background-color: #98FB98;" value="#98FB98">palegreen</option>
-            <option style="background-color: #AFEEEE;" value="#AFEEEE">paleturquoise</option>
-            <option style="background-color: #DB7093;" value="#DB7093">palevioletred</option>
-            <option style="background-color: #FFEFD5;" value="#FFEFD5">papayawhip</option>
-            <option style="background-color: #FFDAB9;" value="#FFDAB9">peachpuff</option>
-            <option style="background-color: #CD853F;" value="#CD853F">peru</option>
-            <option style="background-color: #FFC0CB;" value="#FFC0CB">pink</option>
-            <option style="background-color: #DDA0DD;" value="#DDA0DD">plum</option>
-            <option style="background-color: #B0E0E6;" value="#B0E0E6">powderblue</option>
-            <option style="background-color: #800080;" value="#800080">purple</option>
-            <option style="background-color: #FF0000;" value="#FF0000">red</option>
-            <option style="background-color: #BC8F8F;" value="#BC8F8F">rosybrown</option>
-            <option style="background-color: #4169E1;" value="#4169E1">royalblue</option>
-            <option style="background-color: #8B4513;" value="#8B4513">saddlebrown</option>
-            <option style="background-color: #FA8072;" value="#FA8072">salmon</option>
-            <option style="background-color: #FA8072;" value="#FA8072">sandybrown</option>
-            <option style="background-color: #2E8B57;" value="#2E8B57">seagreen</option>
-            <option style="background-color: #FFF5EE;" value="#FFF5EE">seashell</option>
-            <option style="background-color: #A0522D;" value="#A0522D">sienna</option>
-            <option style="background-color: #C0C0C0;" value="#C0C0C0">silver</option>
-            <option style="background-color: #87CEEB;" value="#87CEEB">skyblue</option>
-            <option style="background-color: #6A5ACD;" value="#6A5ACD">slateblue</option>
-            <option style="background-color: #708090;" value="#708090">slategray</option>
-            <option style="background-color: #FFFAFA;" value="#FFFAFA">snow</option>
-            <option style="background-color: #00FF7F;" value="#00FF7F">springgreen</option>
-            <option style="background-color: #4682B4;" value="#4682B4">steelblue</option>
-            <option style="background-color: #D2B48C;" value="#D2B48C">tan</option>
-            <option style="background-color: #008080;" value="#008080">teal</option>
-            <option style="background-color: #D8BFD8;" value="#D8BFD8">thistle</option>
-            <option style="background-color: #FF6347;" value="#FF6347">tomato</option>
-            <option style="background-color: #40E0D0;" value="#40E0D0">turquoise</option>
-            <option style="background-color: #EE82EE;" value="#EE82EE">violet</option>
-            <option style="background-color: #F5DEB3;" value="#F5DEB3">wheat</option>
-            <option style="background-color: #FFFFFF;" value="#FFFFFF">white</option>
-            <option style="background-color: #F5F5F5;" value="#F5F5F5">whitesmoke</option>
-            <option style="background-color: #FFFF00;" value="#FFFF00">yellow</option>
-            <option style="background-color: #9ACD32;" value="#9ACD32">yellowgreen</option>
-        </select>
-        <button class="hlsection notcollapsedselection onlyforgrouped" type="button" onclick="changeNodeColor(1)" title="Change Color of All Nodes In This Class">ACol</button>
-        <button class="hlsection notcollapsedselection onlyforgrouped" type="button" onclick="changeNodeColor(0)" title="Change Color of this Node">NCol</button>
-        <button class="hlsection notcollapsedselection onlyforgrouped" type="button" onclick="unHighlight()" title="RemoveHighlight">Remove</button>
-        <button class="hlsection notcollapsedselection" type="button" onclick="highlightClass()" title="Highlight" style="float:right">AddToGroup</button>
-        <button class="hlsection notcollapsedselection" type="button" onclick="formatAll('highlight')" title="Highlight all matches" style="float:right">Add-All</button>
-
-        <input class="hlsection" type="text" placeholder="Type new text" id="textchanger">
-        <button class="hlsection" type="button" onclick="changeSelectedText()" title="replace selected text"><em>r</em></button>
-        <button class="hlsection" type="button" onclick="changeSelectedText('all')" title="replace all instances of selected text"><em>r.all</em></button>
-        <button class="hlsection" id="btnhlscontenteditable" style="float: right;" onclick="makeContentEditable()" title="Make page editable">EditPage</button>
-
-        <div id="commentarysubsection">
-            <textarea id="commentarybox" style="display: none;" placeholder="Type your comment here and click the 'Add Comment' button to add the comment."></textarea>
-            <button class="hlsection forhighlightspanandnonecollapsedselection" id="commentarybtn" onclick="hideORshowID('commentarybox')">Comment Box</button>
-            <button class="hlsection forhighlightspanandnonecollapsedselection" id="appendcommentarybtn" onclick="appendComment()">Add Comments</button>
-        </div>
-
+        <div class="bible_nav" name="books" id="bible_books" multiple></div>
+        <div class="bible_nav" name="chapters" id="bible_chapters" multiple></div>
+        <div class="bible_nav" name="verses" id="bible_verses" multiple></div>
     </div>
     <main id="main" contenteditable="false">
         <div id="ppp"></div>
         <!-- <div id="pp3">asasdfasdf adsf adsfa dsf asdf asdfads fasdf ads dfhjfhjkgkhltdystfgdsv bsgdhjkhgkjmdfgxzgafdshgsdgvfsdgherhfnd bnf gdgfhs ghbsdfgsdfhg efgdjfxj s</div>
         <div id="search_section">adfadfadsfasdfadsf</div> -->
+        <div id="searchresultwindow" class="displaynone">
+            <div class="relative">
+                <div id="searchboxtitlebar">
+                    <div id="searchclose" onclick="hideElement(searchresultwindow)" title="Close search result window">CLOSE</div>
+                    <div id="searchminimize" onclick="minimize(searchPreview)" title="Minimize search result window">MINIMIZE</div>
+                </div>
+                <div id="searchPreview">
+                </div>
+            </div>
+        </div>
     </main>
+</div>
+
 
 </body>
 <!-- <script src="..\Scriptures Text Higlighter\FileSaver.js"></script>
 <script src="..\Scriptures Text Higlighter\textHiglighter.js"></script>
 <script src="..\Scriptures Text Higlighter\searchHighlighted.js"></script> -->
-<!-- <script src="bibleApp.js"></script> -->
 <script src="bibleApp.js"></script>
+<script src="bibleApp_search.js"></script>
+
 </html>

@@ -43,7 +43,7 @@ function gotoRef() {
     ref = ref.replace(/(\d)\s*([a-zA-Z]+)/, '$1$2'); //2 Pet3:20 ==> 2Pet3:20
     ref = ref.replace(/([a-zA-Z]+)[.,:;](\d+)/, '$1 $2'); //Gal.3:20 ==> Gal 3:20
     ref = ref.replace(/(\d*[a-zA-Z]+)(\d+)/, '$1 $2'); //Psa15.55 ==> Psa 15.55
-    let ref_bkname, ref_chpnVer, ref_chp, ref_ver;
+    let ref_bkname, ref_chpnVer, ref_chp, ref_ver, refDisplay;
 
     let refArrbySpace = ref.split(" ");
     if (refArrbySpace.length > 1) { //Check if ref has book name
@@ -51,19 +51,19 @@ function gotoRef() {
         let refEnd = refArrbySpace[refArrbySpace.length - 1];
         if (refEnd.split('.').length == 1) {
             ref_chp = refEnd;
-            ref_ver = '1';
+            ref_ver = 1;
         } //if it is a number, then it is chapter number
         else if (refEnd.split('.').length > 1) { //if it is not, split by dot and check each part
             let refEndArraySplitbyDot = refEnd.split('.');
             if (Number(refEndArraySplitbyDot[0])) {
                 ref_chp = refEndArraySplitbyDot[0];
             } else {
-                ref_chp = '1'
+                ref_chp = 1;
             }
             if (Number(refEndArraySplitbyDot[1])) {
                 ref_ver = refEndArraySplitbyDot[1]
             } else {
-                ref_ver = '1';
+                ref_ver = 1;
             }
         }
         refArrbySpace.pop();
@@ -73,17 +73,16 @@ function gotoRef() {
     } else if (refArrbySpace.length == 1) { //If there is no space
         if ((!Number(refArrbySpace[0]))) { //If it is not a number, then it must be the Book Ref Name
             ref_bkname = ref;
-            console.log('yes')
             ref_chpnVer = '1.1';
-            ref_chp = '1';
-            ref_ver = '1';
+            ref_chp = 1;
+            ref_ver = 1;
             ref = ref_bkname + ' 1.1';
         } else if (Number(refArrbySpace[0])) { //If it is a Number, check that it doesn't have a decimal
             console.log('Jesus')
             if (refArrbySpace[0].split('.').length == 1) { //if it has no decimal, then it is the Chapter Number
                 ref_chpnVer = ref + '.1';
                 ref_chp = ref;
-                ref_ver = '1';
+                ref_ver = 1;
                 ref = ref_bkname + ' ' + ref_chpnVer;
             } else { //If it has decimal
                 if (Number(refArrbySpace[0].split('.')[0])) { //If the first part is a Number, then it is the chapter num
@@ -91,20 +90,22 @@ function gotoRef() {
                     ref_ver = refArrbySpace[0].split('.')[1]; //Assuming the secong part is a Number (we'll check next)
                     ref_chpnVer = ref_chp + '.' + ref_ver;
                     if (!Number(refArrbySpace[0].split('.')[1])) { //If the second part is not a number, then default to '1'
-                        ref_ver = '1';
+                        ref_ver = 1;
                         ref_chpnVer = ref_chp + '.1';
                     }
                 } else { //If the first part is not a number, then default to '1.1s'
-                    ref_chp = '1';
-                    ref_ver = '1';
+                    ref_chp = 1;
+                    ref_ver = 1;
                     ref_chpnVer = ref_chp + '.1';
                 }
             }
             ref_bkname = currentBookName;
-            ref = ref_bkname + ' ' + ref_chpnVer;
         }
     }
-    let refDisplay = ref.toLowerCase();
+    ref = ref_bkname + ' ' + (ref_chp - 1) + '.' + (ref_ver - 1);
+    refDisplay = ref_bkname + ' ' + (ref_chp) + '.' + (ref_ver);
+    ref_chpnVer = (ref_chp - 1) + '.' + (ref_ver - 1);
+    refDisplay = refDisplay.toLowerCase();
     if (!Number(refDisplay.charAt(0))) {
         reference.value = refDisplay.charAt(0).toUpperCase() + refDisplay.slice(1)
     } else if (!Number(refDisplay.charAt(1))) {
@@ -113,11 +114,12 @@ function gotoRef() {
         reference.value = refDisplay;
         ref = refDisplay;
     }
-    /* console.log('ref:' + ref);
+    /* console.log('ref:' + ref); */
     console.log('ref_bkname:' + ref_bkname);
+    console.log(ref_bkname.charAt(0).toUpperCase() + ref_bkname.slice(1));
     console.log('ref_chpnVer:' + ref_chpnVer);
     console.log('ref_chp:' + ref_chp);
-    console.log('ref_ver:' + ref_ver) */
+    console.log('ref_ver:' + ref_ver)
     // Find id of Book
     ref_Abrev.forEach(ref_ => {
         if (ref_.a.includes(ref_bkname.toUpperCase())) {
@@ -126,7 +128,7 @@ function gotoRef() {
                 document.querySelector(`[value="book_${refb}"]`).click(); //click on book
                 getAllChapters(); //generate text of all chapters in the book
             }
-            ref_chp = ref_chp - 1;
+            // ref_chp = ref_chp - 1;
             bkXchY = `bk${ref_.b - 1}ch${ref_chp}`;
             let targetVerse = document.getElementById(`_${refb}.${ref_chpnVer}`);
             scrollToVerse(targetVerse)
@@ -145,6 +147,9 @@ function scrollToVerse(targetVerse) {
         setTimeout(function () {
             targetVerse.classList.remove("vglow");
         }, 3000);
+        setTimeout(function () {
+            targetVerse.classList.remove("vhlt");
+        }, 8000);
     }
 }
 
@@ -260,57 +265,78 @@ function getTextOfBook(xxx) {
 }
 
 // GEMERATE THE TEXT/VERSES OF THE SELECTED CHAPTER
-function getTextOfChapter(xxx, oneChptAtaTime = 1) {
+function getTextOfChapter(xxx, oneChptAtaTime = 1, prependORnot) {
+    main.scrollTo()
     chNumInBk = Number(xxx.getAttribute("chapterindex"));
     chStartIdx = Number(xxx.getAttribute("chapterStartIndex"));
     chEndIdx = Number(xxx.getAttribute("chapterendindex")) + 1;
     bookname = xxx.getAttribute("bookname");
-    bkid = xxx.getAttribute("bookindex");
+    bkid = Number(xxx.getAttribute("bookindex"));
+    gotoId = '_' + bkid + '.' + chNumInBk + '.0';
 
-    console.log('goto is ' + goto)
-
+    // IF TEXT IS ALREADY ON PAGE, JUST SCROLL TO IT
+    if (document.getElementById(gotoId)) {
+        scrollToVerse(document.getElementById(gotoId));
+    }
     // TEXT NOT ALREADY ON PAGE, SO FRESHLY GENERATE THE CONTENT
-    if (goto == 0) {
-        if (oneChptAtaTime) {
-            ppp.innerHTML = ''; //will only contain one chapter at a time
-        }
-        for (a = 1, i = chStartIdx; i < chEndIdx; i++, a++) {
-            // Create Chapter Heading
-            if (a == 1) {
-                chapterHeading = document.createElement('h2');
-                chapterHeading.classList.add('chptheading');
-                chapterHeading.append(bookname + ' ' + (chNumInBk + 1));
-                chapterHeading.id = '_' + bkid + '.' + (chNumInBk + 1);
-                ppp.append(chapterHeading)
-            }
-
-            versesText = document.createElement('span');
-            verseSpan = document.createElement('span');
-            verseNum = document.createElement('code');
-            // breakElm = document.createElement('br');//I will make the span element block with the css
-
-            let vText = bcv[Number(i)].txt;
-            vText = vText.replace(/({(\(((H|G)(\d+))\))})+/g, '<sup class="strnum" strnum="$3" testament="$4" strindx="$5">$2</sup>');
-            vText = vText.replace(/({(((H|G)(\d+)))})+/g, '<sup class="strnum" strnum="$2" testament="$4" strindx="$5">$2</sup>');
-            vText = vText.replace(/\[/g, '<span class="translated">');
-            vText = vText.replace(/\]/g, '</span>');
-            vText = vText.replace(/<r>/g, '<span style="color:red">');
-            vText = vText.replace(/<\/r>/g, '</span>');
-            verseSpan.innerHTML = vText;
-            verseNum.prepend((chNumInBk + 1) + ':' + a + ' ');
-            // verseNum.prepend(breakElm);
-            verseSpan.prepend(verseNum);
-            verseSpan.classList.add('verse');
-            verseSpan.id = ('_' + bkid + '.' + (chNumInBk + 1) + '.' + a);
-            createTransliterationAttr(verseSpan)
-            ppp.appendChild(verseSpan);
-        }
-    }
-    // CONTENT ALREADY ON PAGE, JUST SCROLL TO IT
     else {
-        gotoId = '_' + bkid + '.' + (chNumInBk + 1) + '.1';
-        scrollToVerse(document.getElementById(gotoId))
+        if (goto == 0) {
+            if (oneChptAtaTime) {
+                ppp.replaceChildren(); //will only contain one chapter at a time
+            }
+            let versesFragment = new DocumentFragment();
+            let chpheadingFragment = new DocumentFragment();
+            let chapterHeading = null;
+            for (a = 1, i = chStartIdx; i < chEndIdx; i++, a++) {
+                // Create Chapter Heading
+                if (a == 1) {
+                    chapterHeading = document.createElement('h2');
+                    chapterHeading.classList.add('chptheading');
+                    chapterHeading.append(bookname + ' ' + (chNumInBk + 1));
+                    chapterHeading.id = '_' + bkid + '.' + (chNumInBk + 1);
+                    chpheadingFragment.prepend(chapterHeading)
+                }
+
+                parseSingleVerse(bkid, chNumInBk, a, bcv[Number(i)], versesFragment)
+
+            }
+            if (!prependORnot) {
+                versesFragment.prepend(chpheadingFragment);
+                ppp.appendChild(versesFragment);
+            } else {
+                versesFragment.prepend(chpheadingFragment);
+                // chapterHeading.after(versesFragment)
+                ppp.prepend(versesFragment);
+            }
+        }
+        // CONTENT ALREADY ON PAGE, JUST SCROLL TO IT
+        else {
+            scrollToVerse(document.getElementById(gotoId))
+        }
     }
+}
+
+function parseSingleVerse(bkid, chNumInBk, a, jsonVerse, appendHere) {
+    let versesText = document.createElement('span');
+    let verseSpan = document.createElement('span');
+    let verseNum = document.createElement('code');
+    // breakElm = document.createElement('br');//I will make the span element block with the css
+
+    let vText = jsonVerse.txt;
+    vText = vText.replace(/({(((H|G)(\d+)))})/g, '<span class="strnum" strnum="$2" testament="$4" strindx="$5"></span>');
+    // vText = vText.replace(/\[/g, '<span class="translated">');
+    vText = vText.replace(/\[([\w\s.,'";:!?\-\(\)]*)/g, '<span class="translated" data-kjv-trans="$1">$1');
+    vText = vText.replace(/\]/g, '</span>');
+    vText = vText.replace(/<r>/g, '<span style="color:red">');
+    vText = vText.replace(/<\/r>/g, '</span>');
+    verseSpan.innerHTML = vText;
+    verseNum.prepend(document.createTextNode((chNumInBk + 1) + ':' + a + ' '));
+    verseSpan.prepend(verseNum);
+    verseSpan.classList.add('verse');
+    verseSpan.id = ('_' + bkid + '.' + (chNumInBk) + '.' + (a - 1));
+    createTransliterationAttr(verseSpan)
+
+    return appendHere.appendChild(verseSpan);
 }
 
 // Create and Append Transliteration Data Attribute
@@ -320,13 +346,21 @@ function createTransliterationAttr(x) {
         wStrnum = strNumElm.getAttribute('strnum')
         for (abc = 0; abc < strongsJSONresponse.length; abc++) {
             if (strongsJSONresponse[abc].number == wStrnum) {
-                let str_trans = strongsJSONresponse[abc].xlit;
+                let str_xlit = strongsJSONresponse[abc].xlit;
                 let str_lemma = strongsJSONresponse[abc].lemma;
-                strNumElm.setAttribute("data-trans", str_trans);
+                strNumElm.setAttribute("data-xlit", str_xlit);
                 strNumElm.setAttribute("data-lemma", str_lemma);
-                strNumElm.parentElement.setAttribute("strnum", wStrnum);
-                strNumElm.parentElement.setAttribute("data-trans", str_trans);
-                strNumElm.parentElement.title = str_trans + " | " + wStrnum + " | " + str_lemma;
+                if (strNumElm.parentElement.hasAttribute("strnum")) { //For words translated from more than one strongs word
+                    strNumElm.parentElement.setAttribute("strnum", strNumElm.parentElement.getAttribute("strnum") + ' ' + wStrnum);
+                    strNumElm.parentElement.setAttribute("data-xlit", strNumElm.parentElement.getAttribute("data-xlit") + ' ' + str_xlit);
+                    strNumElm.parentElement.title = strNumElm.parentElement.title + " - " + str_xlit + " | " + wStrnum + " | " + str_lemma;
+                } else {
+                    strNumElm.parentElement.setAttribute("strnum", wStrnum);
+                    strNumElm.parentElement.setAttribute("data-xlit", str_xlit);
+                    strNumElm.parentElement.title = str_xlit + " | " + wStrnum + " | " + str_lemma;
+                }
+                strNumElm.parentElement.classList.add(wStrnum)
+                strNumElm.title = '(' + strNumElm.parentElement.getAttribute("data-kjv-trans") + ')' + " - " + str_xlit + " | " + wStrnum + " | " + str_lemma;
                 break
             }
         }
@@ -339,8 +373,7 @@ function getTextOfVerse(xxx) {
 }
 
 // FOR ACTUAL TEXT
-// var requestURL = 'bibles_JSON/kjv_strongs.json';
-var requestURL = 'bibles_JSON/KJV+_red.json';
+var requestURL = 'bibles_JSON/KJV+_red_02.json';
 var kjvBible = new XMLHttpRequest();
 kjvBible.open('GET', requestURL);
 kjvBible.responseType = 'json';
@@ -366,10 +399,12 @@ function showStrongs(x) {
         headPart.append(newStyleInHead);
         x.classList.add('hidingstrongs');
         x.classList.remove('showing');
+        translit.disabled = true;
     } else {
         x.classList.add('showing');
         x.classList.remove('hidingstrongs');
         hidestrongs.remove();
+        translit.disabled = false;
     }
 }
 //Random Color Generator
@@ -382,35 +417,65 @@ function randomColor(brightness) {
     }
     return '#' + randomChannel(brightness) + randomChannel(brightness) + randomChannel(brightness);
 }
+//STYLE SHEET MODIFIER
+function findCSSRule(mySheet, selector) {
+    let ruleIndex = -1; // Default to 'not found'
+    let theRules = mySheet.cssRules ? mySheet.cssRules : mySheet.rules;
+    // console.log(theRules.length)
+    for (i = 0; i < theRules.length; i++) {
+        if (theRules[i].selectorText == selector) {
+            ruleIndex = i;
+            break;
+        }
+    }
+    return ruleIndex;
+}
 //Random color Alternative
-//+'#' + (0x1000000 + Math.random() * 0xFFFFFF).toString(16).substr(1,6);
+//+'#' + (0x1220000 + Math.random() * 0xFF00FF).toString(16).substr(1,6);
 function highlightAllStrongs(x) {
     var headPart = document.getElementsByTagName('head')[0];
-    cs = `span[strnum="` + x + `"]{background-color:` + randomColor(200) + `;}`
+    cs = `span[strnum="` + x + `"]{background-color:` + randomColor(200) + `;outline:1px solid ` + randomColor(200) + `}`
+    //CREATE THE INNER-STYLE WITH ID #highlightstrongs IN THE HEAD IF IT DOESN'T EXIST
     if (!document.querySelector('style#highlightstrongs')) {
         newStyleInHead = document.createElement('style');
         newStyleInHead.id = 'highlightstrongs';
         newStyleInHead.innerHTML = cs;
         headPart.append(newStyleInHead);
-    } else if (!highlightstrongs.toString().includes(`span[strnum="` + x + `"]{background-color:`)) {
-        // console.log(x)
-        // console.log(cs)
-        highlightstrongs = document.getElementById('highlightstrongs').sheet.insertRule(cs, 0)
-        highlightstrongs.innerHTML = highlightstrongs.innerText;
-        // console.log('hi')
+    }
+    //ELSE IF IT ALREADY EXISTS
+    else {
+        let highlightStrongsSheet = highlightstrongs.sheet;
+        let allRules = highlightStrongsSheet.cssRules;
+        let ruleSelector = `span[strnum="${x}"]`
+        for (let i = 0; i < allRules.length; i++) {
+            if (findCSSRule(highlightStrongsSheet, ruleSelector) == -1) {
+                document.getElementById('highlightstrongs').sheet.insertRule(cs, allRules.length - 1);
+            } else {
+                highlightStrongsSheet.deleteRule(findCSSRule(highlightStrongsSheet, ruleSelector));
+                if (allRules.length == 0) {
+                    highlightstrongs.remove()
+                }
+            }
+            break
+        }
     }
 }
+
 main.addEventListener("mousedown", function (e) {
     var hoverElm;
     if (e.target.classList.contains('translated')) {
         hoverElm = e.target;
         stn = hoverElm.getAttribute('strnum');
-        console.log(stn)
         highlightAllStrongs(stn)
+        console.log(stn)
     } else if (e.target.parentElement.classList.contains('translated')) {
         hoverElm = e.target.parentElement;
         stn = hoverElm.getAttribute('strnum');
         highlightAllStrongs(stn)
+        console.log(stn)
+    }
+    if (navigation.style.display == 'block') {
+        navigation.style.display = 'none'
     }
 })
 
@@ -419,7 +484,7 @@ var stl = 0;
 
 function appendTransliteration(strNumElm) {
     if (!strNumElm.classList.contains("translit")) {
-        strNumElm.innerText = strNumElm.getAttribute("data-trans");
+        strNumElm.innerText = strNumElm.getAttribute("data-xlit");
         strNumElm.classList.add("translit")
     } else {
         strNumElm.innerText = strNumElm.getAttribute("strnum");
@@ -436,43 +501,76 @@ function showTransliteration() {
 
 document.addEventListener("click", function (e) {
     clickedElm = e.target;
-    //TO CHANGE A STRONG'S NUMBER TO ITS TRANSLITERATION
-    if (clickedElm.classList.contains('strnum')) {
-        appendTransliteration(clickedElm)
-    }
     //To populate book chapter numbers navigation pane
-    else if (clickedElm.classList.contains('bkname')) {
+    if (clickedElm.classList.contains('bkname')) {
         getBksChptsNum(clickedElm);
         goto = 0;
+        if (bible_books.querySelector('.tmp_hlt')) {
+            bible_books.querySelector('.tmp_hlt').classList.remove('tmp_hlt')
+        }
+        clickedElm.classList.add('tmp_hlt')
     }
     //To Get Text of Selected Chapter
     else if (clickedElm.classList.contains('chptnum')) {
         // createChaptersVerses(clickedElm)
         getTextOfChapter(clickedElm)
-
+        indicateBooknChapterInNav(null, clickedElm)
     }
+    //TO CHANGE A STRONG'S NUMBER TO ITS TRANSLITERATION
+    // else if (clickedElm.classList.contains('strnum')) {
+    //     appendTransliteration(clickedElm)
+    // }
 })
 
+function indicateBooknChapterInNav(bk, chpt) {
+    //remove class from previous class holder in navigation
+    if (chptnumref = document.querySelector('.chptnum.ref_hlt')) {
+        chptnumref.classList.remove('ref_hlt')
+    }
+    if (refbk = bible_books.querySelector('.ref_hlt')) {
+        refbk.classList.remove('ref_hlt')
+    }
+    if (chpt) {
+        chpt.classList.add('ref_hlt')
+        if (tmpbk = bible_books.querySelector('.tmp_hlt')) {
+            tmpbk.classList.remove('tmp_hlt')
+        }
+        bible_books.querySelector('[bookname="' + chpt.getAttribute('bookname')).classList.add('ref_hlt')
+    }
+    if (bk) {
+        bible_books.querySelector('.tmp_hlt').classList.remove('tmp_hlt');
+        bible_chapters.querySelector('.show_chapter').classList.add('ref_htl');
+        bk.classList.add('ref_hlt');
+    }
+}
+
 function getAllChapters() {
+    // let startTime = performance.now() //to get how long it takes to run
     //To populate chapter verse numbers navigation pane
-    bible_chapters = document.getElementById('bible_chapters');
-    allBookChapters = bible_chapters.querySelectorAll('.show_chapter');
-    ppp.innerHTML = '';
-    allBookChapters.forEach(elm => {
-        getTextOfBook(elm)
-    });
-    currentBook = clickedElm.getAttribute('bookindex');
-    currentBookName = clickedElm.getAttribute('bookname');
-    let targetVerse = document.getElementById(`_${currentBook}.1.1`); //scroll to first verse of book
-    scrollToVerse(targetVerse)
-    goto = 1;
+    if (clickedElm.getAttribute('bookindex') != currentBook) {
+        bible_chapters = document.getElementById('bible_chapters');
+        allBookChapters = bible_chapters.querySelectorAll('.show_chapter');
+        ppp.innerHTML = '';
+        allBookChapters.forEach(elm => {
+            getTextOfBook(elm)
+        });
+        currentBook = clickedElm.getAttribute('bookindex');
+        currentBookName = clickedElm.getAttribute('bookname');
+        let targetVerse = document.getElementById(`_${currentBook}.0.0`); //scroll to first verse of book
+        scrollToVerse(targetVerse);
+        showCurrentChapterInHeadnSearchBar(ppp.querySelector('h2').innerText);
+        goto = 1;
+    }
+    // let endTime = performance.now();
+    // console.log(`Duration: ${endTime - startTime} milliseconds`)
 }
 document.addEventListener("dblclick", function (e) {
     // goto=0;
     clickedElm = e.target;
     //To DISPLAY THE TEXT OF ALL CHAPTERS IN A BOOK
     if (clickedElm.classList.contains('bkname')) {
-        getAllChapters()
+        getAllChapters();
+        indicateBooknChapterInNav(clickedElm)
     }
     //Highlight and Unhighlight verse
     if (clickedElm.classList.contains('verse')) {
@@ -484,42 +582,101 @@ document.addEventListener("dblclick", function (e) {
     }
 })
 
-//TO Identify all words translated from the same original word
+//TO SHOW TRANSLITERATION OF WORDS
 main.addEventListener("dblclick", function (e) {
     hoverElm = e.target;
     if (hoverElm.nodeName == 'SPAN' && hoverElm.classList.contains('translated') && !hoverElm.classList.contains('eng2grk')) {
-        let stn = hoverElm.querySelector('sup').getAttribute('strnum');
-        allSimilarWords = main.querySelectorAll('sup[strnum="' + stn + '"]');
-        allSimilarWords.forEach(elm => {
-            elmP = elm.parentElement;
-            translationValue = elmP.childNodes[0].textContent;
-            elmP.setAttribute('trans', translationValue)
-            elmP.setAttribute('title', translationValue + " | " + stn)
-            elmP.childNodes[0].textContent = "";
-            elmP.prepend(elm.getAttribute("data-trans"));
-            elmP.classList.add('eng2grk');
-        });
-    } else if (hoverElm.nodeName == 'SPAN' && hoverElm.classList.contains('eng2grk')) {
-        let stn = hoverElm.querySelector('sup').getAttribute('strnum');
-        allSimilarWords = main.querySelectorAll('sup[strnum="' + stn + '"]');
-        allSimilarWords.forEach(elm => {
-            elmP = elm.parentElement;
-            let translationValue = elmP.getAttribute('trans')
-            elmP.setAttribute('title', translationValue + " | " + stn)
-            elmP.childNodes[0].textContent = "";
-            elmP.prepend(elmP.getAttribute("trans"));
-            elmP.removeAttribute("trans")
-            elmP.classList.remove('eng2grk')
-        });
+        let allstn = hoverElm.querySelectorAll('.strnum'); //Some words are translated from more than one word
+        allstn.forEach(s => {
+            stn = s.getAttribute('strnum');
+            let allSimilarWords = main.querySelectorAll('.strnum[strnum="' + stn + '"]');
+            let i = 0;
+            allSimilarWords.forEach(elm => {
+                // if(i>0){elm.innerText = elm.getAttribute("data-xlit");}
+               elm.innerText = ' ' + elm.getAttribute("data-xlit");
+                elmP = elm.parentElement;
+                if (!elmP.classList.contains('eng2grk')) {
+                    elmP.childNodes[0].remove()
+                    elmP.classList.add('eng2grk');
+                }
+                i=i+1;
+            })
+        })
+    } else if (hoverElm.classList.contains('strnum')) {
+        let allstn = hoverElm.parentElement.querySelectorAll('.strnum');
+        let prevParent = [];
+        allstn.forEach(s => {
+            stn = s.getAttribute('strnum');
+            let allSimilarWords = main.querySelectorAll('.strnum[strnum="' + stn + '"]');
+            allSimilarWords.forEach(elm => {
+                elm.innerText = '';
+                elmP = elm.parentElement;
+            if (!prevParent.includes(elmP)) {
+                elmP.classList.remove('eng2grk');
+                elmP.prepend(elmP.getAttribute("data-kjv-trans"));
+                prevParent.push(elmP)
+            }
+            })
+        })
     }
 })
+
+//TO LOAD NEW CHAPTER WHEN CHAPTER HAS BEEN SCROLLED TO THE END
+function moreChaptersOnScroll() {
+    main.addEventListener('scroll', loadNewChapterOnScroll)
+}
+
+function showOnlyLoadedChapters() {
+    main.removeEventListener('scroll', loadNewChapterOnScroll)
+}
+moreChaptersOnScroll()
+
+function loadNewChapterOnScroll() {
+    let lastScrollTop = 0;
+    var mst = main.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
+    if (mst > lastScrollTop) {
+        // downscroll code
+        if (main.scrollHeight - main.scrollTop - main.clientHeight < 100) { //If you have scrolled to the end of the element
+            let lastVerseLoadedChapters = main.querySelector('span.verse:last-child').id
+            let bkNumb = lastVerseLoadedChapters.replace(/_(\d+)([.]\d+)[.]\d+/, '$1')
+            let chptNumb = lastVerseLoadedChapters.replace(/(_\d+[.])(\d+)[.]\d+/, '$2')
+            let nextChapter = bible_chapters.querySelector(`[value="bk${bkNumb}ch${Number(chptNumb)+1}"]`)
+            if (nextChapter) {
+                getTextOfChapter(nextChapter, 0);
+            }
+        }
+    } else {
+        // upscroll code
+        if (main.scrollTop < 10) { //If you have scrolled to the top of the element
+            let firstVerseLoadedChapters = main.querySelector('span.verse:first-of-type')
+            let firstVerseLoadedChaptersID = firstVerseLoadedChapters.id
+            let bkNumb = firstVerseLoadedChaptersID.replace(/_(\d+)([.]\d+)[.]\d+/, '$1')
+            let chptNumb = firstVerseLoadedChaptersID.replace(/(_\d+[.])(\d+)[.]\d+/, '$2')
+            let prevChapter = bible_chapters.querySelector(`[value="bk${bkNumb}ch${Number(chptNumb)-1}"]`)
+            if (prevChapter) {
+                var old_scrollheight = main.scrollHeight; //store document height before modifications
+
+                getTextOfChapter(prevChapter, 0, true);
+                let preprevChapter = bible_chapters.querySelector(`[value="bk${bkNumb}ch${Number(chptNumb)-2}"]`)
+                if (preprevChapter) {
+                    getTextOfChapter(preprevChapter, 0, true);
+                }
+                main.scrollTo({
+                    top: main.scrollHeight - old_scrollheight
+                })
+            }
+        }
+    }
+    // For Mobile or negative scrolling
+    lastScrollTop = mst <= 0 ? 0 : mst;
+}
 
 /* ON PAGE LOAD SELECT THE FIRST BOOK AND CHAPTER */
 function openachapteronpageload() {
     bible_books.querySelector('[bookname="Genesis"]').click();
     currentBookName = 'Genesis';
     bible_chapters.querySelector('[chapterindex="0"]').click();
-    document.querySelector('body>div.buttons').querySelector('button.showing').click();
+    // document.querySelector('body>div.buttons').querySelector('button.showing').click();
     togglenavbtn.click();
 }
 //Hide navigation when escape is pressed
@@ -571,38 +728,20 @@ function realine() {} //This empty
 Ω	ω	ō
  */
 
-let wordsearch = document.getElementById('wordsearch')
-
-function runWordSearch() {
-    let word2find = new RegExp(wordsearch.value, "i");
-    let allVersesInPage = main.querySelectorAll('.verse');
-    let searchResultArr = [];
-    allVersesInPage.forEach(v => {
-        if (v.innerText.search(word2find) != -1) {
-            searchResultArr.push(v.id)
-            scrollToVerse(v)
-        }
-    });
-    console.log(word2find)
-    console.log(searchResultArr)
-}
-// let position = text.search("Blue");
-// let position = text.search("blue");
-// let position = text.search(/Blue/);
-// let position = text.search(/blue/);
-// let position = text.search(/blue/i);
-
-main.addEventListener('mouseover', function(e){
-    if(e.target.classList.contains('translated')){
+/* EVENT LISTENERS FOR THE HIGHLIGHING ALL ELEMENTS WITH THE SAME CLASS NAME BY HOVERING OVER ONE OF THEM */
+/* This is acomplished by modifying the styles in the head */
+main.addEventListener('mouseover', function (e) {
+    // main.classList.remove('noselect');
+    if (e.target.classList.contains('translated')) {
         let newStyleInHead = document.createElement('style');
         newStyleInHead.id = 'highlightall';
-        newStyleInHead.innerHTML = '[data-trans="' + e.target.getAttribute('data-trans')+'"]{background-color:rgb(154, 252, 255)}';
+        newStyleInHead.innerHTML = '[data-xlit="' + e.target.getAttribute('data-xlit') + '"]{background-color:rgb(154, 252, 255)}';
         let headPart = document.getElementsByTagName('head')[0];
         headPart.append(newStyleInHead);
     }
 })
-main.addEventListener('mouseout', function(e){
-    if(e.target.classList.contains('translated')){
+main.addEventListener('mouseout', function (e) {
+    if (e.target.classList.contains('translated')) {
         document.getElementById('highlightall').remove();
     }
 })
