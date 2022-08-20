@@ -13,43 +13,56 @@
 
 <body>
     <div id="pagemaster">
-    <div class="buttons">
-        <button onclick="toggleNav()" class="togglenav" id="togglenavbtn" title="Toggle Nav">&#9776;</button>
+        <div class="buttons">
+            <button onclick="toggleNav()" class="togglenav" id="togglenavbtn" title="Toggle Nav">&#9776;</button>
             <!-- <button onclick="showStrongs(this)" class="showing" title="Show Strongs"><b>s+</b><button onclick="showTransliteration()" id="translit"class="translit" title="Transliteration"><b>T</b></button> -->
-        <!-- <button onclick="savefile('p#text')" class="footersection" id="filesaver">Download
+            <!-- <button onclick="savefile('p#text')" class="footersection" id="filesaver">Download
         <button onclick="makeContentEditable()" class="footersection" id="btnfootcontenteditable"title="Make page editable">EditPage -->
-        <input class="footersection" id="reference" title="Type Bible Reference"
-            placeholder="Type Bible Reference"></input><button onclick="gotoRef()" class="footersection" id="forreference" title="go to reference">GO</button>
-            <input class="footersection" id="wordsearch" title="What to search for"placeholder="Type Words to Search For"></input><button onclick="runWordSearch()" class="footersection" id="forwordsearch" title="Run Search">&#128270;
-    </div>
-    <div id="navigation" style="display:block">
-        <div class="bible_nav" name="books" id="bible_books" multiple></div>
-        <div class="bible_nav" name="chapters" id="bible_chapters" multiple></div>
-        <div class="bible_nav" name="verses" id="bible_verses" multiple></div>
-    </div>
-    <main id="main" contenteditable="false">
-        <div id="ppp"></div>
-        <!-- <div id="pp3">asasdfasdf adsf adsfa dsf asdf asdfads fasdf ads dfhjfhjkgkhltdystfgdsv bsgdhjkhgkjmdfgxzgafdshgsdgvfsdgherhfnd bnf gdgfhs ghbsdfgsdfhg efgdjfxj s</div>
-        <div id="search_section">adfadfadsfasdfadsf</div> -->
-        <div id="searchresultwindow" class="displaynone">
-            <div class="relative">
-                <div id="searchboxtitlebar">
-                    <div id="searchclose" onclick="hideElement(searchresultwindow)" title="Close search result window">CLOSE</div>
-                    <div id="searchminimize" onclick="minimize(searchPreview)" title="Minimize search result window">MINIMIZE</div>
+            <div id="refdiv">
+                <input class="footersection"id="reference" title="Type Bible Reference" placeholder="Type Bible Reference"></input><button onclick="gotoRef()"class="footersection"id="forreference" title="go to reference">GO</button>
                 </div>
-                <div id="searchPreview">
-                </div>
+            <div id="searchdiv">
+                <input class="footersection" id="wordsearch" title="What to search for"placeholder="Type Words to Search For"></input><button onclick="runWordSearch()"class="footersection" id="forwordsearch" title="Run Search">...</button>
             </div>
         </div>
-    </main>
-</div>
+        
+        <div id="mobilebuttons">
+            <button class="displaynone"id="mb3"onclick="showhidemobile(searchdiv)"title="search">&#128270;</button>
+            <button class="displaynone"id="mb2"onclick="showhidemobile(refdiv)"title="Reference">Go</button>
+            <button class="displaynone"id="mb1"onclick="toggleNav(), showhidemobile(null)"title="Bible Books and Chapters">&#9776;</button>
+            <button onclick="showMobileBtns()" id="showmobilebtns">&#10094;</button>
+        </div>
+
+        <div id="navigation" style="display:block">
+            <div class="bible_nav" name="books" id="bible_books" multiple></div>
+            <div class="bible_nav" name="chapters" id="bible_chapters" multiple></div>
+            <div class="bible_nav" name="verses" id="bible_verses" multiple></div>
+        </div>
+        <main id="main" contenteditable="false">
+            <div id="ppp"></div>
+            <!-- <div id="pp3">asasdfasdf adsf adsfa dsf asdf asdfads fasdf ads dfhjfhjkgkhltdystfgdsv bsgdhjkhgkjmdfgxzgafdshgsdgvfsdgherhfnd bnf gdgfhs ghbsdfgsdfhg efgdjfxj s</div>
+        <div id="search_section">adfadfadsfasdfadsf</div> -->
+            <div id="searchresultwindow" class="displaynone">
+                <div class="relative">
+                    <div id="searchboxtitlebar">
+                        <div id="searchrelative">
+                            <div id="searchclose" onclick="hideElement(searchresultwindow)"title="Close search result window">CLOSE</div>
+                            <div id="searchminimize" onclick="minimize(searchPreview)"title="Minimize search result window">MINIMIZE</div>
+                        </div>
+                    </div>
+                    <div id="searchPreview">
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
 
 
 </body>
 <!-- <script src="..\Scriptures Text Higlighter\FileSaver.js"></script>
 <script src="..\Scriptures Text Higlighter\textHiglighter.js"></script>
 <script src="..\Scriptures Text Higlighter\searchHighlighted.js"></script> -->
-<script src="bibleApp.js"></script>
-<script src="bibleApp_search.js"></script>
+<script src="bibleApp.js" charset = "utf-8" ></script>
+<script src="bibleApp_search.js" charset = "utf-8" ></script>
 
 </html>

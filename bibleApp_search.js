@@ -154,6 +154,7 @@ function minimize(el) {
 
 /* GET TOPMOST H2*/
 main.addEventListener('scroll', getHighestVisibleH2)
+
 function getHighestVisibleH2() {
     let higestElm = document.elementFromPoint(main.getBoundingClientRect().x + (main.getBoundingClientRect().width / 2), main.getBoundingClientRect().y + 5);
     if (higestElm.classList.contains('chptheading')) {
@@ -161,17 +162,17 @@ function getHighestVisibleH2() {
     }
     let lowerElm = document.elementFromPoint(main.getBoundingClientRect().x + (main.getBoundingClientRect().width / 2), main.getBoundingClientRect().y + 20);
     //if highest visible h2 is between 20 and 5, then make the preceding h2 the highest
-    if (lowerElm.classList.contains('chptheading')) {//get the class of the preceding h2 from the id of the current h2
-        higestElm = document.getElementById(lowerElm.id.split('.')[0].toString()+'.'+ (lowerElm.id.split('.')[1]-1))
+    if (lowerElm.classList.contains('chptheading')) { //get the class of the preceding h2 from the id of the current h2
+        higestElm = document.getElementById(lowerElm.id.split('.')[0].toString() + '.' + (lowerElm.id.split('.')[1] - 1))
         showCurrentChapterInHeadnSearchBar(higestElm)
     }
 }
 
-function showCurrentChapterInHeadnSearchBar(h){
+function showCurrentChapterInHeadnSearchBar(h) {
     //Change reference in reference search box
     reference.value = h.innerText;
     //Make current chapter page title
-    document.querySelector('head>title').innerText = /*'LightCity-' +  */h.innerText
+    document.querySelector('head>title').innerText = /*'LightCity-' +  */ h.innerText
 }
 wordsearch.addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
@@ -179,3 +180,37 @@ wordsearch.addEventListener("keypress", function (event) {
         event.preventDefault();
     }
 });
+
+/* MOBILE */
+function showMobileBtns() {
+    if(showmobilebtns.classList.contains('open')){
+        showmobilebtns.innerHTML='&#10094;'
+        showmobilebtns.classList.remove('open');
+    } else {
+        showmobilebtns.innerHTML='&#10095;';
+    showmobilebtns.classList.add('open')}
+    let pclk = document.querySelector('.prevclicked')
+    if (pclk){
+        pclk.click();
+        pclk.classList.remove('prevclicked')
+    }
+    mb1.classList.toggle("displaynone");
+    mb2.classList.toggle("displaynone");
+    mb3.classList.toggle("displaynone");
+}
+
+function showhidemobile(x) {
+    let pclk = document.querySelector('.prevclicked')
+    let currentClick=null;
+
+    if(x==searchdiv){currentClick=mb3}
+    if(x==refdiv){currentClick=mb2}
+    if(x==null){currentClick=mb1}
+if((!currentClick.classList.contains("prevclicked"))&&(pclk)){
+    pclk.click();
+    pclk.classList.remove('prevclicked')
+}
+if(currentClick==pclk){pclk.classList.remove('prevclicked')}
+else{currentClick.classList.add('prevclicked')}
+    if(x!=null){x.classList.toggle("displayshow");}
+}
