@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script src="KJV_theWORD_array.js"></script>
+<script src="KJV+_Red.js"></script>
+<script>
+    console.log(KJV_OLD_LightCityObj.length == KJV_theWORD.length)
+    var i=0;
+    KJV_OLD_LightCityObj.forEach(verse => {
+        verse.txt=KJV_theWORD[i]
+        i++
+    });
+    console.log(KJV_OLD_LightCityObj)
+</script>
+</html>
