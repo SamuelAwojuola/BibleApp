@@ -1,0 +1,199 @@
+[{
+    "a": ["GENESIS","GEN","GE","GN"],
+    "b": 1
+},{
+    "a": ["EXODUS","EXO","EX","EXOD"],
+    "b": 2
+},{
+    "a": ["LEVITICUS","LEV","LE","LV"],
+    "b": 3
+},{
+    "a": ["NUMBERS","NUM","NU","NM","NB"],
+    "b": 4
+},{
+    "a": ["DEUTERONOMY","DEU","DEUT","DT"],
+    "b": 5
+},{
+    "a": ["JOSHUA","JOSH","JOS","JSH"],
+    "b": 6
+},{
+    "a": ["JUDGES","JUDG","JDG","JG","JDGS"],
+    "b": 7
+},{
+    "a": ["RUTH","RU","RUT","RTH"],
+    "b": 8
+},{
+    "a": ["1SAMUEL","I SAMUEL","1ST SAMUEL","FIRST SAMUEL","1 SAM","1 SA","1S","I SA","1 SM","1SA","I SAM","1SAM"],
+    "b": 9
+},{
+    "a": ["II SAMUEL","2SAMUEL","2ND SAMUEL","SECOND SAMUEL","2 SAM","2 SA","2S","II SA","2 SM","2SA","II SAM","2SAM"],
+    "b": 10
+},{
+    "a": ["1 KGS","1 KI","1K","I KGS","1KGS","I KI","1KI","I KINGS","I KING","1KINGS","1 KINGS","1 KING","1KIN","1 KIN","1ST KGS","1ST KINGS","FIRST KINGS","FIRST KGS"],
+    "b": 11
+},{
+    "a": ["2 KGS","2 KI","2K","II KGS","2KGS","II KI","2KI","II KINGS","II KING","2KINGS","2 KINGS","2 KING","2KIN","2 KIN","2ND KGS","2ND KINGS","SECOND KINGS","SECOND KGS"],
+    "b": 12
+},{
+    "a": ["1 CHRON","1 CH","I CH","1CH","1 CHR","I CHR","1CHR","I CHRON","1CHRON","I CHRONICLES","1CHRONICLES","1ST CHRONICLES","FIRST CHRONICLES"],
+    "b": 13
+},{
+    "a": ["2 CHRON","2 CH","II CH","2CH","II CHR","2CHR","II CHRON","2CHRON","II CHRONICLES","2CHRONICLES","2ND CHRONICLES","SECOND CHRONICLES"],
+    "b": 14
+},{
+    "a": ["EZRA","EZR"],
+    "b": 15
+},{
+    "a": ["NEHEMIAH","NEH","NE"],
+    "b": 16
+},{
+    "a": ["ESTHER","ESTH","EST","ES"],
+    "b": 17
+},{
+    "a": ["JOB","JB"],
+    "b": 18
+},{
+    "a": ["PSALMS","PSALM","PSLM","PS","PSA","PSM","PSS"],
+    "b": 19
+},{
+    "a": ["PROVERBS","PROV","PR","PRV"],
+    "b": 20
+},{
+    "a": ["ECCLESIASTES","ECCLES","EC","QOH","QOHELETH"],
+    "b": 21
+},{
+    "a": ["SONG","SO","CANTICLE OF CANTICLES","CANTICLES","SONG OF SONGS","SOS"],
+    "b": 22
+},{
+    "a": ["ISAIAH","ISA","IS"],
+    "b": 23
+},{
+    "a": ["JEREMIAH","JERE","JER","JE","JR"],
+    "b": 24
+},{
+    "a": ["LAMENTATIONS","LAMENTATION","LAM","LA"],
+    "b": 25
+},{
+    "a": ["EZEKIEL","EZEK","EZE","EZK","EZ"],
+    "b": 26
+},{
+    "a": ["DANIEL","DAN","DA","DN"],
+    "b": 27
+},{
+    "a": ["HOSHEA","HOS","HO"],
+    "b": 28
+},{
+    "a": ["JOEL","JOE","JL"],
+    "b": 29
+},{
+    "a": ["AMOS","AM"],
+    "b": 30
+},{
+    "a": ["OBADIAH","OBAD","OB"],
+    "b": 31
+},{
+    "a": ["JONAH","JONA","JNH","JON"],
+    "b": 32
+},{
+    "a": ["MICAH","MIC"],
+    "b": 33
+},{
+    "a": ["NAHUM","NAH","NA"],
+    "b": 34
+},{
+    "a": ["HABAKKUK","HAB"],
+    "b": 35
+},{
+    "a": ["ZEPHANIAH","ZEPH","ZEP","ZP"],
+    "b": 36
+},{
+    "a": ["HAGGAI","HAG","HG"],
+    "b": 37
+},{
+    "a": ["ZECHARIAH","ZECH","ZEC","ZC"],
+    "b": 38
+},{
+    "a": ["MALACHI","MAL","MAL","ML"],
+    "b": 39
+},{
+    "a": ["MATTHEW","MATHEW","MATT","MAT","MT"],
+    "b": 40
+},{
+    "a": ["MARK","MRK","MK","MR"],
+    "b": 41
+},{
+    "a": ["LUKE","LUK","LK"],
+    "b": 42
+},{
+    "a": ["JOHN","JOH","JN","JHN"],
+    "b": 43
+},{
+    "a": ["ACTS","ACT","AC"],
+    "b": 44
+},{
+    "a": ["ROMANS","ROM","RO","RM"],
+    "b": 45
+},{
+    "a": ["1COR","1 CO","I CO","1CO","I COR","1 COR","I CORINTHIANS","1CORINTHIANS","1ST CORINTHIANS","FIRST CORINTHIANS"],
+    "b": 46
+},{
+    "a": ["2 COR","2 CO","II CO","2CO","II COR","2COR","II CORINTHIANS","2CORINTHIANS","2 CORINTHIANS","2ND CORINTHIANS","SECOND CORINTHIANS"],
+    "b": 47
+},{
+    "a": ["GAL","GA","GALATIANS","GALATIAN"],
+    "b": 48
+},{
+    "a": ["EPH","EPHESIAN","EPHESIANS","EPHES"],
+    "b": 49
+},{
+    "a": ["PHILIPPIANS","PHILIP","PHILI","PHIL","PHP"],
+    "b": 50
+},{
+    "a": ["COL","COLOSSIANS"],
+    "b": 51
+},{
+    "a": ["1TH","1THES","1 THESS","1 TH","I TH","I THES","I THESS","1THESS","I THESSALONIANS","1THESSALONIANS","1ST THESSALONIANS","FIRST THESSALONIANS"],
+    "b": 52
+},{
+    "a": ["2TH","2THES","2 THESS","2 TH","II TH","II THES","II THESS","2THESS","II THESSALONIANS","2THESSALONIANS","2ND THESSALONIANS","SECOND THESSALONIANS"],
+    "b": 53
+},{
+    "a": ["1TI","1TIM","1 TIM","1 TI","I TI","I TIM","I TIMOTHY","1TIMOTHY","1ST TIMOTHY","FIRST TIMOTHY"],
+    "b": 54
+},{
+    "a": ["2TI","2TIM","2 TIM","2 TI","II TI","II TIM","II TIMOTHY","2TIMOTHY","2ND TIMOTHY","SECOND TIMOTHY"],
+    "b": 55
+},{
+    "a": ["TIT","TITUS"],
+    "b": 56
+},{
+    "a": ["PHM","PHILE","PHILEM","PHILEMON"],
+    "b": 57
+},{
+    "a": ["HEB","HEBREWS"],
+    "b": 58
+},{
+    "a": ["JAM","JAS","JM","JAMES"],
+    "b": 59
+},{
+    "a": ["1 PET","1 PE","I PE","1PE","I PET","1PET","I PT","1 PT","1PT","I PETER","1PETER","1ST PETER","FIRST PETER"],
+    "b": 60
+},{
+    "a": ["2 PET","2 PE","II PE","2PE","II PET","2PET","II PT","2 PT","2PT","II PETER","2PETER","2ND PETER","SECOND PETER"],
+    "b": 61
+},{
+    "a": ["1 JOHN","1 JN","I JN","1JN","I JO","1JO","I JOH","1JOH","1 JOH","I JHN","1 JHN","1JHN","I JOHN","1JOHN","1ST JOHN","FIRST JOHN"],
+    "b": 62
+},{
+    "a": ["2 JOHN","2 JN","II JN","2JN","II JO","2JO","II JOH","2JOH","2 JOH","II JHN","2 JHN","2JHN","II JOHN","2JOHN","2ND JOHN","SECOND JOHN"],
+    "b": 63
+},{
+    "a": ["3 JOHN","3 JN","III JN","3JN","III JO","3JO","III JOH","3JOH","3 JOH","III JHN","3 JHN","3JHN","III JOHN","3JOHN","3RD JOHN","THIRD JOHN"],
+    "b": 64
+},{
+    "a": ["JUDE","JUD"],
+    "b": 65
+},{
+    "a": ["REV","RE","THE REVELATION","REVELATION"],
+    "b": 66
+}]
