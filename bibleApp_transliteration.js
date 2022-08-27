@@ -1,32 +1,45 @@
-var transliteratedWords_Array = [];
+// FOR STRONGS LEXICON
+var requestStrongsURL = 'bibles_JSON/strongs.json';
+var strongsJSON = new XMLHttpRequest();
+strongsJSON.open('GET', requestStrongsURL);
+strongsJSON.responseType = 'json';
+strongsJSON.send();
+
+let strongsJSONresponse, strngsAll;
+strongsJSON.onload = function () {
+    strongsJSONresponse = strongsJSON.response;
+}
+
+// Create and Append Transliteration Data Attribute
+function createTransliterationAttr(x) {
+    let strnumInVerse = x.querySelectorAll('.strnum');
+    strnumInVerse.forEach(strNumElm => {
+        wStrnum = strNumElm.getAttribute('strnum')
+        for (abc = 0; abc < strongsJSONresponse.length; abc++) {
+            if (strongsJSONresponse[abc].number == wStrnum) {
+                let str_xlit = strongsJSONresponse[abc].xlit;
+                let str_lemma = strongsJSONresponse[abc].lemma;
+                strNumElm.setAttribute("data-xlit", str_xlit);
+                strNumElm.setAttribute("data-lemma", str_lemma);
+                if (strNumElm.parentElement.hasAttribute("strnum")) { //For words translated from more than one strongs word
+                    strNumElm.parentElement.setAttribute("strnum", strNumElm.parentElement.getAttribute("strnum") + ' ' + wStrnum);
+                    strNumElm.parentElement.setAttribute("data-xlit", strNumElm.parentElement.getAttribute("data-xlit") + ' ' + str_xlit);
+                    strNumElm.parentElement.title = strNumElm.parentElement.title + " - " + str_xlit + " | " + wStrnum + " | " + str_lemma;
+                } else {
+                    strNumElm.parentElement.setAttribute("strnum", wStrnum);
+                    strNumElm.parentElement.setAttribute("data-xlit", str_xlit);
+                    strNumElm.parentElement.title = str_xlit + " | " + wStrnum + " | " + str_lemma;
+                }
+                strNumElm.parentElement.classList.add(wStrnum)
+                strNumElm.title = '(' + strNumElm.parentElement.getAttribute("data-kjv-trans") + ')' + " - " + str_xlit + " | " + wStrnum + " | " + str_lemma;
+                break
+            }
+        }
+    });
+}
+
 //TO SHOW TRANSLITERATION OF WORDS
-main.addEventListener("dblclick", function (e) {
-    hoverElm = e.target;
-    if (hoverElm.nodeName == 'SPAN' && hoverElm.classList.contains('translated') && !hoverElm.classList.contains('eng2grk')) {
-        let allstn = hoverElm.querySelectorAll('.strnum'); //Some words are translated from more than one word
-        allstn.forEach(s => {
-            stn = s.getAttribute('strnum');
-            if (transliteratedWords_Array.indexOf(stn) == -1) {
-                /* ADD THE WORD TO THE transliteratedWords_Array */
-                transliteratedWords_Array.push(stn);
-            }
-            showTransliteration(stn)
-        })
-    } else if (hoverElm.classList.contains('strnum')) {
-        let allstn = hoverElm.parentElement.querySelectorAll('.strnum');
-        let prevParent = [];
-        allstn.forEach(s => {
-            stn = s.getAttribute('strnum');
-            if (transliteratedWords_Array.indexOf(stn) != -1) {
-                /* REMOVE THE WORD FROM THE transliteratedWords_Array */
-                transliteratedWords_Array.splice(transliteratedWords_Array.indexOf(stn), 1);
-            }
-            hideTransliteration(stn, prevParent)
-        })
-    }
-    console.log(transliteratedWords_Array)
-    localStorage.setItem('transliteratedWords', transliteratedWords_Array);
-})
+var transliteratedWords_Array = [];
 
 function showTransliteration(stn) {
     let allSimilarWords = main.querySelectorAll('.strnum[strnum="' + stn + '"]');
@@ -88,17 +101,19 @@ function hideTransliteration(stn, prevParent) {
 //window.onload = () => cacheFunctions();
 //Moved to after loading of first chapter
 function cacheFunctions() {
-    if(localStorage.getItem('lastBookandChapter')){lastOpenedBook = localStorage.getItem('lastBookandChapter').split(',')[0];
-    document.querySelector('.bkname[value="'+lastOpenedBook+'"]').click()
-    lastOpenedChapter = localStorage.getItem('lastBookandChapter').split(',')[1];
-    document.querySelector('.chptnum[value="'+lastOpenedChapter+'"]').click()}
-    
-    if(localStorage.getItem('transliteratedWords')){transliteratedWords_Array = localStorage.getItem('transliteratedWords').split(',');
-    transliteratedWords_Array.forEach(storedStrnum => {
-        showTransliteration(storedStrnum)
-    });}
+    if (localStorage.getItem('lastBookandChapter')) {
+        lastOpenedBook = localStorage.getItem('lastBookandChapter').split(',')[0];
+        document.querySelector('.bkname[value="' + lastOpenedBook + '"]').click()
+        lastOpenedChapter = localStorage.getItem('lastBookandChapter').split(',')[1];
+        getTextOfChapter(bible_chapters.querySelector('.chptnum[value="' + lastOpenedChapter + '"]'));
+    }
+    if (localStorage.getItem('transliteratedWords')) {
+        transliteratedWords_Array = localStorage.getItem('transliteratedWords').split(',');
+        transliteratedWords_Array.forEach(storedStrnum => {
+            showTransliteration(storedStrnum)
+        });
+    }
 }
-
 
 /* TRANSLITERAIOTN */
 /* 
@@ -127,3 +142,50 @@ function cacheFunctions() {
 Ψ	ψ	ps
 Ω	ω	ō
  */
+
+main.addEventListener("dblclick", function (e) {
+    hoverElm = e.target;
+    if (hoverElm.nodeName == 'SPAN' && hoverElm.classList.contains('translated') && !hoverElm.classList.contains('eng2grk')) {
+        let allstn = hoverElm.querySelectorAll('.strnum'); //Some words are translated from more than one word
+        allstn.forEach(s => {
+            stn = s.getAttribute('strnum');
+            if (transliteratedWords_Array.indexOf(stn) == -1) {
+                /* ADD THE WORD TO THE transliteratedWords_Array */
+                transliteratedWords_Array.push(stn);
+            }
+            showTransliteration(stn)
+        })
+    } else if (hoverElm.classList.contains('strnum')) {
+        let allstn = hoverElm.parentElement.querySelectorAll('.strnum');
+        let prevParent = [];
+        allstn.forEach(s => {
+            stn = s.getAttribute('strnum');
+            if (transliteratedWords_Array.indexOf(stn) != -1) {
+                /* REMOVE THE WORD FROM THE transliteratedWords_Array */
+                transliteratedWords_Array.splice(transliteratedWords_Array.indexOf(stn), 1);
+            }
+            hideTransliteration(stn, prevParent)
+        })
+    }
+    console.log(transliteratedWords_Array)
+    localStorage.setItem('transliteratedWords', transliteratedWords_Array);
+})
+
+//HIGHLIGHTING CLICKED WORD
+main.addEventListener("mousedown", function (e) {
+    var hoverElm;
+    //IF IT IS A WORD TRANSLATED FROM HEBREW/GREEK
+    if (e.target.classList.contains('translated')) {
+        hoverElm = e.target;
+        stn = hoverElm.getAttribute('strnum');
+        highlightAllStrongs(stn)
+    }
+    //IF IT IS THE STRONGS WORD ITSELF
+    else if (e.target.parentElement.classList.contains('translated')) {
+        hoverElm = e.target.parentElement;
+        stn = hoverElm.getAttribute('strnum');
+        highlightAllStrongs(stn)
+    }
+    //HIDE refnav SIDE BAR IF OPEN BY CLICKING ANYWHERE ON THE PAGE
+    hideRefNav('hide')
+})

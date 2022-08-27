@@ -1,7 +1,50 @@
 /* FUNCTION FOR SEARCH FOR SCRIPTURES BY WORDS AND PHRASES */
 let wordsearch = document.getElementById('wordsearch')
+wordsearch.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+        runWordSearch()
+        e.preventDefault();
+    }
+});
+searchPreview.addEventListener("click", function (e) {
+    if (e.target.tagName == "CODE") {
+        let codeElm = e.target;
+        gotoRef(codeElm.getAttribute('ref'))
+        console.log('e.target')
+        e.preventDefault();
+    }
+});
+
+function returnStrippedTextOfVerse(vTxt) {
+    let madePlain = vTxt.replace(/[{}\[\]]/g, ' '); //strip off {}[]
+    madePlain = madePlain.replace(/<i>/g, ' ');
+    madePlain = madePlain.replace(/<\/i>/g, ' ');
+    madePlain = madePlain.replace(/<r>/g, ' ');
+    madePlain = madePlain.replace(/<\/r>/g, ' ');
+    madePlain = madePlain.replace(/\s\s+/g, ' ');
+    madePlain_without_strongs = madePlain.replace(/[HG]\d+/g, ''); //strip off strongs numbers
+    madePlain_without_strongs = madePlain_without_strongs.replace(/\s\s+/g, ' '); //strip off strongs numbers
+    return {
+        withOutStrongs:madePlain_without_strongs,
+        withStrongs:madePlain}
+}
+
+function arrayOfWordsToSearchFor(w) {
+    let hasStrongs = w.replace(/.*[H|G]\d+.*/ig, 'YesItHasStrongs');
+    w = w.replace(/[(\s\s+),.;:]/g, ' ');
+    w = w.trim();
+    let wArray = w.split(' ');
+    return {
+        "wordsArray": wArray,
+        "hasStrongsNum": hasStrongs == 'YesItHasStrongs',
+        "moreThanOneWord": wArray.length > 1
+    }
+}
 
 function runWordSearch() {
+    if (wordsearch.value.trim() == '' || wordsearch.value.trim().length < 2) {
+        return
+    }
     /* 
     SOME POSSIBLE SEARCH PARAMETERS
     Search excluding Strongs Number
@@ -31,12 +74,15 @@ function runWordSearch() {
         });
     }
 
-    function appendVerseToSearchResultWindow(verseToAppend, currentBK = null, prevBook = null) {
+    let searchFragment = new DocumentFragment()
+    function appendVerseToSearchResultWindow(indexOfVerseToAppend, currentBK = null, prevBook = null) {
+        let verseToAppend = bcv_kjv[indexOfVerseToAppend]
         if ((prevBook != currentBK) || (prevBook == null)) {
             chapterHeading = document.createElement('h2');
             chapterHeading.classList.add('chptheading');
             chapterHeading.append(currentBK);
-            searchPreview.appendChild(chapterHeading)
+            searchFragment.appendChild(chapterHeading)
+            // searchPreview.appendChild(chapterHeading)
             prevBook = currentBK;
         }
         let bkid = Number(verseToAppend.bk) - 1;
@@ -45,7 +91,9 @@ function runWordSearch() {
         let jsonVerse = verseToAppend;
         let verseID = '_' + bkid + '.' + chNumInBk + '.' + v;
         searchResultArr.push(verseID)
-        parseSingleVerse(bkid, chNumInBk, v, jsonVerse, searchPreview)
+        parseSingleVerse(null, chNumInBk, v, indexOfVerseToAppend, searchFragment)
+        // parseSingleVerse(null, chNumInBk, v, jsonVerse, searchFragment)
+        // parseSingleVerse(null, chNumInBk, v, jsonVerse, searchPreview)
     }
 
     function searchJSON() {
@@ -59,10 +107,10 @@ function runWordSearch() {
 
         if (searchForStrongs == true) {
             //If there is a strongs num to be searched for, then you cannot search for a phrase. Rather search for to see if verse contains all words
-            for (let i = 0; i < bcv.length; i++) {
+            for (let i = 0; i < bcv_kjv.length; i++) {
                 let containsAll = true;
                 //Strip off {}[] and strongs numbers
-                let originalText = bcv[i].txt;
+                let originalText = bcv_kjv[i].txt;
                 stateOfTextToSearch = originalText;
                 let wordsArray = arrayOfWordsToSearchFor(wordsearch.value).wordsArray;
                 for (let j = 0; j < wordsArray.length; j++) {
@@ -71,61 +119,42 @@ function runWordSearch() {
                         break
                     }
                     //IT WILL ONLY CHECK AT THE END OF THE FOR LOOP WHICH IT WILL NOT GET TO IF ALL WORDS ARE NOT INCLUDED IN THE VERSE.TXT
-                    // if (j == wordsArray.length - 1) {
+                    if (j == wordsArray.length - 1) {
                     if ((prevBook != currentBK) || (prevBook == null)) {
                         prevBook = currentBK;
                     }
-                    currentBK = bcv[i].bkn;
-                    appendVerseToSearchResultWindow(bcv[i], currentBK, prevBook);
+                    currentBK = bcv_kjv[i].bkn;
+                    appendVerseToSearchResultWindow(i, currentBK, prevBook);
                     findAnything = true;
-                    // }
+                    }
                 }
             }
         } else if (searchForStrongs == false) {
             //If there is no strongs num to be searched for, then just search for the phrase
-            for (let i = 0; i < bcv.length; i++) {
-                let originalText = bcv[i].txt;
-                //Strip off {}[] and strongs numbers
-                let madePlain = originalText.replace(/(\w)\{H|G\d+}/g, '$1');
-                madePlain = madePlain.replace(/[{}]/g, '');
-                madePlain = madePlain.replace(/[\[\]]/g, '');
-                madePlain = madePlain.replace(/<i>/g, '');
-                madePlain = madePlain.replace(/<\/i>/g, '');
-                madePlain = madePlain.replace(/<r>/g, '');
-                madePlain = madePlain.replace(/<\/r>/g, '');
-                madePlain = madePlain.replace(/\s\s+/g, ' ');
+            for (let i = 0; i < bcv_kjv.length; i++) {
+                let originalText = bcv_kjv[i].txt;
+                let madePlain = returnStrippedTextOfVerse(originalText).withOutStrongs
                 if (madePlain.search(word2find) != -1) {
                     if ((prevBook != currentBK) || (prevBook == null)) {
                         prevBook = currentBK;
                     }
-                    currentBK = bcv[i].bkn;
-                    appendVerseToSearchResultWindow(bcv[i], currentBK, prevBook);
+                    currentBK = bcv_kjv[i].bkn;
+                    appendVerseToSearchResultWindow(i, currentBK, prevBook);
+                    // console.log(madePlain)
                     findAnything = true;
                 }
             }
-
         }
         if (findAnything == false) {
             searchPreview.innerHTML = '<code>Sorry, <i><b>' + wordsearch.value + '</b></i> Was Not Found!</code>'
         }
+        searchPreview.append(searchFragment)
         showElement(searchresultwindow)
     }
     searchJSON()
     // console.log(word2find)
     // console.log(searchResultArr.length)
     // console.log(searchResultArr)
-}
-
-function arrayOfWordsToSearchFor(w) {
-    let hasStrongs = w.replace(/.*[H|G]\d+.*/ig, 'YesItHasStrongs');
-    w = w.replace(/[(\s\s+),.;:]/g, ' ');
-    w = w.trim();
-    let wArray = w.split(' ');
-    return {
-        "wordsArray": wArray,
-        "hasStrongsNum": hasStrongs == 'YesItHasStrongs',
-        "moreThanOneWord": wArray.length > 1
-    }
 }
 
 function hideElement(el) {
@@ -151,25 +180,17 @@ function minimize(el) {
 // let position = text.search(/blue/);
 // let position = text.search(/blue/i);
 
-/* getHighestVisibleH2() was here*/
-
-wordsearch.addEventListener("keypress", function (event) {
-    if (event.key === "Enter") {
-        runWordSearch()
-        event.preventDefault();
-    }
-});
-
 /* MOBILE */
 function showMobileBtns() {
-    if(showmobilebtns.classList.contains('open')){
-        showmobilebtns.innerHTML='&#10094;'
+    if (showmobilebtns.classList.contains('open')) {
+        showmobilebtns.innerHTML = '&#10094;'
         showmobilebtns.classList.remove('open');
     } else {
-        showmobilebtns.innerHTML='&#10095;';
-    showmobilebtns.classList.add('open')}
+        showmobilebtns.innerHTML = '&#10095;';
+        showmobilebtns.classList.add('open')
+    }
     let pclk = document.querySelector('.prevclicked')
-    if (pclk){
+    if (pclk) {
         pclk.click();
         pclk.classList.remove('prevclicked')
     }
@@ -180,16 +201,27 @@ function showMobileBtns() {
 
 function showhidemobile(x) {
     let pclk = document.querySelector('.prevclicked')
-    let currentClick=null;
+    let currentClick = null;
 
-    if(x==searchdiv){currentClick=mb3}
-    if(x==refdiv){currentClick=mb2}
-    if(x==null){currentClick=mb1}
-if((!currentClick.classList.contains("prevclicked"))&&(pclk)){
-    pclk.click();
-    pclk.classList.remove('prevclicked')
-}
-if(currentClick==pclk){pclk.classList.remove('prevclicked')}
-else{currentClick.classList.add('prevclicked')}
-    if(x!=null){x.classList.toggle("displayshow");}
+    if (x == searchdiv) {
+        currentClick = mb3
+    }
+    if (x == refdiv) {
+        currentClick = mb2
+    }
+    if (x == null) {
+        currentClick = mb1
+    }
+    if ((!currentClick.classList.contains("prevclicked")) && (pclk)) {
+        pclk.click();
+        pclk.classList.remove('prevclicked')
+    }
+    if (currentClick == pclk) {
+        pclk.classList.remove('prevclicked')
+    } else {
+        currentClick.classList.add('prevclicked')
+    }
+    if (x != null) {
+        x.classList.toggle("displayshow");
+    }
 }

@@ -23,6 +23,10 @@
                 </div>
             <div id="searchdiv">
                 <input class="footersection" id="wordsearch" title="What to search for"placeholder="Type Words to Search For"></input><button onclick="runWordSearch()"class="footersection" id="forwordsearch" title="Run Search">...</button>
+                <br><span class="search_options">
+                    <input type="checkbox" id="search_phrase" name="search_phrase" value="search_phrase" checked><label for="search_phrase">Phrase</label>
+                    <!-- <input type="checkbox" id="search_all_words" name="search_all_words" value="search_all_words"><label for="search_all_words">phrase</label> -->
+                </span>
             </div>
         </div>
         
@@ -33,7 +37,7 @@
             <button onclick="showMobileBtns()" id="showmobilebtns">&#10094;</button>
         </div>
 
-        <div id="navigation" style="display:block">
+        <div id="refnav" class="slideout" style="display:block">
             <div class="bible_nav" name="books" id="bible_books" multiple></div>
             <div class="bible_nav" name="chapters" id="bible_chapters" multiple></div>
             <div class="bible_nav" name="verses" id="bible_verses" multiple></div>
@@ -42,32 +46,34 @@
             <div id="ppp"></div>
             <!-- <div id="pp3">asasdfasdf adsf adsfa dsf asdf asdfads fasdf ads dfhjfhjkgkhltdystfgdsv bsgdhjkhgkjmdfgxzgafdshgsdgvfsdgherhfnd bnf gdgfhs ghbsdfgsdfhg efgdjfxj s</div>
         <div id="search_section">adfadfadsfasdfadsf</div> -->
-            <div id="searchresultwindow" class="displaynone">
-                <div class="relative">
-                    <div id="searchboxtitlebar">
-                        <div id="searchrelative">
-                            <div id="searchclose" onclick="hideElement(searchresultwindow)"title="Close search result window">CLOSE</div>
-                            <div id="searchminimize" onclick="minimize(searchPreview)"title="Minimize search result window">MINIMIZE</div>
-                        </div>
-                    </div>
-                    <div id="searchPreview">
-                    </div>
-                </div>
+    </main>
+</div>
+<div id="searchresultwindow" class="displaynone">
+    <div class="relative">
+        <div id="searchboxtitlebar">
+            <div id="searchrelative">
+                <div id="searchclose" onclick="hideElement(searchresultwindow)"title="Close search result window">CLOSE</div>
+                <div id="searchminimize" onclick="minimize(searchPreview)"title="Minimize search result window">MINIMIZE</div>
             </div>
-        </main>
+        </div>
+        <div id="searchPreview">
+        </div>
     </div>
+</div>
 
+    <div></div>
 
 </body>
-<!-- <script src="..\Scriptures Text Higlighter\FileSaver.js"></script>
-<script src="..\Scriptures Text Higlighter\textHiglighter.js"></script>
+<!-- <script src="..\Scriptures Text Higlighter\FileSaver.js"></script> -->
+<!-- <script src="..\Scriptures Text Higlighter\textHiglighter.js"></script>
 <script src="..\Scriptures Text Higlighter\searchHighlighted.js"></script> -->
 <script src="bibleApp_styles.js" charset = "utf-8" ></script>
-<script src="bibleApp_load_Bible.js" charset = "utf-8" ></script>
+<script src="bibleApp_refNav.js" charset = "utf-8" ></script>
+<script src="bibleApp_displayScriptureReference.js" charset = "utf-8" ></script>
 <script src="bibleApp.js" charset = "utf-8" ></script>
 <script src="bibleApp_gotoRef_Func.js" charset = "utf-8" ></script>
 <script src="bibleApp_search.js" charset = "utf-8" ></script>
-<script src="bibleApp_getCurrentChapter.js" charset = "utf-8" ></script>
+<script src="bibleApp_chapterNameOnScroll.js" charset = "utf-8" ></script>
 <script src="bibleApp_transliteration.js" charset = "utf-8" ></script>
 
 </html>

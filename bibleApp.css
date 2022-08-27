@@ -1,3 +1,39 @@
+/* :root {
+    --verse-higlight: #f1f9c2;
+    --verse-higlight: #ffff9d;
+    --ref-hlt: beige;
+    --vhlt:#8080809c;
+    --nav-bg-color:#f8f8f8;
+    --top-bar-bground-color:#ffb1b1;    --scroll-track-bg-color:#878787;
+    --scroll-thumb-border-color:#000000;
+    --scroll-thumb-hover-border:#939cff;
+    --scroll-thumb-hover-bg-color:#555;
+} */
+/* :root {
+    --verse-higlight: #ffff94;
+    --ref-hlt:#ffef9d ;
+    --nav-bg-color:#f8f8f8;
+    --top-bar-bground-color:#427d7f;--top-bar-bground-color:#ffb1b1;    --scroll-track-bg-color:#878787;
+    --scroll-thumb-bgcolor:#888;
+    --scroll-thumb-border-color:#000000;
+    --scroll-thumb-hover-border:#939cff;
+    --scroll-thumb-hover-bg-color:#555;
+} */
+:root {
+    --ref-hlt: #f5f1c6;
+    --verse-higlight: #ffff92;
+    --verse-higlight: #fffb001b;
+    --nav-bg-color: #f8f8f8;
+    --vhlt-border: #8080809c;
+    --vhlt: #ffffc4;
+    --top-bar-bground-color: #427d7f;
+    --scroll-track-bg-color: #878787;
+    --scroll-thumb-border-color: #000000;
+    --scroll-thumb-bgcolor: #888;
+    --scroll-thumb-hover-border: #939cff;
+    --scroll-thumb-hover-bg-color: #555;
+}
+
 body>svg {
     width: 100% !important;
 }
@@ -30,7 +66,7 @@ code {
 }
 
 .chptheading {
-    background-color: beige;
+    background-color: var(--ref-hlt);
     border-bottom: 0.5px solid grey;
     font-size: small;
 }
@@ -39,7 +75,7 @@ code {
     display: block;
 }
 
-#navigation {
+#refnav {
     grid-column-start: 1;
     grid-column-end: 2;
     grid-row-start: 2;
@@ -47,40 +83,60 @@ code {
     display: flex;
 }
 
-#navigation>.bible_nav {
+.slidein {
+    display: block;
+    margin-left: 0;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+
+.slideout {
+    display: none;
+    margin-left: -500px;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+
+#refnav>.bible_nav {
     height: 100%;
     float: left;
-    background-color: rgb(248, 248, 248);
+    background-color: var(--nav-bg-color);
     border-radius: 0;
     border-color: transparent;
     border-right: 1px solid grey;
     overflow-y: scroll;
 }
 
-#navigation>.bible_nav * {
+#refnav>.bible_nav * {
     /* font-size: 0.75em; */
     cursor: pointer;
 }
 
-#navigation>.bible_nav *:hover {
-    background-color: beige;
+#refnav>.bible_nav *:hover {
+    background-color: var(--ref-hlt);
+    font-style: italic;
 }
 
-#navigation>.bible_nav *:active {
-    background-color: rgb(255, 255, 157);
+#refnav>.bible_nav *:active {
+    background-color: var(--verse-higlight);
 }
 
 .ref_hlt {
-    background-color: beige;
+    font-weight: bold;
+    font-style: italic;
+    background-color: var(--ref-hlt);
+    background-color: var(--ref-hlt);
     border-top: 0.25px solid rgba(128, 128, 128, 0.611);
     border-bottom: 0.25px solid rgba(128, 128, 128, 0.611);
 }
 
 .tmp_hlt {
-    background-color: beige;
+    background-color: var(--ref-hlt);
 }
-
-#bible_chapters {}
 
 #bible_chapters>option {
     display: none;
@@ -108,12 +164,12 @@ code {
     grid-column-end: 5;
     grid-row-start: 1;
     grid-row-end: 2;
-    background-color: rgb(66, 125, 127);
+    background-color: var(--top-bar-bground-color);
     display: flex;
 }
 
-.buttons > * {
-    padding-top: 0!important;
+.buttons>* {
+    padding-top: 0 !important;
     /*
     height: 15px;
     min-width: 15px;
@@ -153,8 +209,6 @@ code {
     display: flex;
 }
 
-#main>* {}
-
 #main>*>* {
     padding-left: 5px;
 }
@@ -173,14 +227,14 @@ code {
     background-color: royalblue;
 }
 
-span.verse:last-child {
+#ppp>span.verse:last-child {
     /* margin-bottom: 20px; */
     padding-bottom: 20px;
 }
 
 span.verse:hover {
     cursor: pointer;
-    background-color: rgb(241, 249, 194)
+    background-color: var(--verse-higlight);
 }
 
 span.translated:hover {
@@ -238,6 +292,12 @@ main span {
     font-style: italic;
 }
 
+.search_options {
+    font-size: small;
+    font-style: italic;
+    color: whitesmoke;
+}
+
 /* .strnum:before {content: " " attr(data-xlit) " ";} */
 .eng2grk {
     text-indent: -9999px;
@@ -282,9 +342,16 @@ main span {
     overflow-y: scroll;
 }
 
-#searchPreview > * {
+#searchPreview>* {
     display: block;
     padding: 0 5px;
+}
+
+#searchPreview [ref]:hover {
+    /* font-size:medium; */
+    font-weight: bolder;
+    background-color: rgb(255, 255, 157);
+    border: 2px solid gray;
 }
 
 #searchboxtitlebar {
@@ -371,8 +438,8 @@ main span {
 }
 
 .vhlt {
-    background-color: beige;
-    border: 0.25px solid rgba(128, 128, 128, 0.611);
+    background-color: var(--vhlt);
+    border: 0.25px solid var(--vhlt-border);
     border-radius: 2px;
     border-style: inset;
 }
@@ -397,7 +464,8 @@ main span {
         width: auto;
         background-color: transparent;
         top: calc(100vh - 50px);
-        right: 0;;
+        right: 0;
+        ;
         height: 100px;
     }
 
@@ -455,7 +523,7 @@ main span {
     h2 {
         font-size: 20px;
     }
-    
+
     code {
         font-size: 20px;
         font-weight: bold;
@@ -473,4 +541,45 @@ main span {
         font-size: 18px;
         display: flex;
     }
+}
+
+/* SCROLL BAR */
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    /* background: #f1f1f1; */
+    background: var(--scroll-track-bg-color);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--scroll-thumb-bgcolor);
+    border-top: 2px solid var(--scroll-thumb-border-color);
+    border-bottom: 2px solid var(--scroll-border-color);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scroll-thumb-hover-bg-color);
+    border-top: 2px solid var(--scroll-thumb-hover-border);
+    border-bottom: 2px solid var(--scroll-thumb-hover-border);
+}
+
+/* BEREAN BIBLE */
+.section_headings {
+    display: none;
+}
+
+.vmultiple{
+    display: flex !important;
+}
+.vmultiple > span{
+    display: table-cell;
+    width: auto;
+    min-width: 50%;
+    row-gap: 0;
 }

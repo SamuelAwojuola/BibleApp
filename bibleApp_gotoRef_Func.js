@@ -17,107 +17,107 @@ reference.addEventListener("keypress", function (event) {
     }
 });
 
-function gotoRef() {
-    let ref = reference.value;
-    ref = ref.trim();
-    ref = ref.replace(/(\d+)\s+(\d+)/g, '$1.$2'); // 15 55==>15.55
-    ref = ref.replace(/\s{2,}/g, ' '); // 1 Cor 15 : 55
-    ref = ref.replace(/(\d+)[.,:;\s*]+(\d+)/g, '$1.$2'); // 1 Cor 15.55
-    ref = ref.replace(/(\d)\s*([a-zA-Z]+)/, '$1$2'); //2 Pet3:20 ==> 2Pet3:20
-    ref = ref.replace(/([a-zA-Z]+)[.,:;](\d+)/, '$1 $2'); //Gal.3:20 ==> Gal 3:20
-    ref = ref.replace(/(\d*[a-zA-Z]+)(\d+)/, '$1 $2'); //Psa15.55 ==> Psa 15.55
-    let ref_bkname, ref_chpnVer, ref_chp, ref_ver, refDisplay;
+function changeSingleStringToTitleCase(str) {
+    return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
+}
 
+function gotoRef(ref_to_get) {
+    let ref_bkname, ref_chpnVer, ref_chp, ref_ver, refDisplay;
+    let ref;
+    if(ref_to_get){ref=ref_to_get}else{ref=reference.value;}
+    ref = ref.trim();
+    if(ref==''){return}
+    //convert every none-digit and none-word to space
+    ref = ref.replace(/[.,:;]/g, ' ');
+    //ensure every space is a single space
+    ref = ref.replace(/\s+/g, ' ');
+    //seperate between number and letter
+    ref = ref.replace(/(\d)([a-zA-Z]+)/g, '$1 $2');
+    ref = ref.replace(/([a-zA-Z]+)(\d)/g, '$1 $2');
     let refArrbySpace = ref.split(" ");
-    if (refArrbySpace.length > 1) { //Check if ref has book name
-        //the last elememnt in the array should be a chapter number or chapter and verse numbers joined by a dot
-        let refEnd = refArrbySpace[refArrbySpace.length - 1];
-        if (refEnd.split('.').length == 1) {
-            ref_chp = refEnd;
-            ref_ver = 1;
-        } //if it is a number, then it is chapter number
-        else if (refEnd.split('.').length > 1) { //if it is not, split by dot and check each part
-            let refEndArraySplitbyDot = refEnd.split('.');
-            if (Number(refEndArraySplitbyDot[0])) {
-                ref_chp = refEndArraySplitbyDot[0];
-            } else {
-                ref_chp = 1;
-            }
-            if (Number(refEndArraySplitbyDot[1])) {
-                ref_ver = refEndArraySplitbyDot[1]
-            } else {
-                ref_ver = 1;
-            }
+
+    // Convert Roman Numerals at start of bookName to numbers
+    if (refArrbySpace[0].toLowerCase() == 'i') {
+        refArrbySpace.splice(0, 1, '1')
+    } else if (refArrbySpace[0].toLowerCase() == 'ii') {
+        refArrbySpace.splice(0, 1, '2')
+    } else if (refArrbySpace[0].toLowerCase() == 'iii') {
+        refArrbySpace.splice(0, 1, '3')
+    } else if (refArrbySpace[0].toLowerCase() == 'iv') {
+        refArrbySpace.splice(0, 1, '4')
+    }
+
+    if (refArrbySpace.length == 4) {//Full reference of a book that has 1 & 2 such as '1 Samuel 10 15' and '2 Samuel 2 5'
+        if (Number(refArrbySpace[0]) && isNaN(refArrbySpace[1])) {
+            ref_bkname = refArrbySpace[0] + ' ' + changeSingleStringToTitleCase(refArrbySpace[1]);
+            ref_chp = refArrbySpace[2];
+            ref_ver = refArrbySpace[3];
         }
-        refArrbySpace.pop();
-        ref_bkname = refArrbySpace.join(' '); //Psa 15.55 ==> Psa
-        ref_chpnVer = ref_chp + '.' + ref_ver
-        ref = ref_bkname + ' ' + ref_chpnVer;
-    } else if (refArrbySpace.length == 1) { //If there is no space
-        if ((!Number(refArrbySpace[0]))) { //If it is not a number, then it must be the Book Ref Name
-            ref_bkname = ref;
-            ref_chpnVer = '1.1';
+    } else if (refArrbySpace.length == 3) { //Could be, e.g., '1 Sam 3' or 'Joh 3 3'
+        //Just book name without chapter and verse reference. E.g., '2 Corinthians'. Default to chapter 1 verse 1
+        if (Number(refArrbySpace[0]) && isNaN(refArrbySpace[1])) {
+            ref_bkname = refArrbySpace[0] + ' ' + changeSingleStringToTitleCase(refArrbySpace[1]);
+            ref_chp = refArrbySpace[2];
+            ref_ver = 1;
+        }
+        //Just book name and chapter without verse reference. E.g., 'Romans 5'. Default to verse 1
+        else if (isNaN(refArrbySpace[0]) && Number(refArrbySpace[1])) {
+            ref_bkname = changeSingleStringToTitleCase(refArrbySpace[0]);
+            ref_chp = refArrbySpace[1];
+            ref_ver = refArrbySpace[2];
+        }
+    } else if (refArrbySpace.length == 2) { //In this case there are different possibilities
+        //Just book name without chapter and verse reference. E.g., '2 Corinthians'. Default to chapter 1 verse 1
+        if (Number(refArrbySpace[0]) && isNaN(refArrbySpace[1])) {
+            ref_bkname = refArrbySpace[0] + ' ' + changeSingleStringToTitleCase(refArrbySpace[1]);
             ref_chp = 1;
             ref_ver = 1;
-            ref = ref_bkname + ' 1.1';
-        } else if (Number(refArrbySpace[0])) { //If it is a Number, check that it doesn't have a decimal
-            console.log('Jesus')
-            if (refArrbySpace[0].split('.').length == 1) { //if it has no decimal, then it is the Chapter Number
-                ref_chpnVer = ref + '.1';
-                ref_chp = ref;
-                ref_ver = 1;
-                ref = ref_bkname + ' ' + ref_chpnVer;
-            } else { //If it has decimal
-                if (Number(refArrbySpace[0].split('.')[0])) { //If the first part is a Number, then it is the chapter num
-                    ref_chp = refArrbySpace[0].split('.')[0];
-                    ref_ver = refArrbySpace[0].split('.')[1]; //Assuming the secong part is a Number (we'll check next)
-                    ref_chpnVer = ref_chp + '.' + ref_ver;
-                    if (!Number(refArrbySpace[0].split('.')[1])) { //If the second part is not a number, then default to '1'
-                        ref_ver = 1;
-                        ref_chpnVer = ref_chp + '.1';
-                    }
-                } else { //If the first part is not a number, then default to '1.1s'
-                    ref_chp = 1;
-                    ref_ver = 1;
-                    ref_chpnVer = ref_chp + '.1';
-                }
-            }
+        }
+        //Just book name and chapter without verse reference. E.g., 'Romans 5'. Default to verse 1
+        else if (isNaN(refArrbySpace[0]) && Number(refArrbySpace[1])) {
+            ref_bkname = changeSingleStringToTitleCase(refArrbySpace[0]);
+            ref_chp = refArrbySpace[1];
+            ref_ver = 1;
+        }
+        //Just chapter and verse reference without book name. E.g., '5:5'. Default to current opened book
+        else if (Number(refArrbySpace[0]) && Number(refArrbySpace[1])) {
             ref_bkname = currentBookName;
+            ref_chp = refArrbySpace[0];
+            ref_ver = refArrbySpace[1];
+        }
+    } else if (refArrbySpace.length == 1) { //In this case there are only TWO possibilities
+        //Just book name without chapter and verse reference. E.g., 'Ruth'. Default to chapter 1 verse 1
+        if (isNaN(refArrbySpace[0])) {
+            ref_bkname = changeSingleStringToTitleCase(refArrbySpace[0]);
+            ref_chp = 1;
+            ref_ver = 1;
+        }
+        //Just the chapter without the book name and verse reference. E.g., '10'. Default to current book and verse 1
+        else if (Number(refArrbySpace[0])) {
+            ref_bkname = currentBookName;
+            ref_chp = refArrbySpace[0];
+            ref_ver = 1;
         }
     }
-    ref = ref_bkname + ' ' + (ref_chp - 1) + '.' + (ref_ver - 1);
-    refDisplay = ref_bkname + ' ' + (ref_chp) + '.' + (ref_ver);
-    ref_chpnVer = (ref_chp - 1) + '.' + (ref_ver - 1);
-    refDisplay = refDisplay.toLowerCase();
-    if (!Number(refDisplay.charAt(0))) {
-        reference.value = refDisplay.charAt(0).toUpperCase() + refDisplay.slice(1)
-    } else if (!Number(refDisplay.charAt(1))) {
-        reference.value = refDisplay.charAt(0) + refDisplay.charAt(1).toUpperCase() + refDisplay.slice(2)
-    } else {
-        reference.value = refDisplay;
-        ref = refDisplay;
-    }
-    /*
-    console.log('ref:' + ref);
-    console.log('ref_bkname:' + ref_bkname);
-    console.log(ref_bkname.charAt(0).toUpperCase() + ref_bkname.slice(1));
-    console.log('ref_chpnVer:' + ref_chpnVer);
-    console.log('ref_chp:' + ref_chp);
-    console.log('ref_ver:' + ref_ver)
-    */
+    
     // Find id of Book
     ref_Abrev.forEach(ref_ => {
         if (ref_.a.includes(ref_bkname.toUpperCase())) {
             refb = ref_.b - 1;
             if (currentBook != refb) {
                 document.querySelector(`[value="book_${refb}"]`).click(); //click on book
-                getAllChapters(); //generate text of all chapters in the book
+                let chptOption = document.querySelector(`[value="bk${refb}ch${ref_chp-1}"]`);
+                getTextOfChapter(chptOption,1,null,true)
+                // document.querySelector(`[value="bk${refb}ch${ref_chp-1}"]`).click(); //click on book
+                // getAllChapters(); //generate text of all chapters in the book
             }
-            // ref_chp = ref_chp - 1;
             bkXchY = `bk${ref_.b - 1}ch${ref_chp}`;
+            ref_chpnVer = (ref_chp - 1) + '.' + (ref_ver - 1);
             let targetVerse = document.getElementById(`_${refb}.${ref_chpnVer}`);
             scrollToVerse(targetVerse)
             return
         }
     });
+    refDisplay = ref_bkname + ' ' + (ref_chp) + '.' + (ref_ver);
+    reference.value = refDisplay;
 }
