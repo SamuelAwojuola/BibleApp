@@ -6,14 +6,17 @@ wordsearch.addEventListener("keypress", function (e) {
         e.preventDefault();
     }
 });
-searchPreview.addEventListener("click", function (e) {
+
+searchPreview.addEventListener("click", searchPreviewRefClick)
+searchPreviewFixed.addEventListener("click", searchPreviewRefClick)
+function searchPreviewRefClick(e) {
     if (e.target.tagName == "CODE") {
         let codeElm = e.target;
         gotoRef(codeElm.getAttribute('ref'))
         console.log('e.target')
         e.preventDefault();
     }
-});
+}
 
 function returnStrippedTextOfVerse(vTxt) {
     let madePlain = vTxt.replace(/[{}\[\]]/g, ' '); //strip off {}[]
@@ -53,7 +56,6 @@ function runWordSearch() {
         Search for verses with any of the words
         Search for verses that have all the words in any order
     */
-    searchPreview.innerHTML = '';
     // let word2find = wordsearch.value;
     let word2find = new RegExp(wordsearch.value, "i");
     let allVersesInPage = main.querySelectorAll('.verse');
@@ -147,8 +149,13 @@ function runWordSearch() {
         }
         if (findAnything == false) {
             searchPreview.innerHTML = '<code>Sorry, <i><b>' + wordsearch.value + '</b></i> Was Not Found!</code>'
+            searchPreviewFixed.innerHTML = '<code>Sorry, <i><b>' + wordsearch.value + '</b></i> Was Not Found!</code>'
         }
+        searchPreview.innerHTML = '';
+        searchPreviewFixed.innerHTML = '';
+        let searchFragmentClone = searchFragment.cloneNode(true)
         searchPreview.append(searchFragment)
+        searchPreviewFixed.append(searchFragmentClone)
         showElement(searchresultwindow)
     }
     searchJSON()

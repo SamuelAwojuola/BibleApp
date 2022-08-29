@@ -107,9 +107,9 @@ function indicateBooknChapterInNav(bk, chpt) {
         if (refbk = bible_books.querySelector('.ref_hlt')) {
             refbk.classList.remove('ref_hlt')
         }
-        bk.classList.add('ref_hlt');        
+        bk.classList.add('ref_hlt');
         getBksChptsNum(bk);
-        if(!chpt){
+        if (!chpt) {
             let chapter_to_highlight = bible_chapters.querySelector('.show_chapter');
             chapter_to_highlight.classList.add('ref_hlt');
             chapter_to_highlight.scrollIntoView(false);
@@ -146,21 +146,34 @@ function toggleNav() {
 }
 
 // FUNCTION TO SHOW OR HIDE REF_NAV
-function hideRefNav(hORs) {
+function hideRefNav(hORs, elm2HideShow) {
+    let elHS;
+    if(elm2HideShow){elHS=elm2HideShow}else{elHS=refnav}
     if (hORs == 'hide') {
-        refnav.classList.remove('slidein');
-        refnav.classList.add('slideout');
+        elHS.classList.remove('slidein');
+        elHS.classList.add('slideout');
     } else if (hORs == 'show') {
-        refnav.classList.remove('slideout');
-        refnav.classList.add('slidein');
+        elHS.classList.remove('slideout');
+        elHS.classList.add('slidein');
     } else {
-        if (refnav.classList.contains('slideout')) {
-            refnav.classList.remove('slideout');
-            refnav.classList.add('slidein');
+        if (elHS.classList.contains('slideout')) {
+            elHS.classList.remove('slideout');
+            elHS.classList.add('slidein');
+        } else {
+            elHS.classList.remove('slidein');
+            elHS.classList.add('slideout');
         }
-        else {
-            refnav.classList.remove('slidein');
-            refnav.classList.add('slideout');
-        }
+    }
+}
+
+function changeVerseAlignment() {
+    let styleID = 'verse_alignement'
+    if (verseAlignmentStyleSheet = document.querySelector('head style#' + styleID)) {
+        verseAlignmentStyleSheet.remove()
+    } else {
+        let styleRule = `.verse {
+        display: block;
+    }`;
+        createNewStyleSheetandRule(styleID, styleRule)
     }
 }

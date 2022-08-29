@@ -187,5 +187,5 @@ main.addEventListener("mousedown", function (e) {
         highlightAllStrongs(stn)
     }
     //HIDE refnav SIDE BAR IF OPEN BY CLICKING ANYWHERE ON THE PAGE
-    hideRefNav('hide')
+    hideRefNav('hide', bible_nav)
 })

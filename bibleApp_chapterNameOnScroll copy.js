@@ -35,12 +35,17 @@ function remove_HIGHEST_Chapter() {
     if (main.querySelectorAll('.chptheading').length >= 4) {
         let highestChapterHeading = main.querySelector('.chptheading:first-of-type');
         let highestChapterID = highestChapterHeading.id;
-        let highestChapterBookName = highestChapterHeading.getAttribute('bookname');
         let hCidSplit = highestChapterID.split('.');
-        let chapterNum = Number(hCidSplit[1]) + 1;
-        let elmToRemove = main.querySelector('[bookname="' + highestChapterBookName + '"][chapter="' + chapterNum + '"]')
-        highestChapterHeading.remove();
-        elmToRemove.remove();
+        let partialIdToSearchFor = hCidSplit[0] + '.' + hCidSplit[1];
+        var elmToRemove = main.querySelectorAll('[id^="' + partialIdToSearchFor + '"]')
+        
+        for (i = elmToRemove.length - 1; i >= 0; i--) {
+            elmToRemove[i].remove()
+            if (i == 0) {
+                highestChapterHeading.remove()
+                console.log('removed: ' + highestChapterHeading.innerText)
+            }
+        }
     }
 }
 
@@ -48,16 +53,22 @@ function remove_LOWEST_Chapter() {
     if (main.querySelectorAll('.chptheading').length >= 4) {
         let lowestChapterHeading = main.querySelector('.chptheading:last-of-type');
         let lowestChapterID = lowestChapterHeading.id;
-        let lowestChapterBookName = lowestChapterHeading.getAttribute('bookname');
         let lCidSplit = lowestChapterID.split('.');
-        let chapterNum = Number(lCidSplit[1]) + 1;
-        let elmToRemove = main.querySelector('[bookname="' + lowestChapterBookName + '"][chapter="' + chapterNum + '"]')
+        let partialIdToSearchFor = lCidSplit[0] + '.' + lCidSplit[1];
+        // var elmToRemove = main.querySelectorAll('[id^="' + partialIdToSearchFor + '"]')
+        var elmToRemove = main.querySelectorAll('[id^="' + partialIdToSearchFor + '"]')
+        
         //ScrollHeight is affected by removal of chapters
         //So, making adjustments for it
         let old_scrollheight = main.scrollHeight;
-        lowestChapterHeading.remove();
-        elmToRemove.remove();
-        main.scrollTo(0, main.scrollHeight - old_scrollheight)
+        for (i = elmToRemove.length - 1; i >= 0; i--) {
+            elmToRemove[i].remove()
+            if (i == 0) {
+                lowestChapterHeading.remove()
+                console.log('removed: ' + lowestChapterHeading.innerText)
+            }
+        }
+        main.scrollTo(0,main.scrollHeight - old_scrollheight)
     }
 }
 
@@ -77,10 +88,9 @@ function loadNewChapterOnScroll() {
     if (mst > lastScrollTop) {
         // downscroll code
         if (main.scrollHeight - main.scrollTop - main.clientHeight < 100) { //If you have scrolled to the end of the element
-            let lastChapter = main.querySelector('.chptverses:last-child');
-            console.log(lastChapter)
-            let bkNumb = lastChapter.getAttribute('bookid');
-            let chptNumb = lastChapter.getAttribute('chapter')-1;
+            let lastVerseLoadedChapters = main.querySelector('span.verse:last-child').id
+            let bkNumb = lastVerseLoadedChapters.replace(/_(\d+)([.]\d+)[.]\d+/, '$1')
+            let chptNumb = lastVerseLoadedChapters.replace(/(_\d+[.])(\d+)[.]\d+/, '$2')
             // let nextChapter = bible_chapters.querySelector(`[value="bk${bkNumb}ch${Number(chptNumb)+1}"]`)//Stops generating chapters at end of book
             let nextChapter = bible_chapters.querySelector(`[value="bk${bkNumb}ch${Number(chptNumb)}"]`).nextElementSibling;
 
@@ -95,12 +105,14 @@ function loadNewChapterOnScroll() {
     } else {
         // upscroll code
         if (main.scrollTop < 10) { //If you have scrolled to the top of the element
-            let firstChapter = main.querySelector('.chptverses:first-of-type')
-            let bkNumb = firstChapter.getAttribute('bookid');
-            let chptNumb = firstChapter.getAttribute('chapter')-1;
+            let firstVerseLoadedChapters = main.querySelector('span.verse:first-of-type')
+            let firstVerseLoadedChaptersID = firstVerseLoadedChapters.id
+            let bkNumb = firstVerseLoadedChaptersID.replace(/_(\d+)([.]\d+)[.]\d+/, '$1')
+            let chptNumb = firstVerseLoadedChaptersID.replace(/(_\d+[.])(\d+)[.]\d+/, '$2')
             // let prevChapter = bible_chapters.querySelector(`[value="bk${bkNumb}ch${Number(chptNumb)-1}"]`)//Stops generating chapters when scrolling gets to the beginning of book
             let prevChapter = bible_chapters.querySelector(`[value="bk${bkNumb}ch${Number(chptNumb)}"]`).previousElementSibling
             if (prevChapter) {
+
                 remove_LOWEST_Chapter()
                 getTextOfChapterOnScroll(prevChapter, true, true);
             }
@@ -116,14 +128,9 @@ function loadNewChapterOnScroll() {
 /* Scroll To Target Verse */
 function scrollToVerse(targetVerse) {
     if (targetVerse) {
-        if (targetVerse.previousElementSibling) {
-            targetVerse.previousElementSibling.scrollIntoView({
-                // behavior: "smooth"//sometimes does not land on the element properly
-            });
-        }else{//(must be first verse so) scroll to parents sibling
-            targetVerse.parentElement.previousElementSibling.scrollIntoView()
-        }
-        //scroll to element before it to give some gap
+        targetVerse.previousElementSibling.scrollIntoView({
+            // behavior: "smooth"//sometimes does not land on the element properly
+        }); //scroll to element before it to give some gap
         targetVerse.classList.add('vhlt');
         targetVerse.classList.add('vglow');
         setTimeout(function () {

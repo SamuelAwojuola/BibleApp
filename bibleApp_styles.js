@@ -23,15 +23,20 @@ function findCSSRule(mySheet, selector) {
 }
 //Random color Alternative
 //+'#' + (0x1220000 + Math.random() * 0xFF00FF).toString(16).substr(1,6);
+
+function createNewStyleSheetandRule(styleID, styleRule) {
+    let headPart = document.getElementsByTagName('head')[0];
+    newStyleInHead = document.createElement('style');
+    newStyleInHead.id = styleID;
+    newStyleInHead.innerHTML = styleRule;
+    headPart.append(newStyleInHead);
+}
+
 function highlightAllStrongs(x) {
-    var headPart = document.getElementsByTagName('head')[0];
     cs = `span[strnum="` + x + `"]{background-color:` + randomColor(200) + `;outline:1px solid ` + randomColor(200) + `}`
     //CREATE THE INNER-STYLE WITH ID #highlightstrongs IN THE HEAD IF IT DOESN'T EXIST
     if (!document.querySelector('style#highlightstrongs')) {
-        newStyleInHead = document.createElement('style');
-        newStyleInHead.id = 'highlightstrongs';
-        newStyleInHead.innerHTML = cs;
-        headPart.append(newStyleInHead);
+        createNewStyleSheetandRule('highlightstrongs', cs)
     }
     //ELSE IF IT ALREADY EXISTS
     else {

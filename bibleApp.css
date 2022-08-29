@@ -29,7 +29,7 @@
     --top-bar-bground-color: #427d7f;
     --scroll-track-bg-color: #878787;
     --scroll-thumb-border-color: #000000;
-    --scroll-thumb-bgcolor: #888;
+    --scroll-thumb-bgcolor: #4b4b4b;
     --scroll-thumb-hover-border: #939cff;
     --scroll-thumb-hover-bg-color: #555;
 }
@@ -101,27 +101,40 @@ code {
     transition-duration: 0.3s;
 }
 
-#refnav>.bible_nav {
+#refnav>.refnav {
+    height: 100%;
+    float: left;
+}
+#refnav #app_settings {
+    border-right: 5px solid grey;
+    background-color: var(--ref-hlt);
+}
+#refnav #app_settings * {
+    display: block;
+    width: 22px;
+    padding: 0;
+    /* font-size:xx-small; */
+}
+.refnav .bible_nav {
     height: 100%;
     float: left;
     background-color: var(--nav-bg-color);
-    border-radius: 0;
     border-color: transparent;
     border-right: 1px solid grey;
     overflow-y: scroll;
 }
 
-#refnav>.bible_nav * {
+#refnav .bible_nav * {
     /* font-size: 0.75em; */
     cursor: pointer;
 }
 
-#refnav>.bible_nav *:hover {
+#refnav .bible_nav *:hover {
     background-color: var(--ref-hlt);
     font-style: italic;
 }
 
-#refnav>.bible_nav *:active {
+#refnav .bible_nav *:active {
     background-color: var(--verse-higlight);
 }
 
@@ -293,6 +306,7 @@ main span {
 }
 
 .search_options {
+    display: none;
     font-size: small;
     font-style: italic;
     color: whitesmoke;
@@ -350,7 +364,8 @@ main span {
 #searchPreview [ref]:hover {
     /* font-size:medium; */
     font-weight: bolder;
-    background-color: rgb(255, 255, 157);
+    /* background-color: rgb(255, 255, 157); */
+    border-bottom: 1px dashed blue;
     border: 2px solid gray;
 }
 
@@ -408,6 +423,40 @@ main span {
     /* color:black;
     background-color: greenyellow; */
     /* z-index: -1; */
+}
+
+#searchparameters input {
+    height: 10px;
+    width: 10px;
+}
+#searchparameters {
+    display: block;
+    border-bottom: 1px solid var(--scroll-track-bg-color);
+    border-top: 0;
+    background-color:var(--ref-hlt);
+    font-size: 10px;
+}
+#searchPreviewWindowFixed {
+    width: 150px;
+    height: 98.5%;
+    border-right: 5px solid;
+    overflow-y:hidden;
+    background-color: var(--verse-higlight);
+    border: 2px solid;
+    font-size: 12px;
+}
+
+#searchPreviewFixed {
+    display:table-row;
+    height: 92%;
+    float: left;
+    width: 150px;
+    overflow-y: scroll;
+}
+
+#searchPreviewFixed>* {
+    display: block;
+    padding: 0 5px;
 }
 
 .displaynone {
@@ -546,7 +595,7 @@ main span {
 /* SCROLL BAR */
 /* width */
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 7.5px;
 }
 
 /* Track */
@@ -559,7 +608,7 @@ main span {
 ::-webkit-scrollbar-thumb {
     background: var(--scroll-thumb-bgcolor);
     border-top: 2px solid var(--scroll-thumb-border-color);
-    border-bottom: 2px solid var(--scroll-border-color);
+    border-bottom: 2px solid var(--scroll-thumb-border-color);
 }
 
 /* Handle on hover */
@@ -574,10 +623,11 @@ main span {
     display: none;
 }
 
-.vmultiple{
+.vmultiple {
     display: flex !important;
 }
-.vmultiple > span{
+
+.vmultiple>span {
     display: table-cell;
     width: auto;
     min-width: 50%;
