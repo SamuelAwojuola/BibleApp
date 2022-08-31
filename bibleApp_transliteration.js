@@ -238,7 +238,7 @@ main.addEventListener('mouseover', function (e) {
     if (e.target.classList.contains('translated')) {
         let newStyleInHead = document.createElement('style');
         newStyleInHead.id = 'highlightall';
-        newStyleInHead.innerHTML = '[data-xlit="' + e.target.getAttribute('data-xlit') + '"]{background-color:rgb(154, 252, 255)}';
+        newStyleInHead.innerHTML = '[data-xlit="' + e.target.getAttribute('data-xlit') + '"]{background-color:bisque;border:1px solid brown; border-radius:2px}';
         let headPart = document.getElementsByTagName('head')[0];
         headPart.append(newStyleInHead);
     }

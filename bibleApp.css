@@ -248,9 +248,9 @@ code {
     padding-bottom: 20px;
 }
 
-span.verse:hover {
+span.verse:hover,span.vmultiple:hover {
     cursor: pointer;
-    background-color: var(--verse-higlight);
+    background-color:rgb(255, 252, 216);
 }
 
 span.translated:hover {

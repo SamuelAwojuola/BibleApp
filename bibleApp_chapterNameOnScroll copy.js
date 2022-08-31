@@ -43,7 +43,7 @@ function remove_HIGHEST_Chapter() {
             elmToRemove[i].remove()
             if (i == 0) {
                 highestChapterHeading.remove()
-                console.log('removed: ' + highestChapterHeading.innerText)
+                // console.log('removed: ' + highestChapterHeading.innerText)
             }
         }
     }
@@ -65,7 +65,7 @@ function remove_LOWEST_Chapter() {
             elmToRemove[i].remove()
             if (i == 0) {
                 lowestChapterHeading.remove()
-                console.log('removed: ' + lowestChapterHeading.innerText)
+                // console.log('removed: ' + lowestChapterHeading.innerText)
             }
         }
         main.scrollTo(0,main.scrollHeight - old_scrollheight)
