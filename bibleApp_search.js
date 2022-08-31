@@ -6,9 +6,9 @@ wordsearch.addEventListener("keypress", function (e) {
         e.preventDefault();
     }
 });
-
-searchPreview.addEventListener("click", searchPreviewRefClick)
+if(!searchresultdisplay.checked){searchPreview.addEventListener("click", searchPreviewRefClick)}
 searchPreviewFixed.addEventListener("click", searchPreviewRefClick)
+
 function searchPreviewRefClick(e) {
     if (e.target.tagName == "CODE") {
         let codeElm = e.target;
@@ -28,8 +28,9 @@ function returnStrippedTextOfVerse(vTxt) {
     madePlain_without_strongs = madePlain.replace(/[HG]\d+/g, ''); //strip off strongs numbers
     madePlain_without_strongs = madePlain_without_strongs.replace(/\s\s+/g, ' '); //strip off strongs numbers
     return {
-        withOutStrongs:madePlain_without_strongs,
-        withStrongs:madePlain}
+        withOutStrongs: madePlain_without_strongs,
+        withStrongs: madePlain
+    }
 }
 
 function arrayOfWordsToSearchFor(w) {
@@ -56,16 +57,22 @@ function runWordSearch() {
         Search for verses with any of the words
         Search for verses that have all the words in any order
     */
-    // let word2find = wordsearch.value;
-    let word2find = new RegExp(wordsearch.value, "i");
-    let allVersesInPage = main.querySelectorAll('.verse');
+    let word2find, wordsearchValue;
+    //If Case Sensitive Search
+    if (case_sensitive.checked) {
+        wordsearchValue = wordsearch.value;
+        word2find = new RegExp(wordsearch.value);
+    } else {
+        wordsearchValue = wordsearch.value.toLowerCase();
+        word2find = new RegExp(wordsearchValue, "i");
+    }
     let searchResultArr = [];
     let moreThanOneWord = false;
 
-    if (arrayOfWordsToSearchFor(wordsearch.value).length > 1) {
+    if (arrayOfWordsToSearchFor(wordsearchValue).length > 1) {
         moreThanOneWord = true
     }
-    console.log(arrayOfWordsToSearchFor(wordsearch.value).wordsArray)
+    console.log(arrayOfWordsToSearchFor(wordsearchValue).wordsArray)
 
     function searchInPage() {
         allVersesInPage.forEach(v => {
@@ -77,6 +84,7 @@ function runWordSearch() {
     }
 
     let searchFragment = new DocumentFragment()
+
     function appendVerseToSearchResultWindow(indexOfVerseToAppend, currentBK = null, prevBook = null) {
         let verseToAppend = bcv_kjv[indexOfVerseToAppend]
         if ((prevBook != currentBK) || (prevBook == null)) {
@@ -102,7 +110,6 @@ function runWordSearch() {
         let prevBook = null;
         let currentBK = null;
         let findAnything = false;
-        let stateOfTextToSearch;
         let searchForStrongs = arrayOfWordsToSearchFor(wordsearch.value).hasStrongsNum;
         console.log(searchForStrongs)
 
@@ -113,7 +120,6 @@ function runWordSearch() {
                 let containsAll = true;
                 //Strip off {}[] and strongs numbers
                 let originalText = bcv_kjv[i].txt;
-                stateOfTextToSearch = originalText;
                 let wordsArray = arrayOfWordsToSearchFor(wordsearch.value).wordsArray;
                 for (let j = 0; j < wordsArray.length; j++) {
                     if (!originalText.includes(wordsArray[j])) {
@@ -122,54 +128,109 @@ function runWordSearch() {
                     }
                     //IT WILL ONLY CHECK AT THE END OF THE FOR LOOP WHICH IT WILL NOT GET TO IF ALL WORDS ARE NOT INCLUDED IN THE VERSE.TXT
                     if (j == wordsArray.length - 1) {
-                    if ((prevBook != currentBK) || (prevBook == null)) {
-                        prevBook = currentBK;
-                    }
-                    currentBK = bcv_kjv[i].bkn;
-                    appendVerseToSearchResultWindow(i, currentBK, prevBook);
-                    findAnything = true;
+                        if ((prevBook != currentBK) || (prevBook == null)) {
+                            prevBook = currentBK;
+                        }
+                        currentBK = bcv_kjv[i].bkn;
+                        appendVerseToSearchResultWindow(i, currentBK, prevBook);
+                        findAnything = true;
                     }
                 }
             }
         } else if (searchForStrongs == false) {
             //If there is no strongs num to be searched for, then just search for the phrase
+            let arrayOfSearchWords = arrayOfWordsToSearchFor(wordsearchValue).wordsArray;
             for (let i = 0; i < bcv_kjv.length; i++) {
                 let originalText = bcv_kjv[i].txt;
                 let madePlain = returnStrippedTextOfVerse(originalText).withOutStrongs
-                if (madePlain.search(word2find) != -1) {
-                    if ((prevBook != currentBK) || (prevBook == null)) {
-                        prevBook = currentBK;
+                if (!case_sensitive.checked) {
+                    madePlain = madePlain.toLowerCase()
+                }
+                let arrayOfWordsInVerse = madePlain.split(' ');
+                /* PHRASE SEARCH */
+                if (search_phrase.checked) {
+                    if (((whole_word.checked) && (isAsubArrayofB(arrayOfSearchWords, arrayOfWordsInVerse))) || ((!whole_word.checked) && (madePlain.search(word2find) != -1))) {
+                        if ((prevBook != currentBK) || (prevBook == null)) {
+                            prevBook = currentBK;
+                        }
+                        currentBK = bcv_kjv[i].bkn;
+                        appendVerseToSearchResultWindow(i, currentBK, prevBook);
+                        // console.log(madePlain)
+                        findAnything = true;
                     }
-                    currentBK = bcv_kjv[i].bkn;
-                    appendVerseToSearchResultWindow(i, currentBK, prevBook);
-                    // console.log(madePlain)
-                    findAnything = true;
+                }
+                /* ALL WORDS (NOT PHRASE) SEARCH */
+                else if (search_all_words.checked) {
+                    if (((whole_word.checked) && (areAllitemsOfAinB(arrayOfSearchWords, arrayOfWordsInVerse))) || ((!whole_word.checked) && (areAllitemsOfAinB(arrayOfSearchWords, madePlain)))) {
+                        if ((prevBook != currentBK) || (prevBook == null)) {
+                            prevBook = currentBK;
+                        }
+                        currentBK = bcv_kjv[i].bkn;
+                        appendVerseToSearchResultWindow(i, currentBK, prevBook);
+                        // console.log(madePlain)
+                        findAnything = true;
+                    }
                 }
             }
-        }
-        if (findAnything == false) {
-            searchPreview.innerHTML = '<code>Sorry, <i><b>' + wordsearch.value + '</b></i> Was Not Found!</code>'
-            searchPreviewFixed.innerHTML = '<code>Sorry, <i><b>' + wordsearch.value + '</b></i> Was Not Found!</code>'
+
         }
         searchPreview.innerHTML = '';
         searchPreviewFixed.innerHTML = '';
+        
+        let caseSensitiveSearch;if(case_sensitive.checked){caseSensitiveSearch = 'CASE SENSITIVE|'}else{caseSensitiveSearch = 'CASE INSENSITIVE|'}
+        let anyWORDsearch;if(searchForStrongs){phraseSearch = 'ANY|';}else{anyWORDsearch = ''}
+        let phraseSearch;if(search_phrase.checked){phraseSearch = 'PHRASE|';}else{phraseSearch = 'NONE PHRASE|';}
+        let wholeWordSearch;if(whole_word.checked){wholeWordSearch = 'WHOLE WORD';}else{wholeWordSearch = 'PARTIAL MATCH';}
+        if (findAnything == false) {
+            searchPreview.innerHTML = '<code>Sorry, <i><b>"' + wordsearchValue + '"</b></i><br>Was Not Found!<br><br>Your Search Parameters Were:<br>[<b>'+ caseSensitiveSearch + phraseSearch + wholeWordSearch + '</b>]</code>';
+            searchPreviewFixed.innerHTML = '<code>Sorry, <i><b>"' + wordsearchValue + '"</b></i><br>Was Not Found!<br><br>Your Search Parameters Were:<br>[<b>'+ caseSensitiveSearch + phraseSearch + wholeWordSearch + '</b>]</code>';
+        }
         let searchFragmentClone = searchFragment.cloneNode(true)
-        searchPreview.append(searchFragment)
+        if(!searchresultdisplay.checked){searchPreview.append(searchFragment)}
         searchPreviewFixed.append(searchFragmentClone)
         showElement(searchresultwindow)
     }
-    searchJSON()
+    searchJSON();
+    hideRefNav('show');
+    hideRefNav('hide', bible_nav);
+    hideRefNav('show', searchPreviewWindowFixed);
     // console.log(word2find)
     // console.log(searchResultArr.length)
     // console.log(searchResultArr)
+    hideAllVerseInSearch()
 }
 
-function hideElement(el) {
-    el.classList.add("displaynone")
+
+function hideAllVerseInSearch() {
+    let chpHeadingInFixedSearch = document.querySelectorAll('#searchPreviewFixed .chptheading');
+    let totalVerseReturned = 0;
+    chpHeadingInFixedSearch.forEach(h2 => {
+        let verseUnderBook = h2.nextElementSibling;
+        let verseCount = 0;
+        while (verseUnderBook && verseUnderBook.classList.contains('verse')) {
+            verseUnderBook.classList.toggle('displaynone');
+            verseCount++;
+            totalVerseReturned++;
+            verseUnderBook = verseUnderBook.nextElementSibling;
+        }
+        h2.innerText = h2.innerText + ' - ' + verseCount;
+    });
+    //Add eventListner to h2
+    searchPreviewFixed.addEventListener('click', showVersesUnderH2)
+    console.log(totalVerseReturned)
+    // totalfound.innerText="Total Verses Found: "+totalVerseReturned;
+    totalfound.innerHTML="Found in <b>"+totalVerseReturned+"</b> verses";
 }
 
-function showElement(el) {
-    el.classList.remove("displaynone")
+function showVersesUnderH2(e) {
+    let h2 = e.target;
+    if (h2.classList.contains('chptheading')) {
+        let verseUnderBook = h2.nextElementSibling;
+        while (verseUnderBook && verseUnderBook.classList.contains('verse')) {
+            verseUnderBook.classList.toggle('displaynone');
+            verseUnderBook = verseUnderBook.nextElementSibling;
+        }
+    }
 }
 
 function minimize(el) {

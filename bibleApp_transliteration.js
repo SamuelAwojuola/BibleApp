@@ -42,7 +42,8 @@ function createTransliterationAttr(x) {
 var transliteratedWords_Array = [];
 
 function showTransliteration(stn) {
-    let allSimilarWords = main.querySelectorAll('.strnum[strnum="' + stn + '"]');
+    // let allSimilarWords = main.querySelectorAll('.strnum[strnum="' + stn + '"]');
+    let allSimilarWords = pagemaster.querySelectorAll('.strnum[strnum="' + stn + '"]');
     let i = 0;
     allSimilarWords.forEach(elm => {
         elmP = elm.parentElement;
@@ -65,7 +66,8 @@ function showTransliteration(stn) {
 }
 
 function hideTransliteration(stn, prevParent) {
-    let allSimilarWords = main.querySelectorAll('.strnum[strnum="' + stn + '"]');
+    // let allSimilarWords = main.querySelectorAll('.strnum[strnum="' + stn + '"]');
+    let allSimilarWords = pagemaster.querySelectorAll('.strnum[strnum="' + stn + '"]');
     allSimilarWords.forEach(elm => {
         elmP = elm.parentElement;
         if (!prevParent.includes(elmP)) {
@@ -90,30 +92,78 @@ function hideTransliteration(stn, prevParent) {
         }
         //If this is the only instance of transliteration of this strongsnum, remove it from the transliteratedArray
         transliteratedWords_Array.forEach(sibStrnum => {
-            if (!main.querySelectorAll('.xlit.strnum[strnum="' + sibStrnum + '"]')) {
+            // if (!main.querySelectorAll('.xlit.strnum[strnum="' + sibStrnum + '"]')) {
+            if (!pagemaster.querySelectorAll('.xlit.strnum[strnum="' + sibStrnum + '"]')) {
                 transliteratedWords_Array.splice(transliteratedWords_Array.indexOf(siblingStrnum, 1));
             }
         });
     })
 }
 
+function highlightAllStrongs(x) {
+    cs = `span[strnum="` + x + `"]{background-color:` + randomColor(200) + `;outline:1px solid ` + randomColor(200) + `}`
+    //CREATE THE INNER-STYLE WITH ID #highlightstrongs IN THE HEAD IF IT DOESN'T EXIST
+    if (!document.querySelector('style#highlightstrongs')) {
+        createNewStyleSheetandRule('highlightstrongs', cs)
+    }
+    //ELSE IF IT ALREADY EXISTS
+    else {
+        let ruleSelector = `span[strnum="${x}"]`
+        addRemoveRuleFromStyleSheet(cs, ruleSelector, highlightstrongs)
+    }
+}
+var clickeElmArray = [];
+let timerstn;
+
+function removeRecentStrongsFromArray(stn) {
+    timerstn = setTimeout(() => {
+        const index = clickeElmArray.indexOf(stn);
+        if (index > -1) {
+            clickeElmArray.splice(index, 1)
+        }
+        highlightAllStrongs(stn)
+        // console.log(clickeElmArray)
+    }, 300);
+}
+
+function strongsHighlighting(e) {
+    let hoverElm;
+    //IF IT IS A WORD TRANSLATED FROM HEBREW/GREEK
+    if (e.target.classList.contains('translated')) {
+        hoverElm = e.target;
+        let stn = hoverElm.getAttribute('strnum');
+        // console.log(clickeElmArray.includes(stn))
+        if (!clickeElmArray.includes(stn)) {
+            // console.log('not clicked recently');
+            clickeElmArray.push(stn)
+            // console.log(clickeElmArray)
+            removeRecentStrongsFromArray(stn);
+            // highlightAllStrongs(stn)
+        } /* else { //If doubleclicked (stn will still be in the array)
+            clickeElmArray.shift(stn);
+            clearTimeout(timerstn)
+        } */
+    }
+    //IF IT IS THE STRONGS WORD ITSELF
+    else if (e.target.parentElement.classList.contains('translated')) {
+        hoverElm = e.target.parentElement;
+        stn = hoverElm.getAttribute('strnum');
+        if (!clickeElmArray.includes(stn)) {
+            clickeElmArray.push(stn)
+            removeRecentStrongsFromArray(stn);
+        } else { //If doubleclicked (stn will still be in the array)
+            clickeElmArray.shift(stn);
+            clearTimeout(timerstn)
+        }
+    }
+    if (highlightstrongs) {
+        setItemInLocalStorage('strongsHighlightStyleSheet', getAllRulesInStyleSheet(highlightstrongs));
+    }
+}
 //ON PAGE LOAD, GET TRANSLITERATED ARRAY FROM CACHE
 //window.onload = () => cacheFunctions();
 //Moved to after loading of first chapter
-function cacheFunctions() {
-    if (localStorage.getItem('lastBookandChapter')) {
-        lastOpenedBook = localStorage.getItem('lastBookandChapter').split(',')[0];
-        document.querySelector('.bkname[value="' + lastOpenedBook + '"]').click()
-        lastOpenedChapter = localStorage.getItem('lastBookandChapter').split(',')[1];
-        getTextOfChapter(bible_chapters.querySelector('.chptnum[value="' + lastOpenedChapter + '"]'));
-    }
-    if (localStorage.getItem('transliteratedWords')) {
-        transliteratedWords_Array = localStorage.getItem('transliteratedWords').split(',');
-        transliteratedWords_Array.forEach(storedStrnum => {
-            showTransliteration(storedStrnum)
-        });
-    }
-}
+
 
 /* TRANSLITERAIOTN */
 /* 
@@ -143,7 +193,7 @@ function cacheFunctions() {
 Ω	ω	ō
  */
 
-main.addEventListener("dblclick", function (e) {
+pagemaster.addEventListener("dblclick", function (e) {
     hoverElm = e.target;
     if (hoverElm.nodeName == 'SPAN' && hoverElm.classList.contains('translated') && !hoverElm.classList.contains('eng2grk')) {
         let allstn = hoverElm.querySelectorAll('.strnum'); //Some words are translated from more than one word
@@ -167,25 +217,34 @@ main.addEventListener("dblclick", function (e) {
             hideTransliteration(stn, prevParent)
         })
     }
-    console.log(transliteratedWords_Array)
-    localStorage.setItem('transliteratedWords', transliteratedWords_Array);
+    // console.log(transliteratedWords_Array)
+    setItemInLocalStorage('transliteratedWords', transliteratedWords_Array);
 })
 
 //HIGHLIGHTING CLICKED WORD
-main.addEventListener("mousedown", function (e) {
-    var hoverElm;
-    //IF IT IS A WORD TRANSLATED FROM HEBREW/GREEK
-    if (e.target.classList.contains('translated')) {
-        hoverElm = e.target;
-        stn = hoverElm.getAttribute('strnum');
-        highlightAllStrongs(stn)
-    }
-    //IF IT IS THE STRONGS WORD ITSELF
-    else if (e.target.parentElement.classList.contains('translated')) {
-        hoverElm = e.target.parentElement;
-        stn = hoverElm.getAttribute('strnum');
-        highlightAllStrongs(stn)
-    }
-    //HIDE refnav SIDE BAR IF OPEN BY CLICKING ANYWHERE ON THE PAGE
+main.addEventListener("click", strongsHighlighting)
+// main.addEventListener("click", debounce(strongsHighlighting))
+searchPreviewFixed.addEventListener("click", strongsHighlighting)
+main.addEventListener("click", hideBibleNav)
+
+function hideBibleNav() {
     hideRefNav('hide', bible_nav)
+} //HIDE refnav SIDE BAR IF OPEN BY CLICKING ANYWHERE ON THE PAGE
+
+/* EVENT LISTENERS FOR THE HIGHLIGHING ALL ELEMENTS WITH THE SAME CLASS NAME BY HOVERING OVER ONE OF THEM */
+/* This is acomplished by modifying the styles in the head */
+main.addEventListener('mouseover', function (e) {
+    // main.classList.remove('noselect');
+    if (e.target.classList.contains('translated')) {
+        let newStyleInHead = document.createElement('style');
+        newStyleInHead.id = 'highlightall';
+        newStyleInHead.innerHTML = '[data-xlit="' + e.target.getAttribute('data-xlit') + '"]{background-color:rgb(154, 252, 255)}';
+        let headPart = document.getElementsByTagName('head')[0];
+        headPart.append(newStyleInHead);
+    }
+})
+main.addEventListener('mouseout', function (e) {
+    if (e.target.classList.contains('translated')) {
+        document.getElementById('highlightall').remove();
+    }
 })

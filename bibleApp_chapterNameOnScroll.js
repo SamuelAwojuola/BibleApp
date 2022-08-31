@@ -78,7 +78,7 @@ function loadNewChapterOnScroll() {
         // downscroll code
         if (main.scrollHeight - main.scrollTop - main.clientHeight < 100) { //If you have scrolled to the end of the element
             let lastChapter = main.querySelector('.chptverses:last-child');
-            console.log(lastChapter)
+            // console.log(lastChapter)
             let bkNumb = lastChapter.getAttribute('bookid');
             let chptNumb = lastChapter.getAttribute('chapter')-1;
             // let nextChapter = bible_chapters.querySelector(`[value="bk${bkNumb}ch${Number(chptNumb)+1}"]`)//Stops generating chapters at end of book

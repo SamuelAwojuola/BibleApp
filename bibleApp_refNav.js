@@ -94,7 +94,7 @@ refnav.addEventListener("click", function (e) {
         getTextOfChapter(clickedElm, null, null, true, true);
         indicateBooknChapterInNav(null, clickedElm)
         currentChapterValue = clickedElm.getAttribute('value')
-        localStorage.setItem('lastBookandChapter', currentBookValue + ',' + currentChapterValue);
+        // setItemInLocalStorage('lastBookandChapter', currentBookValue + ',' + currentChapterValue);
     }
 })
 
@@ -108,6 +108,7 @@ function indicateBooknChapterInNav(bk, chpt) {
             refbk.classList.remove('ref_hlt')
         }
         bk.classList.add('ref_hlt');
+        bk.scrollIntoView(false);
         getBksChptsNum(bk);
         if (!chpt) {
             let chapter_to_highlight = bible_chapters.querySelector('.show_chapter');
@@ -120,8 +121,8 @@ function indicateBooknChapterInNav(bk, chpt) {
         if (chptnumref = document.querySelector('.chptnum.ref_hlt')) {
             chptnumref.classList.remove('ref_hlt')
         }
-        chpt.classList.add('ref_hlt');
         chpt.scrollIntoView(false);
+        chpt.classList.add('ref_hlt');
         if (tmpbk = bible_books.querySelector('.tmp_hlt')) {
             tmpbk.classList.remove('tmp_hlt')
             let bookToHighlight = bible_books.querySelector('[bookname="' + chpt.getAttribute('bookname'));
@@ -129,6 +130,8 @@ function indicateBooknChapterInNav(bk, chpt) {
             bookToHighlight.scrollIntoView(false);
         }
     }
+    // Update cache
+    setItemInLocalStorage('lastBookandChapter', bk.getAttribute('value') + ',' + chpt.getAttribute("value") + ',' + chpt.getAttribute("bookname"));
 }
 
 //Hide refnav when escape is pressed
@@ -148,7 +151,11 @@ function toggleNav() {
 // FUNCTION TO SHOW OR HIDE REF_NAV
 function hideRefNav(hORs, elm2HideShow) {
     let elHS;
-    if(elm2HideShow){elHS=elm2HideShow}else{elHS=refnav}
+    if (elm2HideShow) {
+        elHS = elm2HideShow
+    } else {
+        elHS = refnav
+    }
     if (hORs == 'hide') {
         elHS.classList.remove('slidein');
         elHS.classList.add('slideout');
@@ -175,5 +182,14 @@ function changeVerseAlignment() {
         display: block;
     }`;
         createNewStyleSheetandRule(styleID, styleRule)
+    }
+}
+
+function hideSearchParameters(arr) {
+    searchparameters.classList.toggle('hidesearchparameters');
+    if (hidesearchparameters.innerText != '▼') {
+        hidesearchparameters.innerHTML = '▼'
+    } else {
+        hidesearchparameters.innerHTML = '▲'
     }
 }

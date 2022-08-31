@@ -1,12 +1,15 @@
-//Random Color Generator
-function randomColor(brightness) {
-    function randomChannel(brightness) {
-        var r = 255 - brightness;
-        var n = 0 | ((Math.random() * r) + brightness);
-        var s = n.toString(16);
-        return (s.length == 1) ? '0' + s : s;
+function addCSSrulesFromArray(css_rules_array, styleSheetToAddThemTo) {}
+
+function getAllRulesInStyleSheet(styleSheet) {
+    if (styleSheet) {
+        let allRules = styleSheet.sheet.cssRules;
+        let rulesArray = [];
+        for (let i = 0; i < allRules.length; i++) {
+            rulesArray.push(allRules[i].cssText)
+        };
+        // console.log(rulesArray)
+        return rulesArray
     }
-    return '#' + randomChannel(brightness) + randomChannel(brightness) + randomChannel(brightness);
 }
 //STYLE SHEET MODIFIER
 function findCSSRule(mySheet, selector) {
@@ -23,7 +26,6 @@ function findCSSRule(mySheet, selector) {
 }
 //Random color Alternative
 //+'#' + (0x1220000 + Math.random() * 0xFF00FF).toString(16).substr(1,6);
-
 function createNewStyleSheetandRule(styleID, styleRule) {
     let headPart = document.getElementsByTagName('head')[0];
     newStyleInHead = document.createElement('style');
@@ -32,44 +34,18 @@ function createNewStyleSheetandRule(styleID, styleRule) {
     headPart.append(newStyleInHead);
 }
 
-function highlightAllStrongs(x) {
-    cs = `span[strnum="` + x + `"]{background-color:` + randomColor(200) + `;outline:1px solid ` + randomColor(200) + `}`
-    //CREATE THE INNER-STYLE WITH ID #highlightstrongs IN THE HEAD IF IT DOESN'T EXIST
-    if (!document.querySelector('style#highlightstrongs')) {
-        createNewStyleSheetandRule('highlightstrongs', cs)
-    }
-    //ELSE IF IT ALREADY EXISTS
-    else {
-        let highlightStrongsSheet = highlightstrongs.sheet;
-        let allRules = highlightStrongsSheet.cssRules;
-        let ruleSelector = `span[strnum="${x}"]`
-        for (let i = 0; i < allRules.length; i++) {
-            if (findCSSRule(highlightStrongsSheet, ruleSelector) == -1) {
-                document.getElementById('highlightstrongs').sheet.insertRule(cs, allRules.length - 1);
-            } else {
-                highlightStrongsSheet.deleteRule(findCSSRule(highlightStrongsSheet, ruleSelector));
-                if (allRules.length == 0) {
-                    highlightstrongs.remove()
-                }
+function addRemoveRuleFromStyleSheet(CS_rule, ruleSelector, targetStyleSheet) {
+    let highlightStrongsSheet = targetStyleSheet.sheet;
+    let allRules = highlightStrongsSheet.cssRules;
+    for (let i = 0; i < allRules.length; i++) {
+        if (findCSSRule(highlightStrongsSheet, ruleSelector) == -1) {
+            highlightstrongs.sheet.insertRule(CS_rule, allRules.length - 1);
+        } else {
+            highlightStrongsSheet.deleteRule(findCSSRule(highlightStrongsSheet, ruleSelector));
+            if (allRules.length == 0) {
+                targetStyleSheet.remove()
             }
-            break
         }
+        break
     }
 }
-/* EVENT LISTENERS FOR THE HIGHLIGHING ALL ELEMENTS WITH THE SAME CLASS NAME BY HOVERING OVER ONE OF THEM */
-/* This is acomplished by modifying the styles in the head */
-main.addEventListener('mouseover', function (e) {
-    // main.classList.remove('noselect');
-    if (e.target.classList.contains('translated')) {
-        let newStyleInHead = document.createElement('style');
-        newStyleInHead.id = 'highlightall';
-        newStyleInHead.innerHTML = '[data-xlit="' + e.target.getAttribute('data-xlit') + '"]{background-color:rgb(154, 252, 255)}';
-        let headPart = document.getElementsByTagName('head')[0];
-        headPart.append(newStyleInHead);
-    }
-})
-main.addEventListener('mouseout', function (e) {
-    if (e.target.classList.contains('translated')) {
-        document.getElementById('highlightall').remove();
-    }
-})

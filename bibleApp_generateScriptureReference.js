@@ -30,6 +30,8 @@ kjvBible_refs.onload = function () {
 // var requestURL = 'bibles_JSON/KJV+_Red.json';
 //Berean Interlinear NT Bible
 var showBereanBible = false;
+// if(bsb_version.checked){
+// showBereanBible = true;}
 var bcv_berean=null;
 if (showBereanBible) {
     var request_BereanBible_URL = 'bibles_JSON/Berean_Interlinear.json';
@@ -125,6 +127,8 @@ function getTextOfChapter(xxx, oneChptAtaTime = 1, prependORnot, freshClick = fa
     bkid = Number(xxx.getAttribute("bookindex"));
     bookName = xxx.getAttribute("bookname");
     currentBookName = bookName;
+    setItemInLocalStorage('lastBookandChapter', 'book_'+bkid + ',' + xxx.getAttribute("value") + ',' + bookName);
+
     // clickCurrentBook(xxx);
     let gotoId = '_' + bkid + '.' + chNumInBk + '.0';
     if (document.getElementById(gotoId)) { // IF TEXT IS ALREADY ON PAGE, JUST SCROLL TO IT
@@ -168,7 +172,7 @@ function prependORappendChapters(prependORnot, what_to_append) {
 function getPrevNextChapter(prvORnxtChpt, appendHere) {
     //Is prevChapter on page
     if (prvORnxtChpt.previousElementSibling) {
-        console.log('previousElementSibling')
+        // console.log('previousElementSibling')
 
         let prevChapter = prvORnxtChpt.previousElementSibling;
         let prev_chNumInBk = Number(prevChapter.getAttribute("chapterindex"));
@@ -243,10 +247,11 @@ function parseSingleVerse(bkid, chNumInBk, a, jsonVerseIndex, appendHere) {
     vText = vText.replace(/\]/g, '</span>');
     vText = vText.replace(/<r>/g, '<span style="color:red">');
     vText = vText.replace(/<\/r>/g, '</span>');
-    vText = vText.replace(/<RF>([\w\s.,…'";:!?\-\(\)<\/>&]*)<Rf>/g, '<span class="footnote" title="$1">*</span>');
+    vText = vText.replace(/<RF>([\w\s.,…'";:!?\-\(\)<\/>&]*)<Rf>/g, '<span class="footnote" title="$1" aria-hidden="true">*</span>');
     verseSpan.innerHTML = vText;
     verseNum.prepend(document.createTextNode((chNumInBk + 1) + ':' + a + ' '));
     verseNum.setAttribute('ref', kjv_jsonVerse.bkn + ' ' + (chNumInBk + 1) + ':' + a);
+    verseNum.setAttribute('aria-hidden','true');
     verseSpan.prepend(verseNum);
     verseSpan.classList.add('verse');
     verseSpan.id = ('_' + bkid + '.' + (chNumInBk) + '.' + (a - 1));
@@ -273,12 +278,13 @@ function parseSingleVerse(bkid, chNumInBk, a, jsonVerseIndex, appendHere) {
         vText = vText.replace(/\)_/g, ']');
         vText = vText.replace(/<r>/g, '<span style="color:red">');
         vText = vText.replace(/<\/r>/g, '</span>');
-        vText = vText.replace(/<RF>([\w\s.,…'";:!?\-\(\)<\/>&]*)<Rf>/g, '<span class="footnote" title="$1">*</span>');
+        vText = vText.replace(/<RF>([\w\s.,…'";:!?\-\(\)<\/>&]*)<Rf>/g, '<span class="footnote" title="$1" aria-hidden="true">*</span>');
         verse_BSB_Span.innerHTML = vText;
         verse_BSB_Num.classList.add('BSB')
         verse_BSB_Num.prepend(document.createTextNode((chNumInBk + 1) + ':' + a + ' '));
         verse_BSB_Num.setAttribute('ref', berean_jsonVerse.bkn + ' ' + (chNumInBk + 1) + ':' + a);
         verse_BSB_Span.prepend(verse_BSB_Num);
+        verse_BSB_Span.setAttribute('aria-hidden','true');
         verse_BSB_Span.classList.add('verse');
         verse_BSB_Span.id = ('_' + bkid + '.' + (chNumInBk) + '.' + (a - 1));
         // createTransliterationAttr(verse_BSB_Span)

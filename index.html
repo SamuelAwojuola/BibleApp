@@ -28,8 +28,8 @@
                     placeholder="Type Words to Search For"></input><button onclick="runWordSearch()"
                     class="footersection" id="forwordsearch" title="Run Search">...</button>
                 <br><span class="search_options">
-                    <input type="checkbox" id="search_phrase" name="search_phrase" value="search_phrase" checked><label
-                        for="search_phrase">Phrase</label>
+                    <input type="checkbox" id="footer_search_phrase" name="footer_search_phrase" value="footer_search_phrase" checked><label
+                        for="footer_search_phrase">Phrase</label>
                     <!-- <input type="checkbox" id="search_all_words" name="search_all_words" value="search_all_words"><label for="search_all_words">phrase</label> -->
                 </span>
             </div>
@@ -45,25 +45,45 @@
 
         <nav id="refnav" class="slideout" style="display:block">
             <div class="refnav" name="settings" id="app_settings" multiple>
-                <button id="biblenavigation" onclick="hideRefNav(null, bible_nav)">☰</button>
-                <button id="bibles" onclick="hideRefNav(null, bible_nav)">&#128218;</button>
+                <button id="biblenavigation" onclick="hideRefNav(null, bible_nav)" title="Bible Navigation">☰</button>
+                <button id="bibles" onclick="hideRefNav(null, bible_versions)" title="Bible Versions" >&#128218;</button>
                 <button id="versealignment" onclick="changeVerseAlignment()" title="verses alignment">V</button>
-                <button id="searchsettings" onclick="hideRefNav(null, searchPreviewWindowFixed)"
-                    title="word(s) search">&#x1F50E;</button>
+                <button id="searchsettings" onclick="hideRefNav(null, searchPreviewWindowFixed)" title="word(s) search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
+                </button>
+                <button id="cachesettings" onclick="hideRefNav(null, bibleapp_cache)" title="cache settings">&#9881;</button>
             </div>
             <div id="bible_nav" class="refnav">
                 <div class="bible_nav" name="books" id="bible_books" multiple></div>
                 <div class="bible_nav" name="chapters" id="bible_chapters" multiple></div>
                 <div class="bible_nav" name="verses" id="bible_verses" multiple></div>
             </div>
-            <div id="searchPreviewWindowFixed">
-                <div id="searchparameters">
+            <div id="bible_versions" class="slideout">
+                <input type="checkbox" id="kjv_version" name="kjv_version" value="kjv_version" checked><label for="kjv_version">KJV</label><br>
+                <input type="checkbox" id="bsb_version" name="bsb_version" value="bsb_version" checked><label for="bsb_version">Berean Interlinear</label><br>
+            </div>
+            
+            <div id="searchPreviewWindowFixed" class="slideout">
+                <div id="searchparameters" class="hidesearchparameters">
+                    <div>
+                        <button id="hidesearchparameters" onclick="hideSearchParameters([case_sensitive,search_phrase,search_all_words,whole_word])">&#9660;</button>
+                    </div>
+                    <div>Search Parameters</div>
                     <input type="checkbox" id="case_sensitive" name="case_sensitive" value="case_sensitive" checked><label for="case_sensitive">Case Sensitivity</label><br>
-                    <input type="checkbox" id="search_phrase" name="search_phrase" value="search_phrase" checked><label for="search_phrase">Search for Phrase</label><br>
-                    <input type="checkbox" id="search_all_words" name="search_all_words" value="search_all_words"><label for="search_all_words">All Words</label><br>
+                    <input type="radio" id="search_phrase" name="phraseornot" value="search_phrase" checked><label for="search_phrase">All Words-Search for Phrase</label><br>
+                    <input type="radio" id="search_all_words" name="phraseornot" value="search_all_words"><label for="search_all_words">All Words-Not Phrase</label><br>
                     <input type="checkbox" id="whole_word" name="whole_word" value="whole_word"><label for="whole_word">Whole Words</label><br>
+                    <span id="where2display">
+                        <input type="checkbox" id="searchresultdisplay" name="searchresultdisplay" value="searchresultdisplay" checked><label for="searchresultdisplay">Show search results in this window only</label><br>
+                        <input type="checkbox" id="showreturnedverses" name="showreturnedverses" value="showreturnedverses" checked><label for="showreturnedverses">Show all verses</label>
+                    </span>
+                    <div id="totalfound"></div>
                 </div>
                 <div id="searchPreviewFixed"></div>
+            </div>
+            <div id="bibleapp_cache" class="slideout">
+                <input type="checkbox" id="cache_strongs" name="cache_strongs" value="cache_strongs"><label for="cache_strongs">Clear transliterated words cache</label><br>
+                <input type="checkbox" id="cache_higlights" name="cache_higlights" value="cache_higlights"><label for="cache_higlights">Clear highlighted words cache</label><br>
             </div>
         </nav>
         <main id="main" contenteditable="false">
@@ -93,6 +113,7 @@
 <!-- <script src="..\Scriptures Text Higlighter\FileSaver.js"></script> -->
 <!-- <script src="..\Scriptures Text Higlighter\textHiglighter.js"></script>
 <script src="..\Scriptures Text Higlighter\searchHighlighted.js"></script> -->
+<script src="bibleApp_js_cache.js" charset="utf-8"></script>
 <script src="bibleApp_styles.js" charset="utf-8"></script>
 <script src="bibleApp_refNav.js" charset="utf-8"></script>
 <script src="bibleApp_generateScriptureReference.js" charset="utf-8"></script>
