@@ -32,10 +32,15 @@ function cacheFunctions() {
         headPart.append(newStyleInHead);
         hlstrngCSS = hlstrngCSS.split(',').join('');
     }
+    if (localStorage.getItem('showVersesInSearch')) {
+        let showVerseCheck = localStorage.getItem('showVersesInSearch');
+        if(showVerseCheck=='yes'){showreturnedverses.check=true}
+        else if(showVerseCheck=='no'){showreturnedverses.checked=false}
+    }
 }
 
 function setItemInLocalStorage(name, nValue) {
-    if (name == 'transliteratedWords' && !cache_strongs.checked) {
+    if (name == 'transliteratedWords' && !cache_strongs.checked) {//check if in the settings saving to cache for the transliteration words is selected
         localStorage.setItem(name, nValue);
     } else if (name == 'strongsHighlightStyleSheet' && !cache_higlights.checked) {
         localStorage.setItem(name, nValue);
@@ -46,7 +51,7 @@ function setItemInLocalStorage(name, nValue) {
 
 function removeFromLocalStorage() {}
 
-/* HELPER FUNCTIONS */
+/*********************** HELPER FUNCTIONS ***********************/
 //Random Color Generator
 function randomColor(brightness) {
     function randomChannel(brightness) {

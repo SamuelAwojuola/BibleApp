@@ -6,8 +6,10 @@ wordsearch.addEventListener("keypress", function (e) {
         e.preventDefault();
     }
 });
-if(!searchresultdisplay.checked){searchPreview.addEventListener("click", searchPreviewRefClick)}
-searchPreviewFixed.addEventListener("click", searchPreviewRefClick)
+if (!searchresultdisplay.checked) {
+    searchPreview.addEventListener("click", searchPreviewRefClick)
+}
+searchPreviewFixed.addEventListener("click", searchPreviewRefClick);
 
 function searchPreviewRefClick(e) {
     if (e.target.tagName == "CODE") {
@@ -176,19 +178,41 @@ function runWordSearch() {
         }
         searchPreview.innerHTML = '';
         searchPreviewFixed.innerHTML = '';
-        
-        let caseSensitiveSearch;if(case_sensitive.checked){caseSensitiveSearch = 'CASE SENSITIVE|'}else{caseSensitiveSearch = 'CASE INSENSITIVE|'}
-        let anyWORDsearch;if(searchForStrongs){phraseSearch = 'ANY|';}else{anyWORDsearch = ''}
-        let phraseSearch;if(search_phrase.checked){phraseSearch = 'PHRASE|';}else{phraseSearch = 'NONE PHRASE|';}
-        let wholeWordSearch;if(whole_word.checked){wholeWordSearch = 'WHOLE WORD';}else{wholeWordSearch = 'PARTIAL MATCH';}
+
+        let caseSensitiveSearch;
+        if (case_sensitive.checked) {
+            caseSensitiveSearch = 'CASE SENSITIVE|'
+        } else {
+            caseSensitiveSearch = 'CASE INSENSITIVE|'
+        }
+        let anyWORDsearch;
+        if (searchForStrongs) {
+            phraseSearch = 'ANY|';
+        } else {
+            anyWORDsearch = ''
+        }
+        let phraseSearch;
+        if (search_phrase.checked) {
+            phraseSearch = 'PHRASE|';
+        } else {
+            phraseSearch = 'NONE PHRASE|';
+        }
+        let wholeWordSearch;
+        if (whole_word.checked) {
+            wholeWordSearch = 'WHOLE WORD';
+        } else {
+            wholeWordSearch = 'PARTIAL MATCH';
+        }
         if (findAnything == false) {
-            searchPreview.innerHTML = '<code>Sorry, <i><b>"' + wordsearchValue + '"</b></i><br>Was Not Found!<br><br>Your Search Parameters Were:<br>[<b>'+ caseSensitiveSearch + phraseSearch + wholeWordSearch + '</b>]</code>';
-            searchPreviewFixed.innerHTML = '<code>Sorry, <i><b>"' + wordsearchValue + '"</b></i><br>Was Not Found!<br><br>Your Search Parameters Were:<br>[<b>'+ caseSensitiveSearch + phraseSearch + wholeWordSearch + '</b>]</code>';
+            searchPreview.innerHTML = '<code>Sorry, <i><b>"' + wordsearchValue + '"</b></i><br>Was Not Found!<br><br>Your Search Parameters Were:<br>[<b>' + caseSensitiveSearch + phraseSearch + wholeWordSearch + '</b>]</code>';
+            searchPreviewFixed.innerHTML = '<code>Sorry, <i><b>"' + wordsearchValue + '"</b></i><br>Was Not Found!<br><br>Your Search Parameters Were:<br>[<b>' + caseSensitiveSearch + phraseSearch + wholeWordSearch + '</b>]</code>';
         }
         let searchFragmentClone = searchFragment.cloneNode(true)
-        if(!searchresultdisplay.checked){searchPreview.append(searchFragment)}
+        if (!searchresultdisplay.checked) {
+            searchPreview.append(searchFragment);
+            showElement(searchresultwindow)
+        }
         searchPreviewFixed.append(searchFragmentClone)
-        showElement(searchresultwindow)
     }
     searchJSON();
     hideRefNav('show');
@@ -197,7 +221,9 @@ function runWordSearch() {
     // console.log(word2find)
     // console.log(searchResultArr.length)
     // console.log(searchResultArr)
-    hideAllVerseInSearch()
+    if (!showreturnedverses.checked) {
+        hideAllVerseInSearch()
+    }
 }
 
 
@@ -219,7 +245,7 @@ function hideAllVerseInSearch() {
     searchPreviewFixed.addEventListener('click', showVersesUnderH2)
     console.log(totalVerseReturned)
     // totalfound.innerText="Total Verses Found: "+totalVerseReturned;
-    totalfound.innerHTML="Found in <b>"+totalVerseReturned+"</b> verses";
+    totalfound.innerHTML = "Found in <b>" + totalVerseReturned + "</b> verses";
 }
 
 function showVersesUnderH2(e) {
@@ -231,7 +257,26 @@ function showVersesUnderH2(e) {
             verseUnderBook = verseUnderBook.nextElementSibling;
         }
     }
+    h2.scrollIntoView();
+    searchparametertitlebar.scrollIntoView(); //This is to compensate for the shifting out of view of the search parmeter section
 }
+
+showreturnedverses.addEventListener('change', function () {
+    if (this.checked) {
+        let versesInFixed = searchPreviewFixed.querySelectorAll('.verse');
+        versesInFixed.forEach(elm => {
+            elm.classList.remove('displaynone')
+        });
+        setItemInLocalStorage('showVersesInSearch', 'yes')
+    }
+    else {
+        let versesInFixed = searchPreviewFixed.querySelectorAll('.verse');
+        versesInFixed.forEach(elm => {
+            elm.classList.add('displaynone')
+        });
+        setItemInLocalStorage('showVersesInSearch', 'no')
+    }
+});
 
 function minimize(el) {
     if (el.style.height != '0px') {
@@ -242,11 +287,6 @@ function minimize(el) {
         el.classList.remove("displaynone")
     }
 }
-// let position = text.search("Blue");
-// let position = text.search("blue");
-// let position = text.search(/Blue/);
-// let position = text.search(/blue/);
-// let position = text.search(/blue/i);
 
 /* MOBILE */
 function showMobileBtns() {

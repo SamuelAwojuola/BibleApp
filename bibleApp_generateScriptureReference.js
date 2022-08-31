@@ -13,7 +13,7 @@ var ppp = document.querySelector('#ppp');
 
 
 //For Reference Pane
-var requestURLkjvStrongsSummary = 'bibles_JSON/kjv_strongs_summary01.json';
+var requestURLkjvStrongsSummary = 'bibles_JSON/KJV_Stats_BkChpV.json';
 var kjvBible_refs = new XMLHttpRequest();
 kjvBible_refs.open('GET', requestURLkjvStrongsSummary);
 kjvBible_refs.responseType = 'json';

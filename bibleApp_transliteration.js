@@ -38,6 +38,27 @@ function createTransliterationAttr(x) {
     });
 }
 
+function getsStrongsDefinition(x){
+    strongsdefinitionwindow.innerHTML='';
+    let _text='';
+    x.forEach(wStrnum => {
+        for (abc = 0; abc < strongsJSONresponse.length; abc++) {
+            if (strongsJSONresponse[abc].number == wStrnum) {
+                let str_xlit = strongsJSONresponse[abc].xlit;
+                let str_lemma = strongsJSONresponse[abc].lemma;
+                let str_definition = strongsJSONresponse[abc].description;
+                _text=_text + `<div class="strngsdefinition"><hr><h2>${wStrnum}</h2><hr>
+                <h4><i>Lemma</i>: </h4><h1>${str_lemma}</h1>
+                <h4><i>Transliteration</i>: </h4><h3>${str_xlit}</h3>
+                <h3><hr>Definition:</h3><hr> ${str_definition}<hr></div>
+                `
+                strongsdefinitionwindow.innerHTML=_text;
+                break
+            }
+        }
+    });
+}
+
 //TO SHOW TRANSLITERATION OF WORDS
 var transliteratedWords_Array = [];
 
@@ -127,11 +148,16 @@ function removeRecentStrongsFromArray(stn) {
 }
 
 function strongsHighlighting(e) {
-    let hoverElm;
+    let clickedElm;
+    if(strnum = e.target.getAttribute('strnum')){
+        strnum=strnum.split(' ');
+        getsStrongsDefinition(strnum);
+        console.log(strnum)
+    }
     //IF IT IS A WORD TRANSLATED FROM HEBREW/GREEK
     if (e.target.classList.contains('translated')) {
-        hoverElm = e.target;
-        let stn = hoverElm.getAttribute('strnum');
+        clickedElm = e.target;
+        let stn = clickedElm.getAttribute('strnum');
         // console.log(clickeElmArray.includes(stn))
         if (!clickeElmArray.includes(stn)) {
             // console.log('not clicked recently');
@@ -139,15 +165,12 @@ function strongsHighlighting(e) {
             // console.log(clickeElmArray)
             removeRecentStrongsFromArray(stn);
             // highlightAllStrongs(stn)
-        } /* else { //If doubleclicked (stn will still be in the array)
-            clickeElmArray.shift(stn);
-            clearTimeout(timerstn)
-        } */
+        }
     }
     //IF IT IS THE STRONGS WORD ITSELF
     else if (e.target.parentElement.classList.contains('translated')) {
-        hoverElm = e.target.parentElement;
-        stn = hoverElm.getAttribute('strnum');
+        clickedElm = e.target.parentElement;
+        let stn = clickedElm.getAttribute('strnum');
         if (!clickeElmArray.includes(stn)) {
             clickeElmArray.push(stn)
             removeRecentStrongsFromArray(stn);
@@ -235,16 +258,18 @@ function hideBibleNav() {
 /* This is acomplished by modifying the styles in the head */
 main.addEventListener('mouseover', function (e) {
     // main.classList.remove('noselect');
-    if (e.target.classList.contains('translated')) {
+    // if (e.target.classList.contains('translated')) {
+    if (e.target.hasAttribute('data-xlit')) {
         let newStyleInHead = document.createElement('style');
         newStyleInHead.id = 'highlightall';
-        newStyleInHead.innerHTML = '[data-xlit="' + e.target.getAttribute('data-xlit') + '"]{background-color:bisque;border:1px solid brown; border-radius:2px}';
+        newStyleInHead.innerHTML = '[data-xlit="' + e.target.getAttribute('data-xlit') + '"]{background-color:lightgrey;-webkit-box-shadow: 3px 2px 2px 0px rgba(50, 50, 50, 0.87);-moz-box-shadow:3px 2px 2px 0px rgba(50, 50, 50, 0.87);box-shadow:3px 2px 2px 0px rgba(50, 50, 50, 0.87);}';
         let headPart = document.getElementsByTagName('head')[0];
         headPart.append(newStyleInHead);
     }
 })
 main.addEventListener('mouseout', function (e) {
-    if (e.target.classList.contains('translated')) {
+    if (e.target.hasAttribute('data-xlit')) {
+        // if (e.target.classList.contains('translated')) {
         document.getElementById('highlightall').remove();
     }
 })

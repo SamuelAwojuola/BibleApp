@@ -124,13 +124,17 @@ function scrollToVerse(targetVerse) {
             targetVerse.parentElement.previousElementSibling.scrollIntoView()
         }
         //scroll to element before it to give some gap
-        targetVerse.classList.add('vhlt');
-        targetVerse.classList.add('vglow');
+        // targetVerse.classList.add('vhlt');
+        // targetVerse.classList.add('vglow');
+        // setTimeout(function () {
+        //     targetVerse.classList.remove("vglow");
+        // }, 1000);
+        // setTimeout(function () {
+        //     targetVerse.classList.remove("vhlt");
+        // }, 5000);
+        targetVerse.classList.add('flashit');
         setTimeout(function () {
-            targetVerse.classList.remove("vglow");
-        }, 3000);
-        setTimeout(function () {
-            targetVerse.classList.remove("vhlt");
-        }, 8000);
+            targetVerse.classList.remove("flashit");
+        }, 5000);
     }
 }
