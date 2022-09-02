@@ -38,6 +38,7 @@ if (localStorage.getItem('version_bsb_loaded')) {
     }
     else{bsb_version.checked=false}
 }
+
 bsb_version.addEventListener('change', function () {
     let currentPassage = reference.value;
     if (!bsb_version.checked) {
@@ -55,7 +56,8 @@ bsb_version.addEventListener('change', function () {
         bsb_loader()
     }
     setItemInLocalStorage('version_bsb_loaded', showBereanBible);
-    self.location.replace(location['href']);
+    document.location.reload(false);
+    cacheFunctions()
 });
 function bsb_loader() {
     if (bsb_version.checked) {
@@ -75,6 +77,7 @@ function bsb_loader() {
     }
 }
 bsb_loader();
+
 //KJV Bible OT & NT
 var request_KJV_URL = 'bibles_JSON/KJV_theWORD.json';
 var kjvBible = new XMLHttpRequest();
