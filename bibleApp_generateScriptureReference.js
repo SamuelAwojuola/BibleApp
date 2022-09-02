@@ -31,6 +31,13 @@ kjvBible_refs.onload = function () {
 //Berean Interlinear NT Bible
 var showBereanBible = false;
 var bcv_berean = null;
+if (localStorage.getItem('version_bsb_loaded')) {
+    let bsbLoad=localStorage.getItem('version_bsb_loaded');
+    if(bsbLoad=='true'){bsb_version.checked=true;
+    console.log(bsbLoad)
+    }
+    else{bsb_version.checked=false}
+}
 bsb_version.addEventListener('change', function () {
     let currentPassage = reference.value;
     if (!bsb_version.checked) {
@@ -44,10 +51,12 @@ bsb_version.addEventListener('change', function () {
             element.parentElement.remove();
         });
     } else {
+        showBereanBible = true;
         bsb_loader()
     }
+    setItemInLocalStorage('version_bsb_loaded', showBereanBible);
+    self.location.replace(location['href']);
 });
-
 function bsb_loader() {
     if (bsb_version.checked) {
         showBereanBible = true;

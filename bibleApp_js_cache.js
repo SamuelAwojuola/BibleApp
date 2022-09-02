@@ -37,6 +37,11 @@ function cacheFunctions() {
         if(showVerseCheck=='yes'){showreturnedverses.check=true}
         else if(showVerseCheck=='no'){showreturnedverses.checked=false}
     }
+    if (localStorage.getItem('version_bsb_loaded')) {
+        let bsbLoad=localStorage.getItem('version_bsb_loaded');
+        if(bsbLoad==true){bsb_version.checked=true}
+        else{bsb_version.checked=false}
+    }
 }
 
 function setItemInLocalStorage(name, nValue) {
