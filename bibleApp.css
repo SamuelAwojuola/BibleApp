@@ -45,6 +45,7 @@ html {
     padding: 0;
     font-size: var(--fontsize-main);
     background-color: rgb(255, 253, 230);
+    background-color: rgba(255, 255, 255, 0.62);
 }
 
 body>svg {
@@ -231,7 +232,7 @@ code {
     color: rgb(64, 59, 105);
     /* font-size: 0.85em; */
 }
-
+[strnum]:empty{display: none!important;}
 #main {
     /* border: 3px solid orange; */
     max-width: 100%;
@@ -732,15 +733,16 @@ main span {
 
 .vmultiple {
     display: flex !important;
+    gap:2%;
 }
 
 .vmultiple>span {
-    display: table-cell;
+    /* display: table-cell; */
     width: auto;
     min-width: 50%;
     row-gap: 0;
 }
-
+/* .vmultiple>span+span {} */
 .flashit {
     -webkit-animation: flash linear 1.5s;
     animation: flash linear 1.5s;

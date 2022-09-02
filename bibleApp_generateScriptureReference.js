@@ -30,22 +30,42 @@ kjvBible_refs.onload = function () {
 // var requestURL = 'bibles_JSON/KJV+_Red.json';
 //Berean Interlinear NT Bible
 var showBereanBible = false;
-// if(bsb_version.checked){
-// showBereanBible = true;}
-var bcv_berean=null;
-if (showBereanBible) {
-    var request_BereanBible_URL = 'bibles_JSON/Berean_Interlinear.json';
-    var berean_Interlinear_Bible = new XMLHttpRequest();
-    berean_Interlinear_Bible.open('GET', request_BereanBible_URL);
-    berean_Interlinear_Bible.responseType = 'json';
-    berean_Interlinear_Bible.send();
+var bcv_berean = null;
+bsb_version.addEventListener('change', function () {
+    let currentPassage = reference.value;
+    if (!bsb_version.checked) {
+        showBereanBible = false;
+        bcv_berean = null;
+        
+        // reference.value = currentPassage;
+        // gotoRef();
+        let bsb2remove = pagemaster.querySelectorAll('.BSB');
+        bsb2remove.forEach(element => {
+            element.parentElement.remove();
+        });
+    } else {
+        bsb_loader()
+    }
+});
 
-    berean_Interlinear_Bible.onload = function () {
-        let booksChaptersAndVerses = berean_Interlinear_Bible.response;
-        bcv_berean = booksChaptersAndVerses['verses'];
+function bsb_loader() {
+    if (bsb_version.checked) {
+        showBereanBible = true;
+        if (showBereanBible) {
+            var request_BereanBible_URL = 'bibles_JSON/Berean_Interlinear.json';
+            var berean_Interlinear_Bible = new XMLHttpRequest();
+            berean_Interlinear_Bible.open('GET', request_BereanBible_URL);
+            berean_Interlinear_Bible.responseType = 'json';
+            berean_Interlinear_Bible.send();
+
+            berean_Interlinear_Bible.onload = function () {
+                let booksChaptersAndVerses = berean_Interlinear_Bible.response;
+                bcv_berean = booksChaptersAndVerses['verses'];
+            }
+        }
     }
 }
-
+bsb_loader();
 //KJV Bible OT & NT
 var request_KJV_URL = 'bibles_JSON/KJV_theWORD.json';
 var kjvBible = new XMLHttpRequest();
@@ -127,7 +147,7 @@ function getTextOfChapter(xxx, oneChptAtaTime = 1, prependORnot, freshClick = fa
     bkid = Number(xxx.getAttribute("bookindex"));
     bookName = xxx.getAttribute("bookname");
     currentBookName = bookName;
-    setItemInLocalStorage('lastBookandChapter', 'book_'+bkid + ',' + xxx.getAttribute("value") + ',' + bookName);
+    setItemInLocalStorage('lastBookandChapter', 'book_' + bkid + ',' + xxx.getAttribute("value") + ',' + bookName);
 
     // clickCurrentBook(xxx);
     let gotoId = '_' + bkid + '.' + chNumInBk + '.0';
@@ -241,21 +261,20 @@ function parseSingleVerse(bkid, chNumInBk, a, jsonVerseIndex, appendHere) {
 
     /* KJV */
     let vText = kjv_jsonVerse.txt;
-    vText = vText.replace(/({(((H|G)(\d+)))})/g, '<span class="strnum" strnum="$2" testament="$4" strindx="$5"></span>');
-    // vText = vText.replace(/\[/g, '<span class="translated">');
-    vText = vText.replace(/\[([\w\s.,'";:!?\-\(\)]*)/g, '<span class="translated" data-kjv-trans="$1">$1');
-    vText = vText.replace(/\]/g, '</span>');
+    vText = vText.replace(/\[((?:(?!{).)*)({(((?:(?!\]).)*)*))\]/g, '<span class="translated" translation="$1" data-kjv-trans="$1" strnum="$2" data-xlit="" data-lemma="">$1</span>');
+    vText = vText.replace(/}{/g, ' ');
+    vText = vText.replace(/[{}]/g, '');
     vText = vText.replace(/<r>/g, '<span style="color:red">');
     vText = vText.replace(/<\/r>/g, '</span>');
     vText = vText.replace(/<RF>([\w\s.,…'";:!?\-\(\)<\/>&]*)<Rf>/g, '<span class="footnote" title="$1" aria-hidden="true">*</span>');
     verseSpan.innerHTML = vText;
     verseNum.prepend(document.createTextNode((chNumInBk + 1) + ':' + a + ' '));
     verseNum.setAttribute('ref', kjv_jsonVerse.bkn + ' ' + (chNumInBk + 1) + ':' + a);
-    verseNum.setAttribute('aria-hidden','true');
+    verseNum.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
     verseSpan.prepend(verseNum);
     verseSpan.classList.add('verse');
     verseSpan.id = ('_' + bkid + '.' + (chNumInBk) + '.' + (a - 1));
-    createTransliterationAttr(verseSpan)
+    createTransliterationAttr(verseSpan);
     if (!showBereanBible || bereanIndex < 0) {
         appendHere.appendChild(verseSpan);
     } else {
@@ -271,7 +290,8 @@ function parseSingleVerse(bkid, chNumInBk, a, jsonVerseIndex, appendHere) {
         /* KJV */
         let vText = berean_jsonVerse.txt;
         // console.log(vText)
-        vText = vText.replace(/\[((?:(?!\{).)*)\{((?:(?!\{).)*)\{((?:(?!\{).)*)\{(([G|H]\d+)*)\{((?:(?!\}).)*)\}\]/g, '<span class="translated" data-bsb="$1">$1 <span class="strnum" testament="G" strindx="$12" ms="$2" transliteration="$3" strnum="$4" morph="$5" lema="$6"></span></span>');
+        //><span class="strnum" 
+        vText = vText.replace(/\[((?:(?!\{).)*)\{((?:(?!\{).)*)\{((?:(?!\{).)*)\{(([G|H]\d+)*)\{((?:(?!\{).)*)\{((?:(?!\}).)*)\}\]/g, '<span class="translated $4" translation="$1" data-bsb="$1" testament="G" strnum="$4" morph="$6" lema="$7" data-lemma="" data-xlit="" ms="$2" transliteration="$3">$1 </span>');
 
         vText = vText.replace(/<TS>((?:(?!\<Ts).)*)<Ts>/g, '<span class="section_headings"></span>');
         vText = vText.replace(/_\(/g, '[');
@@ -284,10 +304,10 @@ function parseSingleVerse(bkid, chNumInBk, a, jsonVerseIndex, appendHere) {
         verse_BSB_Num.prepend(document.createTextNode((chNumInBk + 1) + ':' + a + ' '));
         verse_BSB_Num.setAttribute('ref', berean_jsonVerse.bkn + ' ' + (chNumInBk + 1) + ':' + a);
         verse_BSB_Span.prepend(verse_BSB_Num);
-        verse_BSB_Span.setAttribute('aria-hidden','true');
+        verse_BSB_Span.setAttribute('aria-hidden', 'true');
         verse_BSB_Span.classList.add('verse');
         verse_BSB_Span.id = ('_' + bkid + '.' + (chNumInBk) + '.' + (a - 1));
-        // createTransliterationAttr(verse_BSB_Span)
+        createTransliterationAttr(verse_BSB_Span)
         verseMultipleSpan.appendChild(verse_BSB_Span);
         appendHere.appendChild(verseMultipleSpan);
     }

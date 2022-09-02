@@ -12,47 +12,49 @@ strongsJSON.onload = function () {
 
 // Create and Append Transliteration Data Attribute
 function createTransliterationAttr(x) {
-    let strnumInVerse = x.querySelectorAll('.strnum');
-    strnumInVerse.forEach(strNumElm => {
-        wStrnum = strNumElm.getAttribute('strnum')
-        for (abc = 0; abc < strongsJSONresponse.length; abc++) {
-            if (strongsJSONresponse[abc].number == wStrnum) {
-                let str_xlit = strongsJSONresponse[abc].xlit;
-                let str_lemma = strongsJSONresponse[abc].lemma;
-                strNumElm.setAttribute("data-xlit", str_xlit);
-                strNumElm.setAttribute("data-lemma", str_lemma);
-                if (strNumElm.parentElement.hasAttribute("strnum")) { //For words translated from more than one strongs word
-                    strNumElm.parentElement.setAttribute("strnum", strNumElm.parentElement.getAttribute("strnum") + ' ' + wStrnum);
-                    strNumElm.parentElement.setAttribute("data-xlit", strNumElm.parentElement.getAttribute("data-xlit") + ' ' + str_xlit);
-                    strNumElm.parentElement.title = strNumElm.parentElement.title + " - " + str_xlit + " | " + wStrnum + " | " + str_lemma;
-                } else {
-                    strNumElm.parentElement.setAttribute("strnum", wStrnum);
-                    strNumElm.parentElement.setAttribute("data-xlit", str_xlit);
-                    strNumElm.parentElement.title = str_xlit + " | " + wStrnum + " | " + str_lemma;
-                }
-                strNumElm.parentElement.classList.add(wStrnum)
-                strNumElm.title = '(' + strNumElm.parentElement.getAttribute("data-kjv-trans") + ')' + " - " + str_xlit + " | " + wStrnum + " | " + str_lemma;
-                break
+    let translatedWordsInVerse = x.querySelectorAll('[strnum]');
+    translatedWordsInVerse.forEach(strNumElm => {
+        wStrnum_array = strNumElm.getAttribute('strnum').split(' ');
+        let i = 0;
+        wStrnum_array.forEach(wStrnum => {
+            i++;
+            let divider = '|';
+            if ((i > 1) && ((i > 2) && (i != wStrnum_array.length))) {
+                divider = '|'
+            } else if ((i == 1) || ((i > 2) && (i == wStrnum_array.length))) {
+                divider = ''
             }
-        }
+            for (abc = 0; abc < strongsJSONresponse.length; abc++) {
+                if (strongsJSONresponse[abc].number == wStrnum) {
+                    strNumElm.classList.add(wStrnum)
+                    let str_xlit = strongsJSONresponse[abc].xlit;
+                    let str_lemma = strongsJSONresponse[abc].lemma;
+                    strNumElm.setAttribute("data-xlit", strNumElm.getAttribute("data-xlit") + divider + str_xlit);
+                    strNumElm.setAttribute("data-lemma", strNumElm.getAttribute("data-lemma") + divider + str_lemma);
+                    strNumElm.title = strNumElm.title + " - " + str_xlit + " | " + wStrnum + " | " + str_lemma;
+                    break
+                }
+            }
+        });
+        strNumElm.title = '(' + strNumElm.getAttribute("translation") + ')' + strNumElm.title;
     });
 }
 
-function getsStrongsDefinition(x){
-    strongsdefinitionwindow.innerHTML='';
-    let _text='';
+function getsStrongsDefinition(x) {
+    strongsdefinitionwindow.innerHTML = '';
+    let _text = '';
     x.forEach(wStrnum => {
         for (abc = 0; abc < strongsJSONresponse.length; abc++) {
             if (strongsJSONresponse[abc].number == wStrnum) {
                 let str_xlit = strongsJSONresponse[abc].xlit;
                 let str_lemma = strongsJSONresponse[abc].lemma;
                 let str_definition = strongsJSONresponse[abc].description;
-                _text=_text + `<div class="strngsdefinition"><hr><h2>${wStrnum}</h2><hr>
+                _text = _text + `<div class="strngsdefinition"><hr><h2>${wStrnum}</h2><hr>
                 <h4><i>Lemma</i>: </h4><h1>${str_lemma}</h1>
                 <h4><i>Transliteration</i>: </h4><h3>${str_xlit}</h3>
                 <h3><hr>Definition:</h3><hr> ${str_definition}<hr></div>
                 `
-                strongsdefinitionwindow.innerHTML=_text;
+                strongsdefinitionwindow.innerHTML = _text;
                 break
             }
         }
@@ -63,66 +65,44 @@ function getsStrongsDefinition(x){
 var transliteratedWords_Array = [];
 
 function showTransliteration(stn) {
-    // let allSimilarWords = main.querySelectorAll('.strnum[strnum="' + stn + '"]');
-    let allSimilarWords = pagemaster.querySelectorAll('.strnum[strnum="' + stn + '"]');
-    let i = 0;
+    let allSimilarWords = pagemaster.querySelectorAll('.' + stn);
     allSimilarWords.forEach(elm => {
-        elmP = elm.parentElement;
-        if (!elmP.classList.contains('eng2grk')) {
-            elmP.childNodes[0].remove()
-            elmP.classList.add('eng2grk');
-        }
-        // if(i>0){elm.innerText = elm.getAttribute("data-xlit");}
-        elm.innerText = ' ' + elm.getAttribute("data-xlit");
-        elm.classList.add("xlit");
-        //To SHOW ALL STRONGS WORDS UNDER A WORD (FOR WORDS TRANSLATED FROM >1 WORDS)
-        let sibling = elmP.firstElementChild;
-        while (sibling) {
-            sibling.innerText = ' ' + sibling.getAttribute("data-xlit");
-            sibling.classList.add("xlit");
-            sibling = sibling.nextElementSibling;
-        }
-        i = i + 1;
+        elm.innerHTML='';
+        let xlitFragment = new DocumentFragment();
+        let elm_strnum = elm.getAttribute("strnum").split(' ');
+        let elm_dxlit = elm.getAttribute("data-xlit").split('|');
+        let elm_lemma = elm.getAttribute("data-lemma").split('|');
+        // let elm_transliteration = elm.getAttribute("transliteration").split('|');
+        let engTranslation = elm.getAttribute("translation");
+        let j=0;
+        elm_strnum.forEach(eStn => {
+            let transSpan = document.createElement('SPAN');
+            transSpan.classList.add(eStn);
+            transSpan.classList.add('strnum')
+            transSpan.setAttribute('strnum', eStn);
+            transSpan.setAttribute('data-xlit', elm_dxlit[j]);
+            transSpan.title = (engTranslation + '|'+eStn+ '|'+elm_lemma[j]);
+            if(elm.getAttribute("transliteration")){transSpan.innerText = ' ' + elm.getAttribute("transliteration").split(' ')[j];
+            }else{transSpan.innerText = ' ' + elm_dxlit[j];}
+            xlitFragment.append(transSpan);
+            j++
+        });
+        elm.append(xlitFragment);
+        elm.classList.add('eng2grk');
     })
 }
 
-function hideTransliteration(stn, prevParent) {
-    // let allSimilarWords = main.querySelectorAll('.strnum[strnum="' + stn + '"]');
-    let allSimilarWords = pagemaster.querySelectorAll('.strnum[strnum="' + stn + '"]');
+function hideTransliteration(stn) {
+    let allSimilarWords = pagemaster.querySelectorAll('.' + stn);
     allSimilarWords.forEach(elm => {
-        elmP = elm.parentElement;
-        if (!prevParent.includes(elmP)) {
-            elmP.classList.remove('eng2grk');
-            elmP.prepend(elmP.getAttribute("data-kjv-trans"));
-            prevParent.push(elmP)
-        }
-        //If the word was translated from more than one word, then the others will remain transliterated
-        elm.innerText = '';
-        elm.classList.remove("xlit");
-        //To HIDE ALL transliterated words instead
-        let sibling = elmP.firstElementChild;
-        let modifiedSiblingArray = []
-        while (sibling) {
-            sibling.innerText = '';
-            sibling.classList.remove("xlit");
-            let siblingStrnum = sibling.getAttribute("strnum");
-            if (sibling != elm) {
-                modifiedSiblingArray.push(siblingStrnum)
-            };
-            sibling = sibling.nextElementSibling;
-        }
-        //If this is the only instance of transliteration of this strongsnum, remove it from the transliteratedArray
-        transliteratedWords_Array.forEach(sibStrnum => {
-            // if (!main.querySelectorAll('.xlit.strnum[strnum="' + sibStrnum + '"]')) {
-            if (!pagemaster.querySelectorAll('.xlit.strnum[strnum="' + sibStrnum + '"]')) {
-                transliteratedWords_Array.splice(transliteratedWords_Array.indexOf(siblingStrnum, 1));
-            }
-        });
+        elm.classList.remove('eng2grk');
+        elm.innerHTML='';
+        elm.innerHTML=elm.getAttribute("translation");
     })
 }
 
 function highlightAllStrongs(x) {
-    cs = `span[strnum="` + x + `"]{background-color:` + randomColor(200) + `;outline:1px solid ` + randomColor(200) + `}`
+    cs = `span[strnum="` + x + `"]{background-color:` + randomColor(200) + `;outline:1px solid ` + randomColor(200) + `;border-radius:2px;}`
     //CREATE THE INNER-STYLE WITH ID #highlightstrongs IN THE HEAD IF IT DOESN'T EXIST
     if (!document.querySelector('style#highlightstrongs')) {
         createNewStyleSheetandRule('highlightstrongs', cs)
@@ -143,28 +123,25 @@ function removeRecentStrongsFromArray(stn) {
             clickeElmArray.splice(index, 1)
         }
         highlightAllStrongs(stn)
-        // console.log(clickeElmArray)
+        if (highlightstrongs) {
+            setItemInLocalStorage('strongsHighlightStyleSheet', getAllRulesInStyleSheet(highlightstrongs));
+        }
     }, 300);
 }
 
 function strongsHighlighting(e) {
     let clickedElm;
-    if(strnum = e.target.getAttribute('strnum')){
-        strnum=strnum.split(' ');
+    if (strnum = e.target.getAttribute('strnum')) {
+        strnum = strnum.split(' ');
         getsStrongsDefinition(strnum);
-        console.log(strnum)
     }
     //IF IT IS A WORD TRANSLATED FROM HEBREW/GREEK
     if (e.target.classList.contains('translated')) {
         clickedElm = e.target;
         let stn = clickedElm.getAttribute('strnum');
-        // console.log(clickeElmArray.includes(stn))
         if (!clickeElmArray.includes(stn)) {
-            // console.log('not clicked recently');
             clickeElmArray.push(stn)
-            // console.log(clickeElmArray)
             removeRecentStrongsFromArray(stn);
-            // highlightAllStrongs(stn)
         }
     }
     //IF IT IS THE STRONGS WORD ITSELF
@@ -178,9 +155,6 @@ function strongsHighlighting(e) {
             clickeElmArray.shift(stn);
             clearTimeout(timerstn)
         }
-    }
-    if (highlightstrongs) {
-        setItemInLocalStorage('strongsHighlightStyleSheet', getAllRulesInStyleSheet(highlightstrongs));
     }
 }
 //ON PAGE LOAD, GET TRANSLITERATED ARRAY FROM CACHE
@@ -219,9 +193,8 @@ function strongsHighlighting(e) {
 pagemaster.addEventListener("dblclick", function (e) {
     hoverElm = e.target;
     if (hoverElm.nodeName == 'SPAN' && hoverElm.classList.contains('translated') && !hoverElm.classList.contains('eng2grk')) {
-        let allstn = hoverElm.querySelectorAll('.strnum'); //Some words are translated from more than one word
-        allstn.forEach(s => {
-            stn = s.getAttribute('strnum');
+        let allstn = hoverElm.getAttribute('strnum').split(' '); //Some words are translated from more than one word
+        allstn.forEach(stn => {
             if (transliteratedWords_Array.indexOf(stn) == -1) {
                 /* ADD THE WORD TO THE transliteratedWords_Array */
                 transliteratedWords_Array.push(stn);
@@ -229,18 +202,15 @@ pagemaster.addEventListener("dblclick", function (e) {
             showTransliteration(stn)
         })
     } else if (hoverElm.classList.contains('strnum')) {
-        let allstn = hoverElm.parentElement.querySelectorAll('.strnum');
-        let prevParent = [];
-        allstn.forEach(s => {
-            stn = s.getAttribute('strnum');
+        let allstn = hoverElm.parentElement.getAttribute('strnum').split(' ');
+        allstn.forEach(stn => {
             if (transliteratedWords_Array.indexOf(stn) != -1) {
                 /* REMOVE THE WORD FROM THE transliteratedWords_Array */
                 transliteratedWords_Array.splice(transliteratedWords_Array.indexOf(stn), 1);
             }
-            hideTransliteration(stn, prevParent)
+            hideTransliteration(stn)
         })
     }
-    // console.log(transliteratedWords_Array)
     setItemInLocalStorage('transliteratedWords', transliteratedWords_Array);
 })
 
@@ -259,16 +229,27 @@ function hideBibleNav() {
 main.addEventListener('mouseover', function (e) {
     // main.classList.remove('noselect');
     // if (e.target.classList.contains('translated')) {
-    if (e.target.hasAttribute('data-xlit')) {
+    if (strAtt = e.target.getAttribute('strnum')) {
         let newStyleInHead = document.createElement('style');
+        strAtt=strAtt.split(' ');
+        transStyleSelector = '';
+        let i = 0;
+        let commer='';
+        strAtt.forEach(stn => {
+            i++;
+            if(i>1){commer=','}
+            transStyleSelector=transStyleSelector+commer+'.'+stn;
+        });
         newStyleInHead.id = 'highlightall';
-        newStyleInHead.innerHTML = '[data-xlit="' + e.target.getAttribute('data-xlit') + '"]{background-color:lightgrey;-webkit-box-shadow: 3px 2px 2px 0px rgba(50, 50, 50, 0.87);-moz-box-shadow:3px 2px 2px 0px rgba(50, 50, 50, 0.87);box-shadow:3px 2px 2px 0px rgba(50, 50, 50, 0.87);}';
+        // background-color: rgb(240,218,201);rgb(247,243,204);rgb(235,200,230);rgb(200,255,150);rgba(255, 192, 203, 0.5);rgba(222, 184, 135, 0.5);rgba(255, 192, 100, 0.5)
+        newStyleInHead.innerHTML = transStyleSelector+'{background-color:rgba(255, 200, 0, 0.2);border-radius:2px;color:black!important;-webkit-box-shadow: 0.5px 0.5px 1px rgba(100,100,100, 0.8),inset 0 0 1px black;-moz-box-shadow:0.5px 0.5px 1px rgba(100,100,100, 0.8),inset 0 0 1px black;box-shadow:0.5px 0.5px 1px rgba(100,100,100, 0.8),inset 0 0 1px black;}';
+        // newStyleInHead.innerHTML = transStyleSelector+'{background-color:rgba(255, 20   0, 0, 0.2);font-weight:bold;border-radius:2px;color:black!important;-webkit-box-shadow: 2px 2px 1px rgba(100,100,100, 0.8),inset 0 0 1px black;-moz-box-shadow:2px 2px 1px rgba(100,100,100, 0.8),inset 0 0 1px black;box-shadow:2px 2px 1px rgba(100,100,100, 0.8),inset 0 0 1px black;}';
         let headPart = document.getElementsByTagName('head')[0];
         headPart.append(newStyleInHead);
     }
 })
 main.addEventListener('mouseout', function (e) {
-    if (e.target.hasAttribute('data-xlit')) {
+    if (e.target.hasAttribute('strnum')) {
         // if (e.target.classList.contains('translated')) {
         document.getElementById('highlightall').remove();
     }
